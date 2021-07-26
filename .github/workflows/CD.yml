@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  push:
+    tags:
+    - '[0-9]+.[0-9]+.[0-9]+'
+    - '[0-9]+.[0-9]+.[0-9]+-dev-[0-9]+'
+    - '[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.3
+
+    - name: Install .NET
+      uses: actions/setup-dotnet@v1.7.2
+      with:
+        dotnet-version: 5.0.x
+        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Pack
+      run: |
+        dotnet nuget update source PackSite --configfile ./src/NuGet.config -u ${{ secrets.GPR_OWNER }} -p ${{secrets.GPR_TOKEN }} --store-password-in-clear-text
+        dotnet pack src/PackSite.Library.Pipelining.sln --configuration Release
+
+    - name: Deploy to GitHub Package Registry
+      run: |
+        dotnet nuget push src/PackSite.Library.Pipelining/bin/Release/*.nupkg -k ${{ secrets.GITHUB_TOKEN }}

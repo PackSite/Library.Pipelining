@@ -1,0 +1,35 @@
+﻿namespace PackSite.Library.Pipelining
+{
+    using System;
+    using System.Collections.Concurrent;
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>
+    /// Step activator
+    /// </summary>
+    public class ServicesStepActivator : IStepActivator
+    {
+        private readonly IServiceProvider _serviceProvider;
+
+        private static readonly ConcurrentDictionary<Type, ObjectFactory> _cache = new();
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ServicesStepActivator"/>
+        /// </summary>
+        public ServicesStepActivator(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
+        /// <inheritdoc/>
+        public IBaseStep Create(Type stepType)
+        {
+            ObjectFactory stepFactory = _cache.GetOrAdd(stepType, (key) =>
+            {
+                return ActivatorUtilities.CreateFactory(key, Array.Empty<Type>());
+            });
+
+            return (IBaseStep)stepFactory(_serviceProvider, null);
+        }
+    }
+}

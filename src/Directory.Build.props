@@ -1,0 +1,16 @@
+<Project>
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <Author>PackSite</Author>
+    <Company>PackSite</Company>
+    <Copyright>
+      Copyright for project PackSite.Library.Pipelining are held by PackSite, 2021.
+    </Copyright>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable,NU1605,CS1591</WarningsAsErrors>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+  </PropertyGroup>
+
+</Project>
