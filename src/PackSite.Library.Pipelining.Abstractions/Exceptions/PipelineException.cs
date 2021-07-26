@@ -1,4 +1,4 @@
-﻿namespace PackSite.Library.Pipelining
+﻿namespace PackSite.Library.Pipelining.Exceptions
 {
     using System;
 

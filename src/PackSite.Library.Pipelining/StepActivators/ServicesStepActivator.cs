@@ -1,8 +1,9 @@
-﻿namespace PackSite.Library.Pipelining
+﻿namespace PackSite.Library.Pipelining.StepActivators
 {
     using System;
     using System.Collections.Concurrent;
     using Microsoft.Extensions.DependencyInjection;
+    using PackSite.Library.Pipelining;
 
     /// <summary>
     /// Step activator
@@ -29,7 +30,8 @@
                 return ActivatorUtilities.CreateFactory(key, Array.Empty<Type>());
             });
 
-            return (IBaseStep)stepFactory(_serviceProvider, null);
+            return stepFactory(_serviceProvider, null) as IBaseStep ??
+                throw new InvalidOperationException($"Failed to activate '{stepType.FullName ?? stepType.Name}'");
         }
     }
 }

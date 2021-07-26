@@ -26,17 +26,17 @@
     /// <summary>
     /// Pipeline step.
     /// </summary>
-    /// <typeparam name="TParameter"></typeparam>
-    public interface IStep<TParameter> : IBaseStep
-        where TParameter : class
+    /// <typeparam name="TContext"></typeparam>
+    public interface IStep<TContext> : IBaseStep
+        where TContext : class
     {
         /// <summary>
         /// Step entry point.
         /// </summary>
-        /// <param name="parameter"></param>
+        /// <param name="context"></param>
         /// <param name="next"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        ValueTask ExecuteAsync(TParameter parameter, StepDelegate next, CancellationToken cancellationToken = default);
+        ValueTask ExecuteAsync(TContext context, StepDelegate next, CancellationToken cancellationToken = default);
     }
 }

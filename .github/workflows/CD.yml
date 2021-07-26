@@ -31,3 +31,4 @@ jobs:
     - name: Deploy to GitHub Package Registry
       run: |
         dotnet nuget push src/PackSite.Library.Pipelining/bin/Release/*.nupkg -k ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget push src/PackSite.Library.Pipelining.Abstractions/bin/Release/*.nupkg -k ${{ secrets.GITHUB_TOKEN }}

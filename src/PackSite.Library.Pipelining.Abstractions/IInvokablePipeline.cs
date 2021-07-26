@@ -2,18 +2,19 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using PackSite.Library.Pipelining.Exceptions;
 
     /// <summary>
     /// Invokable pipeline.
     /// </summary>
-    /// <typeparam name="TParameter"></typeparam>
-    public interface IInvokablePipeline<TParameter>
-        where TParameter : class
+    /// <typeparam name="TContext"></typeparam>
+    public interface IInvokablePipeline<TContext>
+        where TContext : class
     {
         /// <summary>
         /// Pipeline.
         /// </summary>
-        IPipeline<TParameter> Pipeline { get; }
+        IPipeline<TContext> Pipeline { get; }
 
         /// <summary>
         /// Invokes a pipeline for given input.
@@ -22,6 +23,6 @@
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="PipelineException">Throws when an unhandled exception was thrown during pipeline execution.</exception>
-        ValueTask<TParameter> InvokeAsync(TParameter input, CancellationToken cancellationToken = default);
+        ValueTask<TContext> InvokeAsync(TContext input, CancellationToken cancellationToken = default);
     }
 }
