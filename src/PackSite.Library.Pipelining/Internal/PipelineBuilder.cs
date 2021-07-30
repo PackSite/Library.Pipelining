@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using PackSite.Library.Pipelining;
 
     /// <summary>
@@ -60,7 +61,16 @@
             where TStep : class, IBaseStep
         {
             _ = _buildTimeSteps ?? throw new InvalidOperationException("Cannot modify pipeline after build operation.");
-            _buildTimeSteps.Add(typeof(TStep));
+
+            Type stepType = typeof(TStep);
+            Type[] stepInterfaces = stepType.GetInterfaces();
+
+            if (!stepInterfaces.Contains(typeof(IStep)) && !stepInterfaces.Contains(typeof(IStep<TContext>)))
+            {
+                throw new ArgumentException(nameof(TContext), "Invalid step instance type.");
+            }
+
+            _buildTimeSteps.Add(stepType);
 
             return this;
         }
@@ -71,6 +81,12 @@
         {
             _ = instance ?? throw new ArgumentNullException(nameof(instance));
             _ = _buildTimeSteps ?? throw new InvalidOperationException("Cannot modify pipeline after build operation.");
+
+            if (instance is not (IStep or IStep<TContext>))
+            {
+                throw new ArgumentException("Invalid step instance type.", nameof(instance));
+            }
+
             _buildTimeSteps.Add(instance);
 
             return this;
