@@ -15,7 +15,7 @@
         public static IPipelineBuilder<TContext> Create<TContext>()
             where TContext : class
         {
-            return new PipelineBuilder<TContext>(); //TODO: maybe rename TContext to TContext
+            return new PipelineBuilder<TContext>();
         }
     }
 }

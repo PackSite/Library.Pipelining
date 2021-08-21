@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
 		clean.ps1 = clean.ps1
+		..\codecov.yml = ..\codecov.yml
 		Directory.Build.props = Directory.Build.props
 		local-deploy.ps1 = local-deploy.ps1
 		NuGet.config = NuGet.config
@@ -32,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 		..\.github\workflows\CI.yml = ..\.github\workflows\CI.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackSite.Library.Pipelining.Abstractions", "PackSite.Library.Pipelining.Abstractions\PackSite.Library.Pipelining.Abstractions.csproj", "{785A0E69-DDA1-4833-BFC2-2C3B9AB12673}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackSite.Library.Pipelining.Abstractions", "PackSite.Library.Pipelining.Abstractions\PackSite.Library.Pipelining.Abstractions.csproj", "{785A0E69-DDA1-4833-BFC2-2C3B9AB12673}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

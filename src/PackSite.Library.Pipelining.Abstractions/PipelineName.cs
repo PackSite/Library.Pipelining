@@ -5,7 +5,7 @@
     /// <summary>
     /// Pipeline name.
     /// </summary>
-    public readonly struct PipelineName : IEquatable<PipelineName>, IComparable<PipelineName>, IComparable
+    public sealed class PipelineName : IEquatable<PipelineName>, IComparable<PipelineName>, IComparable
     {
         /// <summary>
         /// Item name.
@@ -45,15 +45,15 @@
         }
 
         /// <inheritdoc/>
-        public override readonly bool Equals(object? obj)
+        public override bool Equals(object? obj)
         {
             return obj is PipelineName itemName && Value.Equals(itemName.Value);
         }
 
         /// <inheritdoc/>
-        public readonly bool Equals(PipelineName other)
+        public bool Equals(PipelineName? other)
         {
-            return Value.Equals(other.Value);
+            return other is PipelineName && Value.Equals(other.Value);
         }
 
         /// <summary>
@@ -79,8 +79,13 @@
         }
 
         /// <inheritdoc/>
-        public readonly int CompareTo(PipelineName other)
+        public int CompareTo(PipelineName? other)
         {
+            if (other is not PipelineName)
+            {
+                return -1;
+            }
+
             return Value.CompareTo(other.Value);
         }
 
@@ -96,13 +101,13 @@
         }
 
         /// <inheritdoc/>
-        public override readonly int GetHashCode()
+        public override int GetHashCode()
         {
             return Value.GetHashCode();
         }
 
         /// <inheritdoc/>
-        public override readonly string ToString()
+        public override string ToString()
         {
             return Value.ToString();
         }

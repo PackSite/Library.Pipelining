@@ -32,13 +32,14 @@
         /// <inheritdoc/>
         public async ValueTask<TContext> InvokeAsync(TContext input, CancellationToken cancellationToken = default)
         {
+            //TODO: pipeline profiling
             try
             {
                 await _delegate(input, cancellationToken);
             }
             catch (Exception ex)
             {
-                throw new PipelineException(Pipeline, ex);
+                throw new PipelineException(input, Pipeline, ex);
             }
 
             return input;

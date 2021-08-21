@@ -1,5 +1,6 @@
 ﻿namespace PackSite.Library.Pipelining
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -7,6 +8,21 @@
     /// </summary>
     public interface IPipelineCollection : IReadOnlyCollection<IPipeline>
     {
+        /// <summary>
+        /// Event invoked when a pipeline was added to <see cref="IPipelineCollection"/>
+        /// </summary>
+        public event EventHandler<PipelineAddedEventArgs>? Added;
+
+        /// <summary>
+        /// Event invoked when a pipeline was removed from <see cref="IPipelineCollection"/>
+        /// </summary>
+        public event EventHandler<PipelineRemovedEventArgs>? Removed;
+
+        /// <summary>
+        /// Event invoked when a pipeline collection was cleared.
+        /// </summary>
+        public event EventHandler? Cleared;
+
         /// <summary>
         /// Pipeline names.
         /// </summary>
@@ -32,12 +48,39 @@
         void Clear();
 
         /// <summary>
-        /// Get pipeline by name or default.
+        /// Get pipeline by name.
+        /// </summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Throws when pipeline with specified name was not found.</exception>
+        public IPipeline<TContext> Get<TContext>(PipelineName name)
+            where TContext : class;
+
+        /// <summary>
+        /// Get pipeline by name.
+        /// </summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Throws when pipeline with specified name was not found.</exception>
+        public IPipeline<TContext> Get<TContext>()
+            where TContext : class;
+
+        /// <summary>
+        /// Get pipeline by name. Returns null when not found.
         /// </summary>
         /// <typeparam name="TContext"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
         IPipeline<TContext>? GetOrDefault<TContext>(PipelineName name)
+            where TContext : class;
+
+        /// <summary>
+        /// Get pipeline by its default name. Returns null when not found.
+        /// </summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <returns></returns>
+        IPipeline<TContext>? GetOrDefault<TContext>()
             where TContext : class;
     }
 }

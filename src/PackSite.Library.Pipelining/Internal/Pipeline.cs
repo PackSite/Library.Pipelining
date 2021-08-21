@@ -40,7 +40,7 @@
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="steps"></param>
-        public Pipeline(InvokablePipelineLifetime lifetime, PipelineName name, string? description, object[] steps)
+        public Pipeline(InvokablePipelineLifetime lifetime, PipelineName name, string description, object[] steps)
         {
             Lifetime = lifetime;
             Name = name;
@@ -117,6 +117,18 @@
 
             builder.Append("PIPELINE '");
             builder.Append(Name);
+            builder.Append(" (");
+            builder.Append(Steps.Count);
+
+            if (Steps.Count == 1)
+            {
+                builder.Append(" step)");
+            }
+            else
+            {
+                builder.Append(" steps)");
+            }
+
             builder.AppendLine("'");
             builder.AppendLine("{");
 
@@ -131,6 +143,7 @@
             }
 
             builder.AppendLine("  [-] = \\/ /\\");
+            --i;
 
             foreach (Type step in Steps.Reverse())
             {

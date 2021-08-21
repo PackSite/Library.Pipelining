@@ -1,5 +1,6 @@
 ﻿namespace PackSite.Library.Pipelining
 {
+    using System;
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
@@ -11,6 +12,15 @@
     public class PipelineCollection : IPipelineCollection
     {
         private readonly ConcurrentDictionary<PipelineName, IPipeline> _pipelines = new();
+
+        /// <inheritdoc/>
+        public event EventHandler<PipelineAddedEventArgs>? Added;
+
+        /// <inheritdoc/>
+        public event EventHandler<PipelineRemovedEventArgs>? Removed;
+
+        /// <inheritdoc/>
+        public event EventHandler? Cleared;
 
         /// <inheritdoc/>
         public IReadOnlyList<PipelineName> Names => _pipelines.Keys.ToList();
@@ -29,19 +39,49 @@
         /// <inheritdoc/>
         public bool TryAdd(IPipeline pipeline)
         {
-            return _pipelines.TryAdd(pipeline.Name, pipeline);
+            bool wasAdded = _pipelines.TryAdd(pipeline.Name, pipeline);
+
+            if (wasAdded && Added is not null)
+            {
+                Added(this, new PipelineAddedEventArgs(pipeline.Name));
+            }
+
+            return wasAdded;
         }
 
         /// <inheritdoc/>
         public bool TryRemove(PipelineName name)
         {
-            return _pipelines.TryRemove(name, out IPipeline _);
+            bool wasRemoved = _pipelines.TryRemove(name, out IPipeline _);
+
+            if (wasRemoved && Removed is not null)
+            {
+                Removed(this, new PipelineRemovedEventArgs(name));
+            }
+
+            return wasRemoved;
         }
 
         /// <inheritdoc/>
         public void Clear()
         {
             _pipelines.Clear();
+            Cleared?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <inheritdoc/>
+        public IPipeline<TContext> Get<TContext>(PipelineName name)
+                where TContext : class
+        {
+            return _pipelines.GetValueOrDefault(name) as IPipeline<TContext> ??
+                throw new ArgumentException($"Cannot get pipeline. Pipeline '{name}' not found or '{typeof(TContext).FullName ?? typeof(TContext).Name}' is an invalid type for '{name}' pipeline.", nameof(name));
+        }
+
+        /// <inheritdoc/>
+        public IPipeline<TContext> Get<TContext>()
+            where TContext : class
+        {
+            return Get<TContext>(typeof(IPipeline<TContext>).FullName ?? string.Empty);
         }
 
         /// <inheritdoc/>
@@ -49,6 +89,13 @@
             where TContext : class
         {
             return _pipelines.GetValueOrDefault(name) as IPipeline<TContext>;
+        }
+
+        /// <inheritdoc/>
+        public IPipeline<TContext>? GetOrDefault<TContext>()
+            where TContext : class
+        {
+            return GetOrDefault<TContext>(typeof(IPipeline<TContext>).FullName ?? string.Empty);
         }
 
         /// <inheritdoc/>
