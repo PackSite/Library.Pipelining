@@ -90,7 +90,7 @@
                 {
                     invokeDelegate = (input, ct) =>
                     {
-                        return s.ExecuteAsync(() => next(input, ct), ct);
+                        return s.ExecuteAsync(input, () => next(input, ct), ct);
                     };
                 }
                 else if (baseStep is IStep<TContext> sp)

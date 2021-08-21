@@ -62,6 +62,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipelines.Names.Should().Contain(pipelineName);
             pipelines.Count.Should().Be(1);
             pipelines.Should().Contain(pipeline);
+
             pipelines.GetOrDefault<SampleContext>("invalid:name").Should().BeNull();
 
             IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
@@ -123,6 +124,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipelines.Names.Should().Contain(pipelineName);
             pipelines.Count.Should().Be(1);
             pipelines.Should().Contain(pipeline);
+
             pipelines.GetOrDefault<SampleContext>("invalid:name").Should().BeNull();
 
             IPipeline<SampleContext> pipelineFromCollection = useDefault ?
@@ -155,7 +157,7 @@ namespace PackSite.Library.Pipelining.Tests
         [InlineData(null, InvokablePipelineLifetime.Transient)]
         [InlineData(null, InvokablePipelineLifetime.Scoped)]
         [InlineData(null, InvokablePipelineLifetime.Singleton)]
-        public async Task Should_create_and_invoke_that_throws_exceptin(string? pipelineName, InvokablePipelineLifetime lifetime)
+        public async Task Should_create_and_invoke_that_throws_exception(string? pipelineName, InvokablePipelineLifetime lifetime)
         {
             // Arrange
             bool useDefault = pipelineName is null;
@@ -206,6 +208,70 @@ namespace PackSite.Library.Pipelining.Tests
 
             context.DataOut.Should().ContainInOrder(typeof(StepWithContext2));
             context.DataOut.Should().NotContain(typeof(GenericStep));
+        }
+
+        [Fact]
+        public void Should_fire_events()
+        {
+            // Arrange
+            using ServiceProvider services = new ServiceCollection()
+                .AddPipelining()
+                .BuildServiceProvider(true);
+
+            using IServiceScope scope = services.CreateScope();
+
+            IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
+
+            PipelineName? lastAdded = null;
+            PipelineName? lastRemoved = null;
+
+            int addedCount = 0;
+            int removedCount = 0;
+            int clearedCount = 0;
+
+            pipelines.Added += (sender, e) =>
+            {
+                lastAdded = e.PipelineName;
+                ++addedCount;
+            };
+
+            pipelines.Removed += (sender, e) =>
+            {
+                lastRemoved = e.PipelineName;
+                ++removedCount;
+            };
+
+            pipelines.Cleared += (sender, e) =>
+            {
+                ++clearedCount;
+            };
+
+            // Act
+            IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+                .Name(DefaultName)
+                .Build();
+
+            pipelines.TryAdd(pipeline).Should().BeTrue();
+            lastAdded.Should().Be(DefaultName);
+            addedCount.Should().Be(1);
+            removedCount.Should().Be(0);
+            clearedCount.Should().Be(0);
+
+            pipelines.TryRemove(DefaultName);
+            lastRemoved.Should().Be(DefaultName);
+            addedCount.Should().Be(1);
+            removedCount.Should().Be(1);
+            clearedCount.Should().Be(0);
+
+            pipelines.TryAdd(pipeline).Should().BeTrue();
+            addedCount.Should().Be(2);
+            removedCount.Should().Be(1);
+            clearedCount.Should().Be(0);
+
+            pipelines.Clear();
+            addedCount.Should().Be(2);
+            removedCount.Should().Be(1);
+            clearedCount.Should().Be(1);
         }
     }
 }

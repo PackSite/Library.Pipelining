@@ -11,8 +11,11 @@ namespace PackSite.Library.Pipelining.Tests
         public void Should_create_from_string()
         {
             PipelineName name = "abc";
-            (name.Value == "abc").Should().BeTrue();
-            (name.Value != "abc").Should().BeFalse();
+            (name == "abc").Should().BeTrue();
+            name.Equals((object)"abc").Should().BeFalse();
+            name.Equals((object)(PipelineName)"abc").Should().BeTrue();
+
+            (name != "abc").Should().BeFalse();
 
             name.ToString().Should().Be("abc");
         }
@@ -21,8 +24,11 @@ namespace PackSite.Library.Pipelining.Tests
         public void Should_create_with_ctor()
         {
             PipelineName name = new("abc");
-            (name.Value == "abc").Should().BeTrue();
-            (name.Value != "abc").Should().BeFalse();
+            (name == "abc").Should().BeTrue();
+            name.Equals((object)"abc").Should().BeFalse();
+            name.Equals((object)(PipelineName)"abc").Should().BeTrue();
+
+            (name != "abc").Should().BeFalse();
 
             name.ToString().Should().Be("abc");
         }
@@ -53,6 +59,7 @@ namespace PackSite.Library.Pipelining.Tests
             PipelineName n1 = new(name1);
 
             n0.CompareTo(n1).Should().Be(result);
+            n0.CompareTo((object)n1).Should().Be(result);
         }
     }
 }

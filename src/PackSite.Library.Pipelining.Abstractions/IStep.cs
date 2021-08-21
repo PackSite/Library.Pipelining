@@ -17,10 +17,11 @@
         /// <summary>
         /// Step entry point.
         /// </summary>
+        /// <param name="context"></param>
         /// <param name="next"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        ValueTask ExecuteAsync(StepDelegate next, CancellationToken cancellationToken = default);
+        ValueTask ExecuteAsync(object context, StepDelegate next, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
