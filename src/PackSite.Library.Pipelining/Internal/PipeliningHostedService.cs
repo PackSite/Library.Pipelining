@@ -13,12 +13,13 @@
     using PackSite.Library.Pipelining.Configuration;
     using PackSite.Library.Pipelining.Internal.Extensions;
 
-    internal sealed class PipeliningHostedService : IHostedService
+    internal sealed class PipeliningHostedService : IHostedService, IDisposable
     {
         private IReadOnlyList<PipelineName> _lastRegistered = new List<PipelineName>();
 
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private PipeliningConfiguration _options;
+        private readonly IDisposable _optionsMonitor;
         private readonly IPipelineCollection _pipelineCollection;
         private readonly ILogger _logger;
 
@@ -33,7 +34,7 @@
         {
             _serviceScopeFactory = serviceScopeFactory;
             _options = options.CurrentValue;
-            options.OnChange(OptionsChanged);
+            _optionsMonitor = options.OnChange(OptionsChanged);
 
             _pipelineCollection = pipelineCollection;
             _logger = logger;
@@ -75,7 +76,7 @@
 
         private void OptionsChanged(PipeliningConfiguration @new, string namedOptions)
         {
-            lock (_options)
+            lock (_optionsMonitor)
             {
                 _options = @new;
                 UpdatePipelines();
@@ -121,6 +122,11 @@
                     throw;
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            _optionsMonitor.Dispose();
         }
 
         /// <summary>

@@ -4,13 +4,13 @@
     using System.Threading.Tasks;
     using PackSite.Library.Pipelining;
 
-    public class OtherDemoDataStep2 : IStep<OtherDemoDataContext>
+    public class OtherDemoDataStep2 : IStep<OtherDemoDataArgs>
     {
-        public async ValueTask ExecuteAsync(OtherDemoDataContext context, StepDelegate next, IInvokablePipeline<OtherDemoDataContext> invokablePipeline, CancellationToken cancellationToken = default)
+        public async ValueTask ExecuteAsync(OtherDemoDataArgs args, StepDelegate next, IInvokablePipeline<OtherDemoDataArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
-            if (context.Value > 5)
+            if (args.Value > 5)
             {
-                context.Value = 0;
+                args.Value = 0;
             }
 
             await next();

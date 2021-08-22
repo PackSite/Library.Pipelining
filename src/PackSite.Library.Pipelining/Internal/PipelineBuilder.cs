@@ -8,9 +8,9 @@
     /// <summary>
     /// Pipeline builder.
     /// </summary>
-    /// <typeparam name="TContext"></typeparam>
-    internal sealed class PipelineBuilder<TContext> : IPipelineBuilder<TContext>
-        where TContext : class
+    /// <typeparam name="TArgs"></typeparam>
+    internal sealed class PipelineBuilder<TArgs> : IPipelineBuilder<TArgs>
+        where TArgs : class
     {
         private InvokablePipelineLifetime _lifetime = InvokablePipelineLifetime.Singleton;
         private readonly List<object> _buildTimeSteps = new();
@@ -18,7 +18,7 @@
         private string? _description;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="PipelineBuilder{T}"/>.
+        /// Initializes a new instance of <see cref="PipelineBuilder{TArgs}"/>.
         /// </summary>
         public PipelineBuilder()
         {
@@ -26,7 +26,7 @@
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TContext> Lifetime(InvokablePipelineLifetime lifetime)
+        public IPipelineBuilder<TArgs> Lifetime(InvokablePipelineLifetime lifetime)
         {
             _lifetime = lifetime;
 
@@ -34,7 +34,7 @@
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TContext> Name(PipelineName? name)
+        public IPipelineBuilder<TArgs> Name(PipelineName? name)
         {
             _name = name;
 
@@ -42,7 +42,7 @@
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TContext> Description(string description)
+        public IPipelineBuilder<TArgs> Description(string description)
         {
             _description = description ?? throw new ArgumentNullException(nameof(description));
 
@@ -50,13 +50,13 @@
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TContext> Add(Type stepType)
+        public IPipelineBuilder<TArgs> Add(Type stepType)
         {
             Type[] stepInterfaces = stepType.GetInterfaces();
 
-            if (!stepInterfaces.Contains(typeof(IStep)) && !stepInterfaces.Contains(typeof(IStep<TContext>)))
+            if (!stepInterfaces.Contains(typeof(IStep)) && !stepInterfaces.Contains(typeof(IStep<TArgs>)))
             {
-                throw new ArgumentException(nameof(TContext), $"Invalid step instance type. Must implement '{typeof(IStep).FullName}' or '{typeof(IStep<TContext>).FullName}'.");
+                throw new ArgumentException(nameof(TArgs), $"Invalid step instance type. Must implement '{typeof(IStep).FullName}' or '{typeof(IStep<TArgs>).FullName}'.");
             }
 
             _buildTimeSteps.Add(stepType);
@@ -65,7 +65,7 @@
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TContext> Add<TStep>()
+        public IPipelineBuilder<TArgs> Add<TStep>()
             where TStep : class, IBaseStep
         {
             Type stepType = typeof(TStep);
@@ -74,13 +74,13 @@
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TContext> Add<TStep>(TStep instance)
+        public IPipelineBuilder<TArgs> Add<TStep>(TStep instance)
             where TStep : class, IBaseStep
         {
             _ = instance ?? throw new ArgumentNullException(nameof(instance));
             _ = _buildTimeSteps ?? throw new InvalidOperationException("Cannot modify pipeline after build operation.");
 
-            if (instance is not (IStep or IStep<TContext>))
+            if (instance is not (IStep or IStep<TArgs>))
             {
                 throw new ArgumentException("Invalid step instance type.", nameof(instance));
             }
@@ -91,11 +91,11 @@
         }
 
         /// <inheritdoc/>
-        public IPipeline<TContext> Build()
+        public IPipeline<TArgs> Build()
         {
-            _name ??= typeof(IPipeline<TContext>).FullName!;
+            _name ??= typeof(IPipeline<TArgs>).FullName!;
 
-            Pipeline<TContext> pipeline = new(_lifetime,
+            Pipeline<TArgs> pipeline = new(_lifetime,
                                               _name,
                                               _description ?? string.Empty,
                                               _buildTimeSteps.ToArray());

@@ -22,33 +22,33 @@
         /// <summary>
         /// Invokes a pipeline for given input.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="args"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="PipelineInvocationException">Throws when an unhandled exception was thrown during pipeline execution.</exception>
-        /// <exception cref="InvalidCastException">Throws when failed to cast <paramref name="context"/> to underlying context type.</exception>
-        ValueTask<object> InvokeAsync(object context, CancellationToken cancellationToken = default);
+        /// <exception cref="InvalidCastException">Throws when failed to cast <paramref name="args"/> to underlying args type.</exception>
+        ValueTask<object> InvokeAsync(object args, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
     /// Invokable pipeline.
     /// </summary>
-    /// <typeparam name="TContext"></typeparam>
-    public interface IInvokablePipeline<TContext> : IInvokablePipeline
-        where TContext : class
+    /// <typeparam name="TArgs"></typeparam>
+    public interface IInvokablePipeline<TArgs> : IInvokablePipeline
+        where TArgs : class
     {
         /// <summary>
         /// Pipeline.
         /// </summary>
-        new IPipeline<TContext> Pipeline { get; }
+        new IPipeline<TArgs> Pipeline { get; }
 
         /// <summary>
         /// Invokes a pipeline for given input.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="args"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="PipelineInvocationException">Throws when an unhandled exception was thrown during pipeline execution.</exception>
-        ValueTask<TContext> InvokeAsync(TContext context, CancellationToken cancellationToken = default);
+        ValueTask<TArgs> InvokeAsync(TArgs args, CancellationToken cancellationToken = default);
     }
 }

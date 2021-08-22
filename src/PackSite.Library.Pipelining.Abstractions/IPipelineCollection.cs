@@ -57,37 +57,37 @@
         /// <summary>
         /// Get pipeline by name.
         /// </summary>
-        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TArgs"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Throws when pipeline with specified name was not found.</exception>
-        public IPipeline<TContext> Get<TContext>(PipelineName name)
-            where TContext : class;
+        public IPipeline<TArgs> Get<TArgs>(PipelineName name)
+            where TArgs : class;
 
         /// <summary>
         /// Get pipeline by name.
         /// </summary>
-        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Throws when pipeline with specified name was not found.</exception>
-        public IPipeline<TContext> Get<TContext>()
-            where TContext : class;
+        public IPipeline<TArgs> Get<TArgs>()
+            where TArgs : class;
 
         /// <summary>
         /// Get pipeline by name. Returns null when not found.
         /// </summary>
-        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TArgs"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        IPipeline<TContext>? GetOrDefault<TContext>(PipelineName name)
-            where TContext : class;
+        IPipeline<TArgs>? GetOrDefault<TArgs>(PipelineName name)
+            where TArgs : class;
 
         /// <summary>
         /// Get pipeline by its default name. Returns null when not found.
         /// </summary>
-        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>
-        IPipeline<TContext>? GetOrDefault<TContext>()
-            where TContext : class;
+        IPipeline<TArgs>? GetOrDefault<TArgs>()
+            where TArgs : class;
     }
 }

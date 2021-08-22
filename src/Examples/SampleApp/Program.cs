@@ -16,7 +16,7 @@
         public static async Task Main(string[] args)
         {
             ConfigurationBuilder builder = new();
-            BuildConfig(builder, args);
+            BuildConfig(builder);
 
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(builder.Build())
@@ -52,15 +52,13 @@
             }
         }
 
-        private static void BuildConfig(IConfigurationBuilder builder, string[] args)
+        private static void BuildConfig(IConfigurationBuilder builder)
         {
             builder.SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production"}.json", optional: true)
                 .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
-                .AddEnvironmentVariables()
-                .AddUserSecrets(typeof(Program).Assembly, optional: true, reloadOnChange: true)
-                .AddCommandLine(args);
+                .AddEnvironmentVariables();
         }
     }
 }

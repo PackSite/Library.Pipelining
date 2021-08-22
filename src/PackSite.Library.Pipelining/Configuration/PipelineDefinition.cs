@@ -15,9 +15,9 @@
         public bool Enabled { get; set; }
 
         /// <summary>
-        /// Context type.
+        /// Args type.
         /// </summary>
-        public string? ContextType { get; set; }
+        public string? ArgsType { get; set; }
 
         /// <summary>
         /// Pipeline description.
@@ -35,12 +35,12 @@
         public List<string?>? Steps { get; set; }
 
         /// <summary>
-        /// Sets context type.
+        /// Sets args type.
         /// </summary>
         /// <param name="type"></param>
-        public void SetContext(Type type)
+        public void SetArgsType(Type type)
         {
-            ContextType = type?.AssemblyQualifiedName ?? throw new ArgumentNullException(nameof(type));
+            ArgsType = type?.AssemblyQualifiedName ?? throw new ArgumentNullException(nameof(type));
         }
 
         /// <summary>

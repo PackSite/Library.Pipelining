@@ -31,10 +31,10 @@
         }
 
         /// <inheritdoc/>
-        public IInvokablePipeline<TContext>? GetPipeline<TContext>(PipelineName name)
-            where TContext : class
+        public IInvokablePipeline<TArgs>? GetPipeline<TArgs>(PipelineName name)
+            where TArgs : class
         {
-            IPipeline<TContext>? pipeline = _pipelines.GetOrDefault<TContext>(name);
+            IPipeline<TArgs>? pipeline = _pipelines.GetOrDefault<TArgs>(name);
 
             if (pipeline is null)
             {
@@ -46,7 +46,7 @@
                 return _singletonPipelines.Container.GetOrAdd(name, (key) =>
                 {
                     return pipeline.CreateInvokable(_stepActivator);
-                }) as IInvokablePipeline<TContext>;
+                }) as IInvokablePipeline<TArgs>;
             }
 
             if (pipeline.Lifetime is InvokablePipelineLifetime.Scoped)
@@ -54,32 +54,32 @@
                 return _scopedPipelines.GetOrAdd(name, (key) =>
                 {
                     return pipeline.CreateInvokable(_stepActivator);
-                }) as IInvokablePipeline<TContext>;
+                }) as IInvokablePipeline<TArgs>;
             }
 
             return pipeline.CreateInvokable(_stepActivator);
         }
 
         /// <inheritdoc/>
-        public IInvokablePipeline<TContext> GetRequiredPipeline<TContext>(PipelineName name)
-            where TContext : class
+        public IInvokablePipeline<TArgs> GetRequiredPipeline<TArgs>(PipelineName name)
+            where TArgs : class
         {
-            return GetPipeline<TContext>(name) ??
-                throw new ArgumentException($"Cannot get invokable pipeline. Pipeline '{name}' not found or '{typeof(TContext).FullName ?? typeof(TContext).Name}' is an invalid type for '{name}' pipeline.", nameof(name));
+            return GetPipeline<TArgs>(name) ??
+                throw new ArgumentException($"Cannot get invokable pipeline. Pipeline '{name}' not found or '{typeof(TArgs).FullName ?? typeof(TArgs).Name}' is an invalid type for '{name}' pipeline.", nameof(name));
         }
 
         /// <inheritdoc/>
-        public IInvokablePipeline<TContext>? GetPipeline<TContext>()
-            where TContext : class
+        public IInvokablePipeline<TArgs>? GetPipeline<TArgs>()
+            where TArgs : class
         {
-            return GetPipeline<TContext>(typeof(IPipeline<TContext>).FullName ?? string.Empty);
+            return GetPipeline<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
         }
 
         /// <inheritdoc/>
-        public IInvokablePipeline<TContext> GetRequiredPipeline<TContext>()
-            where TContext : class
+        public IInvokablePipeline<TArgs> GetRequiredPipeline<TArgs>()
+            where TArgs : class
         {
-            return GetRequiredPipeline<TContext>(typeof(IPipeline<TContext>).FullName ?? string.Empty);
+            return GetRequiredPipeline<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
         }
 
         private void PipelinesCollection_Cleared(object? sender, EventArgs e)

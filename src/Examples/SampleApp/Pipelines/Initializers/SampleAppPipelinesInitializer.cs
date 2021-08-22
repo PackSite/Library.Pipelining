@@ -5,16 +5,15 @@
     using System.Threading.Tasks;
     using PackSite.Library.Pipelining;
     using SampleApp.Extensions;
-    using SampleApp.Pipelines;
     using SampleApp.Pipelines.DemoData;
 
     public class SampleAppPipelinesInitializer : IPipelineInitializer
     {
         public ValueTask RegisterAsync(IPipelineCollection pipelines, CancellationToken cancellationToken)
         {
-            _ = PipelineBuilder.Create<DemoDataContext>()
+            _ = PipelineBuilder.Create<DemoDataArgs>()
                 .Description("Demo data pipeline.")
-                .Lifetime(InvokablePipelineLifetime.Transient)
+                .Lifetime(InvokablePipelineLifetime.Singleton)
                 .Add<ExceptionLoggingStep>()
                 .Add<DemoDataStep1>()
                 .Add<DemoDataStep2>()

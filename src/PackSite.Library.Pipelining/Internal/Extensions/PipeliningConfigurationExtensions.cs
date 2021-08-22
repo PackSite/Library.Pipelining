@@ -33,12 +33,12 @@
 
         private static IPipeline BuildPipeline(string pipelineName, PipelineDefinition pipelineDefinition)
         {
-            _ = pipelineDefinition.ContextType ?? throw new NullReferenceException($"Context type cannot be null in '{pipelineName}' pipeline.");
+            _ = pipelineDefinition.ArgsType ?? throw new NullReferenceException($"Args type cannot be null in '{pipelineName}' pipeline.");
 
-            Type contextType = Type.GetType(pipelineDefinition.ContextType, AssemblyResolver, null) ??
-                throw new NullReferenceException($"Invalid context type '{pipelineDefinition.ContextType}' in '{pipelineName}' pipeline.");
+            Type argsType = Type.GetType(pipelineDefinition.ArgsType, AssemblyResolver, null) ??
+                throw new NullReferenceException($"Invalid args type '{pipelineDefinition.ArgsType}' in '{pipelineName}' pipeline.");
 
-            IPipelineBuilder builder = PipelineBuilder.Create(contextType)
+            IPipelineBuilder builder = PipelineBuilder.Create(argsType)
                 .Name(pipelineName ?? string.Empty)
                 .Description(pipelineDefinition.Description ?? string.Empty)
                 .Lifetime(pipelineDefinition.Lifetime);

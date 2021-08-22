@@ -2,7 +2,7 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using PackSite.Library.Pipelining.Tests.Data.Contexts;
+    using PackSite.Library.Pipelining.Tests.Data.Args;
     using PackSite.Library.Pipelining.Tests.Data.Steps;
 
     public sealed class SamplePipelineInitializers : IPipelineInitializer
@@ -16,11 +16,11 @@
 
         public ValueTask RegisterAsync(IPipelineCollection pipelines, CancellationToken cancellationToken)
         {
-            _ = PipelineBuilder.Create<SampleContext>()
+            _ = PipelineBuilder.Create<SampleArgs>()
                 .Name(Names[0])
-                .Add<StepWithContext1>()
-                .Add<StepWithContext2>()
-                .Add(new StepWithContext3())
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs2>()
+                .Add(new StepWithArgs3())
                 .Add<GenericStep>()
                 .Build().TryAddTo(pipelines);
 

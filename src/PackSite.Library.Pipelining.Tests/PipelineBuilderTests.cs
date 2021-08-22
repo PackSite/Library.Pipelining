@@ -3,7 +3,7 @@ namespace PackSite.Library.Pipelining.Tests
     using System;
     using FluentAssertions;
     using PackSite.Library.Pipelining;
-    using PackSite.Library.Pipelining.Tests.Data.Contexts;
+    using PackSite.Library.Pipelining.Tests.Data.Args;
     using PackSite.Library.Pipelining.Tests.Data.Steps;
     using Xunit;
 
@@ -19,13 +19,13 @@ namespace PackSite.Library.Pipelining.Tests
         public void Should_create_pipeline(InvokablePipelineLifetime lifetime)
         {
             // Act
-            IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(DefaultName)
                 .Description(DefaultDescription)
-                .Add<StepWithContext1>()
-                .Add<StepWithContext1>()
-                .Add<StepWithContext2>()
-                .Add(new StepWithContext3())
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs2>()
+                .Add(new StepWithArgs3())
                 .Add<GenericStep>()
                 .Add<GenericStep>()
                 .Lifetime(lifetime)
@@ -36,13 +36,13 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Name.Should().Be(DefaultName);
             pipeline.Description.Should().Be(DefaultDescription);
             pipeline.Lifetime.Should().Be(lifetime);
-            pipeline.Steps.Should().ContainInOrder(typeof(StepWithContext1), typeof(StepWithContext1), typeof(StepWithContext2), typeof(GenericStep), typeof(GenericStep));
+            pipeline.Steps.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(GenericStep), typeof(GenericStep));
 
             pipeline.ToString().Should().NotBeNull();
             pipeline.ToString().Should().ContainAll(
-                typeof(StepWithContext1).FullName,
-                typeof(StepWithContext1).FullName,
-                typeof(StepWithContext2).FullName,
+                typeof(StepWithArgs1).FullName,
+                typeof(StepWithArgs1).FullName,
+                typeof(StepWithArgs2).FullName,
                 typeof(GenericStep).FullName,
                 typeof(GenericStep).FullName,
                 "[0]", "[1]", "[2]", "[3]", "[4]", "[5]");
@@ -56,7 +56,7 @@ namespace PackSite.Library.Pipelining.Tests
         public void Should_create_pipeline_with_no_steps(InvokablePipelineLifetime lifetime)
         {
             // Act
-            IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(DefaultName)
                 .Description(DefaultDescription)
                 .Lifetime(lifetime)
@@ -74,12 +74,12 @@ namespace PackSite.Library.Pipelining.Tests
         public void Should_create_pipeline_with_default_name()
         {
             // Act
-            IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Description(DefaultDescription)
                 .Build();
 
             // Assert
-            pipeline.Name.Should().Be(typeof(IPipeline<SampleContext>).FullName!);
+            pipeline.Name.Should().Be(typeof(IPipeline<SampleArgs>).FullName!);
             pipeline.Description.Should().Be(DefaultDescription);
             pipeline.Lifetime.Should().Be(InvokablePipelineLifetime.Singleton);
             pipeline.Steps.Should().BeEmpty();
@@ -89,11 +89,11 @@ namespace PackSite.Library.Pipelining.Tests
         public void Should_create_pipeline_without_setting_any_options()
         {
             // Act
-            IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Build();
 
             // Assert
-            pipeline.Name.Should().Be(typeof(IPipeline<SampleContext>).FullName!);
+            pipeline.Name.Should().Be(typeof(IPipeline<SampleArgs>).FullName!);
             pipeline.Description.Should().BeEmpty();
             pipeline.Lifetime.Should().Be(InvokablePipelineLifetime.Singleton);
             pipeline.Steps.Should().BeEmpty();
@@ -106,7 +106,7 @@ namespace PackSite.Library.Pipelining.Tests
             // Act
             Action action = () =>
             {
-                IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+                IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                     .Add<InvalidStep>()
                     .Build();
             };
@@ -124,7 +124,7 @@ namespace PackSite.Library.Pipelining.Tests
             // Act
             Action action = () =>
             {
-                IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+                IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                     .Name(name)
                     .Build();
             };
@@ -139,7 +139,7 @@ namespace PackSite.Library.Pipelining.Tests
             // Act
             Action action = () =>
             {
-                IPipelineBuilder<SampleContext> builder = PipelineBuilder.Create<SampleContext>();
+                IPipelineBuilder<SampleArgs> builder = PipelineBuilder.Create<SampleArgs>();
                 builder.Build();
                 builder.Build();
             };
@@ -154,7 +154,7 @@ namespace PackSite.Library.Pipelining.Tests
             // Act
             Action action = () =>
             {
-                IPipelineBuilder<SampleContext> builder = PipelineBuilder.Create<SampleContext>();
+                IPipelineBuilder<SampleArgs> builder = PipelineBuilder.Create<SampleArgs>();
                 builder.Build();
                 builder.Name("test");
             };

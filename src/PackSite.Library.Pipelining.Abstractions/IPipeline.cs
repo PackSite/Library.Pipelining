@@ -44,15 +44,15 @@
     /// <summary>
     /// Pipeline.
     /// </summary>
-    /// <typeparam name="TContext"></typeparam>
-    public interface IPipeline<TContext> : IPipeline
-        where TContext : class
+    /// <typeparam name="TArgs"></typeparam>
+    public interface IPipeline<TArgs> : IPipeline
+        where TArgs : class
     {
         /// <summary>
         /// Creates an invokable pipeline.
         /// </summary>
         /// <param name="stepActivator"></param>
         /// <returns></returns>
-        new IInvokablePipeline<TContext> CreateInvokable(IStepActivator stepActivator);
+        new IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator);
     }
 }

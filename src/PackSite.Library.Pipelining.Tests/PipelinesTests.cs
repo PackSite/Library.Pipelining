@@ -9,7 +9,7 @@ namespace PackSite.Library.Pipelining.Tests
     using PackSite.Library.Pipelining;
     using PackSite.Library.Pipelining.StepActivators;
     using PackSite.Library.Pipelining.Tests.Data;
-    using PackSite.Library.Pipelining.Tests.Data.Contexts;
+    using PackSite.Library.Pipelining.Tests.Data.Args;
     using PackSite.Library.Pipelining.Tests.Data.Extensions;
     using PackSite.Library.Pipelining.Tests.Data.Steps;
     using Xunit;
@@ -41,12 +41,12 @@ namespace PackSite.Library.Pipelining.Tests
                 pipelines.Names.Should().Contain(SamplePipelineInitializers.Names);
                 pipelines.Names.Should().HaveCount(SamplePipelineInitializers.Names.Length);
 
-                SampleContext context = new();
+                SampleArgs args = new();
 
                 foreach (PipelineName name in SamplePipelineInitializers.Names)
                 {
-                    IInvokablePipeline<SampleContext> invokablePipeline = pipelineFactory.GetRequiredPipeline<SampleContext>(name);
-                    await invokablePipeline.InvokeAsync(context, ct);
+                    IInvokablePipeline<SampleArgs> invokablePipeline = pipelineFactory.GetRequiredPipeline<SampleArgs>(name);
+                    await invokablePipeline.InvokeAsync(args, ct);
                 }
             });
         }
@@ -62,7 +62,7 @@ namespace PackSite.Library.Pipelining.Tests
         {
             // Arrange
             bool useDefault = pipelineName is null;
-            pipelineName ??= typeof(IPipeline<SampleContext>).FullName!;
+            pipelineName ??= typeof(IPipeline<SampleArgs>).FullName!;
 
             using ServiceProvider services = new ServiceCollection()
                 .AddPipelining()
@@ -73,12 +73,12 @@ namespace PackSite.Library.Pipelining.Tests
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
             // Act
-            IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(pipelineName)
                 .Description(DefaultDescription)
-                .Add<StepWithContext1>()
-                .Add<StepWithContext2>()
-                .Add(new StepWithContext3())
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs2>()
+                .Add(new StepWithArgs3())
                 .Add<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
@@ -88,7 +88,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Name.Should().Be(pipelineName);
             pipeline.Description.Should().Be(DefaultDescription);
             pipeline.Lifetime.Should().Be(lifetime);
-            pipeline.Steps.Should().ContainInOrder(typeof(StepWithContext1), typeof(StepWithContext2), typeof(StepWithContext3), typeof(GenericStep));
+            pipeline.Steps.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3), typeof(GenericStep));
 
             // Act & Assert
             pipelines.Should().BeEmpty();
@@ -99,22 +99,22 @@ namespace PackSite.Library.Pipelining.Tests
             pipelines.Count.Should().Be(1);
             pipelines.Should().Contain(pipeline);
 
-            pipelines.GetOrDefault<SampleContext>("invalid-name").Should().BeNull();
+            pipelines.GetOrDefault<SampleArgs>("invalid-name").Should().BeNull();
 
             IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
-            IInvokablePipeline<SampleContext> invokablePipeline = useDefault ?
-                pipelineFactory.GetRequiredPipeline<SampleContext>() :
-                pipelineFactory.GetRequiredPipeline<SampleContext>(pipelineName);
+            IInvokablePipeline<SampleArgs> invokablePipeline = useDefault ?
+                pipelineFactory.GetRequiredPipeline<SampleArgs>() :
+                pipelineFactory.GetRequiredPipeline<SampleArgs>(pipelineName);
 
-            SampleContext context = new();
-            await invokablePipeline.InvokeAsync(context, CancellationToken.None);
+            SampleArgs args = new();
+            await invokablePipeline.InvokeAsync(args, CancellationToken.None);
 
             // Assert
-            context.DataIn.Should().ContainInOrder(typeof(StepWithContext1), typeof(StepWithContext2), typeof(StepWithContext3));
-            context.DataIn.Should().NotContain(typeof(GenericStep));
+            args.DataIn.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3));
+            args.DataIn.Should().NotContain(typeof(GenericStep));
 
-            context.DataOut.Should().ContainInOrder(typeof(StepWithContext3), typeof(StepWithContext2), typeof(StepWithContext1));
-            context.DataOut.Should().NotContain(typeof(GenericStep));
+            args.DataOut.Should().ContainInOrder(typeof(StepWithArgs3), typeof(StepWithArgs2), typeof(StepWithArgs1));
+            args.DataOut.Should().NotContain(typeof(GenericStep));
 
             // Act & Assert
             pipelines.TryRemove(pipelineName).Should().BeTrue();
@@ -132,17 +132,17 @@ namespace PackSite.Library.Pipelining.Tests
         {
             // Arrange
             bool useDefault = pipelineName is null;
-            pipelineName ??= typeof(IPipeline<SampleContext>).FullName!;
+            pipelineName ??= typeof(IPipeline<SampleArgs>).FullName!;
 
             IPipelineCollection pipelines = new PipelineCollection();
 
             // Act
-            IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(pipelineName)
                 .Description(DefaultDescription)
-                .Add<StepWithContext1>()
-                .Add<StepWithContext2>()
-                .Add(new StepWithContext3())
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs2>()
+                .Add(new StepWithArgs3())
                 .Add<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
@@ -152,7 +152,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Name.Should().Be(pipelineName);
             pipeline.Description.Should().Be(DefaultDescription);
             pipeline.Lifetime.Should().Be(lifetime);
-            pipeline.Steps.Should().ContainInOrder(typeof(StepWithContext1), typeof(StepWithContext2), typeof(StepWithContext3), typeof(GenericStep));
+            pipeline.Steps.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3), typeof(GenericStep));
 
             // Act & Assert
             pipelines.Should().BeEmpty();
@@ -161,25 +161,25 @@ namespace PackSite.Library.Pipelining.Tests
             pipelines.Count.Should().Be(1);
             pipelines.Should().Contain(pipeline);
 
-            pipelines.GetOrDefault<SampleContext>("invalid-name").Should().BeNull();
+            pipelines.GetOrDefault<SampleArgs>("invalid-name").Should().BeNull();
 
-            IPipeline<SampleContext> pipelineFromCollection = useDefault ?
-                pipelines.Get<SampleContext>() :
-                pipelines.Get<SampleContext>(pipelineName);
+            IPipeline<SampleArgs> pipelineFromCollection = useDefault ?
+                pipelines.Get<SampleArgs>() :
+                pipelines.Get<SampleArgs>(pipelineName);
 
             IStepActivator stepActivator = new ActivatorStepActivator();
-            IInvokablePipeline<SampleContext>? invokablePipeline = pipelineFromCollection?.CreateInvokable(stepActivator);
+            IInvokablePipeline<SampleArgs>? invokablePipeline = pipelineFromCollection?.CreateInvokable(stepActivator);
             invokablePipeline.Should().NotBeNull();
 
-            SampleContext context = new();
-            await invokablePipeline!.InvokeAsync(context, CancellationToken.None);
+            SampleArgs args = new();
+            await invokablePipeline!.InvokeAsync(args, CancellationToken.None);
 
             // Assert
-            context.DataIn.Should().ContainInOrder(typeof(StepWithContext1), typeof(StepWithContext2), typeof(StepWithContext3));
-            context.DataIn.Should().NotContain(typeof(GenericStep));
+            args.DataIn.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3));
+            args.DataIn.Should().NotContain(typeof(GenericStep));
 
-            context.DataOut.Should().ContainInOrder(typeof(StepWithContext3), typeof(StepWithContext2), typeof(StepWithContext1));
-            context.DataOut.Should().NotContain(typeof(GenericStep));
+            args.DataOut.Should().ContainInOrder(typeof(StepWithArgs3), typeof(StepWithArgs2), typeof(StepWithArgs1));
+            args.DataOut.Should().NotContain(typeof(GenericStep));
 
             // Act & Assert
             pipelines.TryRemove(pipelineName).Should().BeTrue();
@@ -197,7 +197,7 @@ namespace PackSite.Library.Pipelining.Tests
         {
             // Arrange
             bool useDefault = pipelineName is null;
-            pipelineName ??= typeof(IPipeline<SampleContext>).FullName!;
+            pipelineName ??= typeof(IPipeline<SampleArgs>).FullName!;
 
             using ServiceProvider services = new ServiceCollection()
                 .AddPipelining()
@@ -208,11 +208,11 @@ namespace PackSite.Library.Pipelining.Tests
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
             // Act
-            IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(pipelineName)
-                .Add<StepWithContext1>()
-                .Add<StepWithContextThatThrowsException>()
-                .Add(new StepWithContext2())
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgsThatThrowsException>()
+                .Add(new StepWithArgs2())
                 .Add<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
@@ -220,30 +220,30 @@ namespace PackSite.Library.Pipelining.Tests
             pipelines.TryAdd(pipeline).Should().BeTrue();
 
             // Assert
-            pipeline.Steps.Should().ContainInOrder(typeof(StepWithContext1), typeof(StepWithContextThatThrowsException), typeof(StepWithContext2), typeof(GenericStep));
+            pipeline.Steps.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgsThatThrowsException), typeof(StepWithArgs2), typeof(GenericStep));
 
             // Act
             IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
-            IInvokablePipeline<SampleContext> invokablePipeline = useDefault ?
-                pipelineFactory.GetRequiredPipeline<SampleContext>() :
-                pipelineFactory.GetRequiredPipeline<SampleContext>(pipelineName);
+            IInvokablePipeline<SampleArgs> invokablePipeline = useDefault ?
+                pipelineFactory.GetRequiredPipeline<SampleArgs>() :
+                pipelineFactory.GetRequiredPipeline<SampleArgs>(pipelineName);
 
-            SampleContext context = new();
+            SampleArgs args = new();
             Func<Task> throwable = async () =>
             {
-                await invokablePipeline.InvokeAsync(context, CancellationToken.None);
+                await invokablePipeline.InvokeAsync(args, CancellationToken.None);
             };
 
             await throwable.Should().ThrowAsync<PipelineInvocationException>()
-                .Where(x => x.Pipeline == pipeline && x.Context == context)
-                .WithInnerException<PipelineInvocationException, InvalidOperationException>().WithMessage(StepWithContextThatThrowsException.ExceptionMessage);
+                .Where(x => x.Pipeline == pipeline && x.Args == args)
+                .WithInnerException<PipelineInvocationException, InvalidOperationException>().WithMessage(StepWithArgsThatThrowsException.ExceptionMessage);
 
             // Assert
-            context.DataIn.Should().ContainInOrder(typeof(StepWithContext1), typeof(StepWithContextThatThrowsException), typeof(StepWithContext2));
-            context.DataIn.Should().NotContain(typeof(GenericStep));
+            args.DataIn.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgsThatThrowsException), typeof(StepWithArgs2));
+            args.DataIn.Should().NotContain(typeof(GenericStep));
 
-            context.DataOut.Should().ContainInOrder(typeof(StepWithContext2));
-            context.DataOut.Should().NotContain(typeof(GenericStep));
+            args.DataOut.Should().ContainInOrder(typeof(StepWithArgs2));
+            args.DataOut.Should().NotContain(typeof(GenericStep));
         }
 
         [Fact]
@@ -283,7 +283,7 @@ namespace PackSite.Library.Pipelining.Tests
             };
 
             // Act
-            IPipeline pipeline = PipelineBuilder.Create<SampleContext>()
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(DefaultName)
                 .Build();
 

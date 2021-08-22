@@ -8,14 +8,14 @@
     public interface IPipelineBuilder
     {
         /// <summary>
-        /// Overrides <see cref="IInvokablePipeline{TContext}"/> lifetime (default: <see cref="InvokablePipelineLifetime.Singleton"/>).
+        /// Overrides <see cref="IInvokablePipeline"/> lifetime (default: <see cref="InvokablePipelineLifetime.Singleton"/>).
         /// </summary>
         /// <param name="lifetime"></param>
         /// <returns></returns>
         IPipelineBuilder Lifetime(InvokablePipelineLifetime lifetime);
 
         /// <summary>
-        /// Sets a custom pipeline name (default: <code>typeof(IPipeline&lt;TContext&gt;).FullName</code>).
+        /// Sets a custom pipeline name (default: <code>typeof(IPipeline&lt;TArgs&gt;).FullName</code>).
         /// </summary>
         /// <returns></returns>
         IPipelineBuilder Name(PipelineName? name);
@@ -32,7 +32,7 @@
         /// </summary>
         /// <param name="stepType"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="stepType"/> is not <see cref="IStep"/> or <see cref="IStep{TContext}"/>.</exception>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="stepType"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
         IPipelineBuilder Add(Type stepType);
 
         /// <summary>
@@ -40,7 +40,7 @@
         /// </summary>
         /// <typeparam name="TStep"></typeparam>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TContext}"/>.</exception>
+        /// <exception cref="ArgumentNullException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
         IPipelineBuilder Add<TStep>()
             where TStep : class, IBaseStep;
 
@@ -51,7 +51,7 @@
         /// <param name="instance"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instance"/> is null.</exception>
-        /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TContext}"/>.</exception>
+        /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
         IPipelineBuilder Add<TStep>(TStep instance)
             where TStep : class, IBaseStep;
 
@@ -65,45 +65,45 @@
     /// <summary>
     /// Pipeline builder.
     /// </summary>
-    /// <typeparam name="TContext"></typeparam>
-    public interface IPipelineBuilder<TContext> : IPipelineBuilder
-        where TContext : class
+    /// <typeparam name="TArgs"></typeparam>
+    public interface IPipelineBuilder<TArgs> : IPipelineBuilder
+        where TArgs : class
     {
         /// <summary>
-        /// Overrides <see cref="IInvokablePipeline{TContext}"/> lifetime (default: <see cref="InvokablePipelineLifetime.Singleton"/>).
+        /// Overrides <see cref="IInvokablePipeline{TArgs}"/> lifetime (default: <see cref="InvokablePipelineLifetime.Singleton"/>).
         /// </summary>
         /// <param name="lifetime"></param>
         /// <returns></returns>
-        new IPipelineBuilder<TContext> Lifetime(InvokablePipelineLifetime lifetime);
+        new IPipelineBuilder<TArgs> Lifetime(InvokablePipelineLifetime lifetime);
 
         /// <summary>
-        /// Sets a custom pipeline name (default: <code>typeof(IPipeline&lt;TContext&gt;).FullName</code>).
+        /// Sets a custom pipeline name (default: <code>typeof(IPipeline&lt;TArgs&gt;).FullName</code>).
         /// </summary>
         /// <returns></returns>
-        new IPipelineBuilder<TContext> Name(PipelineName? name);
+        new IPipelineBuilder<TArgs> Name(PipelineName? name);
 
         /// <summary>
         /// Sets pipeline description.
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="description"/> is null.</exception>
-        new IPipelineBuilder<TContext> Description(string description);
+        new IPipelineBuilder<TArgs> Description(string description);
 
         /// <summary>
         /// Adds a step to the pipeline.
         /// </summary>
         /// <param name="stepType"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="stepType"/> is not <see cref="IStep"/> or <see cref="IStep{TContext}"/>.</exception>
-        new IPipelineBuilder<TContext> Add(Type stepType);
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="stepType"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
+        new IPipelineBuilder<TArgs> Add(Type stepType);
 
         /// <summary>
         /// Adds a step to the pipeline.
         /// </summary>
         /// <typeparam name="TStep"></typeparam>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TContext}"/>.</exception>
-        new IPipelineBuilder<TContext> Add<TStep>()
+        /// <exception cref="ArgumentNullException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
+        new IPipelineBuilder<TArgs> Add<TStep>()
             where TStep : class, IBaseStep;
 
         /// <summary>
@@ -113,14 +113,14 @@
         /// <param name="instance"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instance"/> is null.</exception>
-        /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TContext}"/>.</exception>
-        new IPipelineBuilder<TContext> Add<TStep>(TStep instance)
+        /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
+        new IPipelineBuilder<TArgs> Add<TStep>(TStep instance)
             where TStep : class, IBaseStep;
 
         /// <summary>
         /// Creates a pipeline.
         /// </summary>
         /// <returns></returns>
-        new IPipeline<TContext> Build();
+        new IPipeline<TArgs> Build();
     }
 }

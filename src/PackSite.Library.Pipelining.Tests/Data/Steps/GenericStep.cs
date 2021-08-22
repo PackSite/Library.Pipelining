@@ -6,7 +6,7 @@
     public class GenericStep : IStep
     {
         /// <inheritdoc/>
-        public async ValueTask ExecuteAsync(object context, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default)
+        public async ValueTask ExecuteAsync(object args, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default)
         {
             await next();
         }

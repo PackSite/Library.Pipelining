@@ -5,15 +5,15 @@
     using System.Threading.Tasks;
     using PackSite.Library.Pipelining;
 
-    public class OtherDemoDataStep1 : IStep<OtherDemoDataContext>
+    public class OtherDemoDataStep1 : IStep<OtherDemoDataArgs>
     {
-        public async ValueTask ExecuteAsync(OtherDemoDataContext context, StepDelegate next, IInvokablePipeline<OtherDemoDataContext> invokablePipeline, CancellationToken cancellationToken = default)
+        public async ValueTask ExecuteAsync(OtherDemoDataArgs args, StepDelegate next, IInvokablePipeline<OtherDemoDataArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
-            context.Value++;
+            args.Value++;
 
             await next();
 
-            if (context.Value > 2)
+            if (args.Value > 2)
             {
                 throw new InvalidOperationException("Demo");
             }

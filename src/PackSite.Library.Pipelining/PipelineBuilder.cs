@@ -15,12 +15,12 @@
         /// <summary>
         /// Creates a new instance of pipeline builder.
         /// </summary>
-        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>
-        public static IPipelineBuilder<TContext> Create<TContext>()
-            where TContext : class
+        public static IPipelineBuilder<TArgs> Create<TArgs>()
+            where TArgs : class
         {
-            return new PipelineBuilder<TContext>();
+            return new PipelineBuilder<TArgs>();
         }
 
         /// <summary>

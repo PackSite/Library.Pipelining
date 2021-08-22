@@ -8,12 +8,7 @@
     public sealed class PipeliningConfiguration
     {
         /// <summary>
-        /// Whether pipeline profiling is enabled.
-        /// </summary>
-        public bool EnableProfiling { get; set; }
-
-        /// <summary>
-        /// Whether to throw on cofig reload error.
+        /// Whether to throw on config reload error.
         /// </summary>
         public bool ThrowOnReloadError { get; set; }
 

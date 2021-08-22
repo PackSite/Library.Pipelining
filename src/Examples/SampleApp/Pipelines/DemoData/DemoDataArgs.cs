@@ -1,6 +1,6 @@
 ﻿namespace SampleApp.Pipelines.DemoData
 {
-    public class DemoDataContext
+    public class DemoDataArgs
     {
         public int Value { get; set; }
     }

@@ -29,36 +29,47 @@
 
             _appLifetime.ApplicationStarted.Register(() =>
             {
-                Task.Run(async () => await ExecuteAsync(_appLifetime.ApplicationStopping));
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        await ExecuteAsync(_appLifetime.ApplicationStopping);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogCritical(ex, "Execution error");
+                        _appLifetime.StopApplication();
+                    }
+                });
             });
+
 
             return Task.CompletedTask;
         }
 
         private async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            DemoDataContext context = new();
-            OtherDemoDataContext otherContext = new();
+            DemoDataArgs args = new();
+            OtherDemoDataArgs otherArgs = new();
 
-            do
+            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
             {
-                Console.WriteLine();
-
-                using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+                do
                 {
+                    Console.WriteLine();
                     IInvokablePipelineFactory invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
-                    IInvokablePipeline<DemoDataContext> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<DemoDataContext>();
+                    IInvokablePipeline<DemoDataArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<DemoDataArgs>();
 
-                    await invokablePipeline.InvokeAsync(context, cancellationToken);
-                    _logger.LogInformation("\n    R1: {@Result}\n    IPC: {@IPCounters}\n    PC: {@PCounters}", context, invokablePipeline.Counters, invokablePipeline.Pipeline.Counters);
+                    await invokablePipeline.InvokeAsync(args, cancellationToken);
+                    _logger.LogInformation("\n    R1: {@Result}\n    IPC: {@IPCounters}\n    PC: {@PCounters}", args, invokablePipeline.Counters, invokablePipeline.Pipeline.Counters);
 
-                    IInvokablePipeline<OtherDemoDataContext>? otherInvokablePipeline = invokablePipelineFactory.GetPipeline<OtherDemoDataContext>("demo-other");
+                    IInvokablePipeline<OtherDemoDataArgs>? otherInvokablePipeline = invokablePipelineFactory.GetPipeline<OtherDemoDataArgs>("demo-other");
 
                     if (otherInvokablePipeline is not null)
                     {
                         try
                         {
-                            await otherInvokablePipeline.InvokeAsync(otherContext, cancellationToken);
+                            await otherInvokablePipeline.InvokeAsync(otherArgs, cancellationToken);
                         }
                         catch (Exception)
                         {
@@ -66,14 +77,13 @@
                         }
                         finally
                         {
-                            _logger.LogInformation("\n    R2: {@Result}\n    IPC: {@IPC}\n    PC: {@PCounters}", otherContext, otherInvokablePipeline.Counters, otherInvokablePipeline.Pipeline.Counters);
+                            _logger.LogInformation("\n    R2: {@Result}\n    IPC: {@IPC}\n    PC: {@PCounters}", otherArgs, otherInvokablePipeline.Counters, otherInvokablePipeline.Pipeline.Counters);
                         }
                     }
-                }
+                    Console.WriteLine("Press any key to proceed or press [Ctrl+C] to exit...");
 
-                Console.WriteLine("Press any key to proceed or press [Ctrl+C] to exit...");
-
-            } while (!cancellationToken.IsCancellationRequested); //(Console.ReadKey(true).KeyChar > 0 && !cancellationToken.IsCancellationRequested);
+                } while (Console.ReadKey(true).KeyChar > 0 && !cancellationToken.IsCancellationRequested);
+            }
 
             // Stop the application once the work is done
             _appLifetime.StopApplication();

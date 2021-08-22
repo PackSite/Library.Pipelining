@@ -15,7 +15,7 @@
             _logger = logger;
         }
 
-        public async ValueTask ExecuteAsync(object context, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default)
+        public async ValueTask ExecuteAsync(object args, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -24,7 +24,9 @@
             catch (InvalidOperationException)
             {
                 _logger.LogError("{ExceptionType} handled by {Step}", nameof(InvalidOperationException), nameof(ExceptionLoggingStep));
-                //await invokablePipeline.InvokeAsync(context, cancellationToken); // Retry
+
+                // Retry
+                //await invokablePipeline.InvokeAsync(args, cancellationToken);
             }
         }
     }

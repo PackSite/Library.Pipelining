@@ -17,29 +17,29 @@
         /// <summary>
         /// Step entry point.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="args"></param>
         /// <param name="next"></param>
         /// <param name="invokablePipeline"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        ValueTask ExecuteAsync(object context, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default);
+        ValueTask ExecuteAsync(object args, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
     /// Pipeline step.
     /// </summary>
-    /// <typeparam name="TContext"></typeparam>
-    public interface IStep<TContext> : IBaseStep
-        where TContext : class
+    /// <typeparam name="TArgs"></typeparam>
+    public interface IStep<TArgs> : IBaseStep
+        where TArgs : class
     {
         /// <summary>
         /// Step entry point.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="args"></param>
         /// <param name="next"></param>
         /// <param name="invokablePipeline"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        ValueTask ExecuteAsync(TContext context, StepDelegate next, IInvokablePipeline<TContext> invokablePipeline, CancellationToken cancellationToken = default);
+        ValueTask ExecuteAsync(TArgs args, StepDelegate next, IInvokablePipeline<TArgs> invokablePipeline, CancellationToken cancellationToken = default);
     }
 }

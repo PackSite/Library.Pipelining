@@ -10,28 +10,28 @@
     /// <summary>
     /// Invokable pipleline.
     /// </summary>
-    /// <typeparam name="TContext"></typeparam>
-    internal sealed class InvokablePipeline<TContext> : IInvokablePipeline<TContext>
-        where TContext : class
+    /// <typeparam name="TArgs"></typeparam>
+    internal sealed class InvokablePipeline<TArgs> : IInvokablePipeline<TArgs>
+        where TArgs : class
     {
         private readonly PipelineCounters _pipelineCounters;
         private readonly PipelineCounters _invokablePipelineCounters = new();
-        private readonly Func<TContext, IInvokablePipeline, CancellationToken, ValueTask> _delegate;
+        private readonly Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> _delegate;
 
         /// <inheritdoc/>
         public IPipelineCounters Counters => _invokablePipelineCounters;
 
         /// <inheritdoc/>
-        public IPipeline<TContext> Pipeline { get; }
+        public IPipeline<TArgs> Pipeline { get; }
         IPipeline IInvokablePipeline.Pipeline => Pipeline;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="InvokablePipeline{TContext}"/>.
+        /// Initializes a new instance of <see cref="InvokablePipeline{TArgs}"/>.
         /// </summary>
         /// <param name="pipeline"></param>
         /// <param name="pipelineCounters"></param>
         /// <param name="delegate"></param>
-        public InvokablePipeline(IPipeline<TContext> pipeline, PipelineCounters pipelineCounters, Func<TContext, IInvokablePipeline, CancellationToken, ValueTask> @delegate)
+        public InvokablePipeline(IPipeline<TArgs> pipeline, PipelineCounters pipelineCounters, Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> @delegate)
         {
             Pipeline = pipeline;
             _pipelineCounters = pipelineCounters;
@@ -39,9 +39,8 @@
         }
 
         /// <inheritdoc/>
-        public async ValueTask<TContext> InvokeAsync(TContext input, CancellationToken cancellationToken = default)
+        public async ValueTask<TArgs> InvokeAsync(TArgs input, CancellationToken cancellationToken = default)
         {
-            //TODO: pipeline profiling
             Stopwatch stopwatch = new();
             stopwatch.Start();
 
@@ -66,9 +65,9 @@
         }
 
         /// <inheritdoc/>
-        public async ValueTask<object> InvokeAsync(object context, CancellationToken cancellationToken = default)
+        public async ValueTask<object> InvokeAsync(object args, CancellationToken cancellationToken = default)
         {
-            return await InvokeAsync((TContext)context, cancellationToken);
+            return await InvokeAsync((TArgs)args, cancellationToken);
         }
     }
 }

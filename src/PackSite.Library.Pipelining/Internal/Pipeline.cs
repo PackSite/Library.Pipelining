@@ -10,11 +10,11 @@
     /// <summary>
     /// Pipeline builder.
     /// </summary>
-    /// <typeparam name="TContext"></typeparam>
-    internal sealed class Pipeline<TContext> : IPipeline<TContext>
-        where TContext : class
+    /// <typeparam name="TArgs"></typeparam>
+    internal sealed class Pipeline<TArgs> : IPipeline<TArgs>
+        where TArgs : class
     {
-        private static readonly Func<TContext, IInvokablePipeline, CancellationToken, ValueTask> PipelineTermination = (input, invokablePipeline, cancellationToken) => default;
+        private static readonly Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> PipelineTermination = (input, invokablePipeline, cancellationToken) => default;
         private readonly PipelineCounters _counters = new();
 
 
@@ -48,9 +48,9 @@
         public Pipeline(InvokablePipelineLifetime lifetime, PipelineName name, string description, object[] steps)
         {
             Lifetime = lifetime;
-            Name = name;
-            Description = description;
-            _steps = steps;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Description = description ?? throw new ArgumentNullException(nameof(description));
+            _steps = steps ?? throw new ArgumentNullException(nameof(steps));
 
             _lazyStepTypes = new Lazy<IReadOnlyList<Type>>(() =>
             {
@@ -67,7 +67,7 @@
         }
 
         /// <inheritdoc/>
-        public IInvokablePipeline<TContext> CreateInvokable(IStepActivator stepActivator)
+        public IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator)
         {
             IBaseStep?[] instances = new IBaseStep?[_steps.Length];
 
@@ -85,11 +85,13 @@
                 }
             }
 
-            Func<TContext, IInvokablePipeline, CancellationToken, ValueTask> invokeDelegate = PipelineTermination;
+            //TODO: pipeline step profiling
+
+            Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> invokeDelegate = PipelineTermination;
             for (int i = _steps.Length - 1; i >= 0; i--)
             {
                 IBaseStep? baseStep = instances[i];
-                Func<TContext, IInvokablePipeline, CancellationToken, ValueTask> next = invokeDelegate;
+                Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> next = invokeDelegate;
 
                 if (baseStep is IStep s)
                 {
@@ -102,20 +104,20 @@
                             ct);
                     };
                 }
-                else if (baseStep is IStep<TContext> sp)
+                else if (baseStep is IStep<TArgs> sp)
                 {
                     invokeDelegate = (input, invokablePipeline, ct) =>
                     {
                         return sp.ExecuteAsync(
                             input,
                             () => next(input, invokablePipeline, ct),
-                            (invokablePipeline as IInvokablePipeline<TContext>)!,
+                            (invokablePipeline as IInvokablePipeline<TArgs>)!,
                             ct);
                     };
                 }
             }
 
-            return new InvokablePipeline<TContext>(this, _counters, invokeDelegate);
+            return new InvokablePipeline<TArgs>(this, _counters, invokeDelegate);
         }
 
         IInvokablePipeline IPipeline.CreateInvokable(IStepActivator stepActivator)

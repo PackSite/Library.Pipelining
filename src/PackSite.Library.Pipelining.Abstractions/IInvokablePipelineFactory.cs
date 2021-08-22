@@ -10,37 +10,37 @@
         /// <summary>
         /// Gets invokable pipeline by name. Returns null when not found.
         /// </summary>
-        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TArgs"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        IInvokablePipeline<TContext>? GetPipeline<TContext>(PipelineName name)
-            where TContext : class;
+        IInvokablePipeline<TArgs>? GetPipeline<TArgs>(PipelineName name)
+            where TArgs : class;
 
         /// <summary>
         /// Gets invokable pipeline by its default name name. Returns null when not found.
         /// </summary>
-        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>
-        IInvokablePipeline<TContext>? GetPipeline<TContext>()
-            where TContext : class;
+        IInvokablePipeline<TArgs>? GetPipeline<TArgs>()
+            where TArgs : class;
 
         /// <summary>
         /// Gets invokable pipeline by name or default.
         /// </summary>
-        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TArgs"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentException">Throws when <paramref name="name"/> is invalid or <typeparamref name="TContext"/> is invalid for a named pipeline.</exception>
-        IInvokablePipeline<TContext> GetRequiredPipeline<TContext>(PipelineName name)
-            where TContext : class;
+        /// <exception cref="ArgumentException">Throws when <paramref name="name"/> is invalid or <typeparamref name="TArgs"/> is invalid for a named pipeline.</exception>
+        IInvokablePipeline<TArgs> GetRequiredPipeline<TArgs>(PipelineName name)
+            where TArgs : class;
 
         /// <summary>
         /// Gets invokable pipeline by its default name name.
         /// </summary>
-        /// <typeparam name="TContext"></typeparam>
+        /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Throws when pipeline was not found.</exception>
-        IInvokablePipeline<TContext> GetRequiredPipeline<TContext>()
-            where TContext : class;
+        IInvokablePipeline<TArgs> GetRequiredPipeline<TArgs>()
+            where TArgs : class;
     }
 }

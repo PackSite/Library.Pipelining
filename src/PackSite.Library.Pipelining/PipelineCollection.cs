@@ -79,32 +79,32 @@
         }
 
         /// <inheritdoc/>
-        public IPipeline<TContext> Get<TContext>(PipelineName name)
-                where TContext : class
+        public IPipeline<TArgs> Get<TArgs>(PipelineName name)
+                where TArgs : class
         {
-            return _pipelines.GetValueOrDefault(name) as IPipeline<TContext> ??
-                throw new ArgumentException($"Cannot get pipeline. Pipeline '{name}' not found or '{typeof(TContext).FullName ?? typeof(TContext).Name}' is an invalid type for '{name}' pipeline.", nameof(name));
+            return _pipelines.GetValueOrDefault(name) as IPipeline<TArgs> ??
+                throw new ArgumentException($"Cannot get pipeline. Pipeline '{name}' not found or '{typeof(TArgs).FullName ?? typeof(TArgs).Name}' is an invalid type for '{name}' pipeline.", nameof(name));
         }
 
         /// <inheritdoc/>
-        public IPipeline<TContext> Get<TContext>()
-            where TContext : class
+        public IPipeline<TArgs> Get<TArgs>()
+            where TArgs : class
         {
-            return Get<TContext>(typeof(IPipeline<TContext>).FullName ?? string.Empty);
+            return Get<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
         }
 
         /// <inheritdoc/>
-        public IPipeline<TContext>? GetOrDefault<TContext>(PipelineName name)
-            where TContext : class
+        public IPipeline<TArgs>? GetOrDefault<TArgs>(PipelineName name)
+            where TArgs : class
         {
-            return _pipelines.GetValueOrDefault(name) as IPipeline<TContext>;
+            return _pipelines.GetValueOrDefault(name) as IPipeline<TArgs>;
         }
 
         /// <inheritdoc/>
-        public IPipeline<TContext>? GetOrDefault<TContext>()
-            where TContext : class
+        public IPipeline<TArgs>? GetOrDefault<TArgs>()
+            where TArgs : class
         {
-            return GetOrDefault<TContext>(typeof(IPipeline<TContext>).FullName ?? string.Empty);
+            return GetOrDefault<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
         }
 
         /// <inheritdoc/>
