@@ -1,6 +1,7 @@
 ﻿namespace PackSite.Library.Pipelining
 {
     using System;
+    using System.Linq;
 
     /// <summary>
     /// Pipeline name.
@@ -21,6 +22,11 @@
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
+            }
+
+            if (name.Where(x => x is ':' or '_').Any())
+            {
+                throw new ArgumentException($"'{nameof(name)}' cannot contain ':' and '_'.", nameof(name));
             }
 
             Value = name;

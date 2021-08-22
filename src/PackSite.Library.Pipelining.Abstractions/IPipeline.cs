@@ -9,6 +9,11 @@
     public interface IPipeline
     {
         /// <summary>
+        /// Pipeline instance counters.
+        /// </summary>
+        IPipelineCounters Counters { get; }
+
+        /// <summary>
         /// Pipeline lifetime.
         /// </summary>
         InvokablePipelineLifetime Lifetime { get; }
@@ -27,6 +32,13 @@
         /// Steps.
         /// </summary>
         IReadOnlyList<Type> Steps { get; }
+
+        /// <summary>
+        /// Creates an invokable pipeline.
+        /// </summary>
+        /// <param name="stepActivator"></param>
+        /// <returns></returns>
+        IInvokablePipeline CreateInvokable(IStepActivator stepActivator);
     }
 
     /// <summary>
@@ -41,6 +53,6 @@
         /// </summary>
         /// <param name="stepActivator"></param>
         /// <returns></returns>
-        IInvokablePipeline<TContext> CreateInvokable(IStepActivator stepActivator);
+        new IInvokablePipeline<TContext> CreateInvokable(IStepActivator stepActivator);
     }
 }

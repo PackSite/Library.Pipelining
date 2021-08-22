@@ -18,8 +18,8 @@
         public bool ThrowOnReloadError { get; set; }
 
         /// <summary>
-        /// Pipeline definitions.
+        /// Pipeline definitions map (key is a pipeline name).
         /// </summary>
-        public List<PipelineDefinition>? Pipelines { get; set; }
+        public Dictionary<string, PipelineDefinition?>? Pipelines { get; set; }
     }
 }

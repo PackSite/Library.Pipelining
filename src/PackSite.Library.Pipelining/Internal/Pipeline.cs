@@ -14,12 +14,17 @@
     internal sealed class Pipeline<TContext> : IPipeline<TContext>
         where TContext : class
     {
-        private static readonly Func<TContext, CancellationToken, ValueTask> PipelineTermination = (input, cancellationToken) => default;
+        private static readonly Func<TContext, IInvokablePipeline, CancellationToken, ValueTask> PipelineTermination = (input, invokablePipeline, cancellationToken) => default;
+        private readonly PipelineCounters _counters = new();
+
 
         private readonly object[] _steps;
         private readonly Lazy<IReadOnlyList<Type>> _lazyStepTypes;
 
         private string? _toStringCache;
+
+        /// <inheritdoc/>
+        public IPipelineCounters Counters => _counters;
 
         /// <inheritdoc/>
         public InvokablePipelineLifetime Lifetime { get; }
@@ -80,29 +85,42 @@
                 }
             }
 
-            Func<TContext, CancellationToken, ValueTask> invokeDelegate = PipelineTermination;
+            Func<TContext, IInvokablePipeline, CancellationToken, ValueTask> invokeDelegate = PipelineTermination;
             for (int i = _steps.Length - 1; i >= 0; i--)
             {
                 IBaseStep? baseStep = instances[i];
-                Func<TContext, CancellationToken, ValueTask> next = invokeDelegate;
+                Func<TContext, IInvokablePipeline, CancellationToken, ValueTask> next = invokeDelegate;
 
                 if (baseStep is IStep s)
                 {
-                    invokeDelegate = (input, ct) =>
+                    invokeDelegate = (input, invokablePipeline, ct) =>
                     {
-                        return s.ExecuteAsync(input, () => next(input, ct), ct);
+                        return s.ExecuteAsync(
+                            input,
+                            () => next(input, invokablePipeline, ct),
+                            invokablePipeline,
+                            ct);
                     };
                 }
                 else if (baseStep is IStep<TContext> sp)
                 {
-                    invokeDelegate = (input, ct) =>
+                    invokeDelegate = (input, invokablePipeline, ct) =>
                     {
-                        return sp.ExecuteAsync(input, () => next(input, ct), ct);
+                        return sp.ExecuteAsync(
+                            input,
+                            () => next(input, invokablePipeline, ct),
+                            (invokablePipeline as IInvokablePipeline<TContext>)!,
+                            ct);
                     };
                 }
             }
 
-            return new InvokablePipeline<TContext>(this, invokeDelegate);
+            return new InvokablePipeline<TContext>(this, _counters, invokeDelegate);
+        }
+
+        IInvokablePipeline IPipeline.CreateInvokable(IStepActivator stepActivator)
+        {
+            return CreateInvokable(stepActivator);
         }
 
         /// <inheritdoc/>

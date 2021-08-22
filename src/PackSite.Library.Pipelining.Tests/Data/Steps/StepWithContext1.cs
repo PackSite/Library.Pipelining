@@ -7,7 +7,7 @@
     public class StepWithContext1 : IStep<SampleContext>
     {
         /// <inheritdoc/>
-        public async ValueTask ExecuteAsync(SampleContext context, StepDelegate next, CancellationToken cancellationToken = default)
+        public async ValueTask ExecuteAsync(SampleContext context, StepDelegate next, IInvokablePipeline<SampleContext> invokablePipeline, CancellationToken cancellationToken = default)
         {
             context.DataIn.Add(GetType());
 

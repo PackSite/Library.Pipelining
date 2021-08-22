@@ -16,7 +16,7 @@ namespace PackSite.Library.Pipelining.Tests
 
     public class PipelinesTests
     {
-        private const string DefaultName = "tests:demo";
+        private const string DefaultName = "tests-demo";
         private const string DefaultDescription = "Invoked in tests.";
 
         [Fact]
@@ -99,7 +99,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipelines.Count.Should().Be(1);
             pipelines.Should().Contain(pipeline);
 
-            pipelines.GetOrDefault<SampleContext>("invalid:name").Should().BeNull();
+            pipelines.GetOrDefault<SampleContext>("invalid-name").Should().BeNull();
 
             IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
             IInvokablePipeline<SampleContext> invokablePipeline = useDefault ?
@@ -161,7 +161,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipelines.Count.Should().Be(1);
             pipelines.Should().Contain(pipeline);
 
-            pipelines.GetOrDefault<SampleContext>("invalid:name").Should().BeNull();
+            pipelines.GetOrDefault<SampleContext>("invalid-name").Should().BeNull();
 
             IPipeline<SampleContext> pipelineFromCollection = useDefault ?
                 pipelines.Get<SampleContext>() :

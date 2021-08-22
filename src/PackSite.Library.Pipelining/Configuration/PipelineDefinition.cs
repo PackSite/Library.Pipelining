@@ -20,11 +20,6 @@
         public string? ContextType { get; set; }
 
         /// <summary>
-        /// Pipeline name.
-        /// </summary>
-        public string? Name { get; set; }
-
-        /// <summary>
         /// Pipeline description.
         /// </summary>
         public string? Description { get; set; }

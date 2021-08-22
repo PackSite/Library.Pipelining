@@ -9,7 +9,7 @@ namespace PackSite.Library.Pipelining.Tests
 
     public class PipelineBuilderTests
     {
-        private const string DefaultName = "tests:demo";
+        private const string DefaultName = "tests-demo";
         private const string DefaultDescription = "Invoked in tests.";
 
         [Theory]

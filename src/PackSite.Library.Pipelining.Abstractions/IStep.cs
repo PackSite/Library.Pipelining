@@ -19,9 +19,10 @@
         /// </summary>
         /// <param name="context"></param>
         /// <param name="next"></param>
+        /// <param name="invokablePipeline"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        ValueTask ExecuteAsync(object context, StepDelegate next, CancellationToken cancellationToken = default);
+        ValueTask ExecuteAsync(object context, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -36,8 +37,9 @@
         /// </summary>
         /// <param name="context"></param>
         /// <param name="next"></param>
+        /// <param name="invokablePipeline"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        ValueTask ExecuteAsync(TContext context, StepDelegate next, CancellationToken cancellationToken = default);
+        ValueTask ExecuteAsync(TContext context, StepDelegate next, IInvokablePipeline<TContext> invokablePipeline, CancellationToken cancellationToken = default);
     }
 }

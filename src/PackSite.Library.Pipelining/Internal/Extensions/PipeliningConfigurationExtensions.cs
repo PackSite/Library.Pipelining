@@ -16,13 +16,13 @@
         {
             List<IPipeline> pipelines = new();
 
-            if (options.Pipelines is List<PipelineDefinition> pipelinesToBuild)
+            if (options.Pipelines is Dictionary<string, PipelineDefinition?> pipelinesToBuild)
             {
-                foreach (PipelineDefinition pipelineDefinition in pipelinesToBuild)
+                foreach (var pipelineDefinition in pipelinesToBuild)
                 {
-                    if (pipelineDefinition.Enabled)
+                    if (pipelineDefinition.Value?.Enabled ?? false)
                     {
-                        IPipeline pipeline = BuildPipeline(pipelineDefinition);
+                        IPipeline pipeline = BuildPipeline(pipelineDefinition.Key, pipelineDefinition.Value);
                         pipelines.Add(pipeline);
                     }
                 }
@@ -31,26 +31,26 @@
             return pipelines;
         }
 
-        private static IPipeline BuildPipeline(PipelineDefinition pipelineDefinition)
+        private static IPipeline BuildPipeline(string pipelineName, PipelineDefinition pipelineDefinition)
         {
-            _ = pipelineDefinition.ContextType ?? throw new NullReferenceException($"Context type cannot be null in '{pipelineDefinition.Name}' pipeline.");
+            _ = pipelineDefinition.ContextType ?? throw new NullReferenceException($"Context type cannot be null in '{pipelineName}' pipeline.");
 
             Type contextType = Type.GetType(pipelineDefinition.ContextType, AssemblyResolver, null) ??
-                throw new NullReferenceException($"Invalid context type '{pipelineDefinition.ContextType}' in '{pipelineDefinition.Name}' pipeline.");
+                throw new NullReferenceException($"Invalid context type '{pipelineDefinition.ContextType}' in '{pipelineName}' pipeline.");
 
             IPipelineBuilder builder = PipelineBuilder.Create(contextType)
-                .Name(pipelineDefinition.Name ?? string.Empty)
+                .Name(pipelineName ?? string.Empty)
                 .Description(pipelineDefinition.Description ?? string.Empty)
                 .Lifetime(pipelineDefinition.Lifetime);
 
             if (pipelineDefinition.Steps is not null)
             {
-                foreach (string? step in pipelineDefinition.Steps)
+                foreach (string? stepAssemblyQualifiedName in pipelineDefinition.Steps)
                 {
-                    _ = step ?? throw new NullReferenceException($"Step type cannot be null in '{pipelineDefinition.Name}' pipeline.");
+                    _ = stepAssemblyQualifiedName ?? throw new NullReferenceException($"Step type cannot be null in '{pipelineName}' pipeline.");
 
-                    Type stepType = Type.GetType(step, AssemblyResolver, null) ??
-                        throw new NullReferenceException($"Invalid step type '{step}' in '{pipelineDefinition.Name}' pipeline.");
+                    Type stepType = Type.GetType(stepAssemblyQualifiedName, AssemblyResolver, null) ??
+                        throw new NullReferenceException($"Invalid step type '{stepAssemblyQualifiedName}' in '{pipelineName}' pipeline.");
 
                     builder.Add(stepType);
                 }

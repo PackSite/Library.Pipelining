@@ -9,7 +9,7 @@
     /// Pipeline builder.
     /// </summary>
     /// <typeparam name="TContext"></typeparam>
-    internal sealed class PipelineBuilder<TContext> : IPipelineBuilder<TContext>, IPipelineBuilder
+    internal sealed class PipelineBuilder<TContext> : IPipelineBuilder<TContext>
         where TContext : class
     {
         private InvokablePipelineLifetime _lifetime = InvokablePipelineLifetime.Singleton;
@@ -105,37 +105,31 @@
 
         IPipelineBuilder IPipelineBuilder.Lifetime(InvokablePipelineLifetime lifetime)
         {
-            Lifetime(lifetime);
-            return this;
+            return Lifetime(lifetime);
         }
         IPipelineBuilder IPipelineBuilder.Name(PipelineName? name)
         {
-            Name(name);
-            return this;
+            return Name(name);
         }
 
         IPipelineBuilder IPipelineBuilder.Description(string description)
         {
-            Description(description);
-            return this;
+            return Description(description);
         }
 
         IPipelineBuilder IPipelineBuilder.Add(Type stepType)
         {
-            Add(stepType);
-            return this;
+            return Add(stepType);
         }
 
         IPipelineBuilder IPipelineBuilder.Add<TStep>()
         {
-            Add<TStep>();
-            return this;
+            return Add<TStep>();
         }
 
         IPipelineBuilder IPipelineBuilder.Add<TStep>(TStep instance)
         {
-            Add<TStep>(instance);
-            return this;
+            return Add(instance);
         }
 
         IPipeline IPipelineBuilder.Build()

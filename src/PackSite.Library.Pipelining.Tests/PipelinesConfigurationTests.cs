@@ -17,7 +17,7 @@ namespace PackSite.Library.Pipelining.Tests
     {
         private const string DefaultSectionName = "Pipelining";
 
-        private const string DefaultName = "tests:demo";
+        private const string DefaultName = "tests-demo";
         private const string DefaultDescription = "Invoked in tests.";
 
         [Fact]
@@ -31,35 +31,32 @@ namespace PackSite.Library.Pipelining.Tests
                     [$"{DefaultSectionName}:{nameof(PipeliningConfiguration.EnableProfiling)}"] = true.ToString(),
                     [$"{DefaultSectionName}:{nameof(PipeliningConfiguration.ThrowOnReloadError)}"] = true.ToString(),
 
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.ContextType)}"] = typeof(SampleContext).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Name)}"] = DefaultName,
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Steps)}:0"] = typeof(StepWithContext1).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Steps)}:1"] = typeof(StepWithContext2).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Steps)}:2"] = typeof(StepWithContext3).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Steps)}:3"] = typeof(GenericStep).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
+                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.ContextType)}"] = typeof(SampleContext).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
+                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
+                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Steps)}:0"] = typeof(StepWithContext1).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Steps)}:1"] = typeof(StepWithContext2).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Steps)}:2"] = typeof(StepWithContext3).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Steps)}:3"] = typeof(GenericStep).AssemblyQualifiedName ?? "null",
 
-                    [$"{pipelinesSection}:1:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
-                    [$"{pipelinesSection}:1:{nameof(PipelineDefinition.ContextType)}"] = typeof(SampleContext).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:1:{nameof(PipelineDefinition.Name)}"] = "test:pipeline2",
-                    [$"{pipelinesSection}:1:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:1:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
-                    [$"{pipelinesSection}:1:{nameof(PipelineDefinition.Steps)}:0"] = typeof(StepWithContext1).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:1:{nameof(PipelineDefinition.Steps)}:1"] = typeof(StepWithContext2).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:1:{nameof(PipelineDefinition.Steps)}:2"] = typeof(StepWithContext3).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:1:{nameof(PipelineDefinition.Steps)}:3"] = typeof(GenericStep).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.ContextType)}"] = typeof(SampleContext).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:0"] = typeof(StepWithContext1).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:1"] = typeof(StepWithContext2).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:2"] = typeof(StepWithContext3).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:3"] = typeof(GenericStep).AssemblyQualifiedName ?? "null",
 
-                    [$"{pipelinesSection}:3:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
-                    [$"{pipelinesSection}:3:{nameof(PipelineDefinition.ContextType)}"] = typeof(SampleContext).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:3:{nameof(PipelineDefinition.Name)}"] = "test:pipeline2",
-                    [$"{pipelinesSection}:3:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:3:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Scoped.ToString(),
-                    [$"{pipelinesSection}:3:{nameof(PipelineDefinition.Steps)}:0"] = typeof(StepWithContext1).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:3:{nameof(PipelineDefinition.Steps)}:1"] = typeof(StepWithContext2).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:3:{nameof(PipelineDefinition.Steps)}:2"] = typeof(StepWithContext3).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:3:{nameof(PipelineDefinition.Steps)}:3"] = typeof(GenericStep).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.ContextType)}"] = typeof(SampleContext).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Scoped.ToString(),
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:0"] = typeof(StepWithContext1).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:1"] = typeof(StepWithContext2).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:2"] = typeof(StepWithContext3).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:3"] = typeof(GenericStep).AssemblyQualifiedName ?? "null",
                 })
                 .Build();
 
@@ -77,7 +74,7 @@ namespace PackSite.Library.Pipelining.Tests
 
             await services.FakeHostStartupAsync((ct) =>
             {
-                pipelines.Names.Should().Contain(DefaultName, "test:pipeline2");
+                pipelines.Names.Should().Contain(DefaultName, "test-pipeline2");
                 pipelines.Names.Should().HaveCount(2);
 
                 return Task.CompletedTask;
@@ -97,16 +94,14 @@ namespace PackSite.Library.Pipelining.Tests
                     [$"{DefaultSectionName}:{nameof(PipeliningConfiguration.EnableProfiling)}"] = true.ToString(),
                     [$"{DefaultSectionName}:{nameof(PipeliningConfiguration.ThrowOnReloadError)}"] = true.ToString(),
 
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Enabled)}"] = false.ToString(),
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.ContextType)}"] = typeof(SampleContext).AssemblyQualifiedName ?? "null",
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Name)}"] = "test",
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:0:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
+                    [$"{pipelinesSection}:test:{nameof(PipelineDefinition.Enabled)}"] = false.ToString(),
+                    [$"{pipelinesSection}:test:{nameof(PipelineDefinition.ContextType)}"] = typeof(SampleContext).AssemblyQualifiedName ?? "null",
+                    [$"{pipelinesSection}:test:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
+                    [$"{pipelinesSection}:test:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
 
-                    [$"{pipelinesSection}:2:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
-                    [$"{pipelinesSection}:2:{nameof(PipelineDefinition.Name)}"] = "test2",
-                    [$"{pipelinesSection}:2:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:2:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
+                    [$"{pipelinesSection}:test2:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
+                    [$"{pipelinesSection}:test2:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
+                    [$"{pipelinesSection}:test2:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
                 })
                 .Build();
 
@@ -118,9 +113,9 @@ namespace PackSite.Library.Pipelining.Tests
                 .Configure<PipeliningConfiguration>(configuration.GetSection(DefaultSectionName))
                 .AddPipelining(options =>
                 {
-                    options.Pipelines![1].SetContext(typeof(SampleContext));
-                    options.Pipelines![1].AddSteps(typeof(StepWithContext1), typeof(StepWithContext2));
-                    options.Pipelines![1].AddSteps(new[] { typeof(StepWithContext1), typeof(StepWithContext2) });
+                    options.Pipelines!["test2"]!.SetContext(typeof(SampleContext));
+                    options.Pipelines!["test2"]!.AddSteps(typeof(StepWithContext1), typeof(StepWithContext2));
+                    options.Pipelines!["test2"]!.AddSteps(new[] { typeof(StepWithContext1), typeof(StepWithContext2) });
                 })
                 .BuildServiceProvider(true);
 
