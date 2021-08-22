@@ -2,7 +2,6 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using PackSite.Library.Pipelining.Exceptions;
 
     /// <summary>
     /// Invokable pipeline.
@@ -22,7 +21,7 @@
         /// <param name="input"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        /// <exception cref="PipelineException">Throws when an unhandled exception was thrown during pipeline execution.</exception>
+        /// <exception cref="PipelineInvocationException">Throws when an unhandled exception was thrown during pipeline execution.</exception>
         ValueTask<TContext> InvokeAsync(TContext input, CancellationToken cancellationToken = default);
     }
 }

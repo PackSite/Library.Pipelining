@@ -4,7 +4,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using PackSite.Library.Pipelining;
-    using PackSite.Library.Pipelining.Exceptions;
 
     /// <summary>
     /// Invokable pipleline.
@@ -39,7 +38,7 @@
             }
             catch (Exception ex)
             {
-                throw new PipelineException(input, Pipeline, ex);
+                throw new PipelineInvocationException(input, Pipeline, ex);
             }
 
             return input;

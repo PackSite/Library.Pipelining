@@ -36,6 +36,13 @@
         bool TryAdd(IPipeline pipeline);
 
         /// <summary>
+        /// Add or replace the specified pipeline.
+        /// </summary>
+        /// <param name="pipeline"></param>
+        /// <returns>true if pipeline was added successfully; otherwise, false.</returns>
+        void AddOrReplace(IPipeline pipeline);
+
+        /// <summary>
         /// Attempts to remove the specified pipeline.
         /// </summary>
         /// <param name="name"></param>

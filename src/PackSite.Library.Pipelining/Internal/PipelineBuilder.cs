@@ -9,7 +9,7 @@
     /// Pipeline builder.
     /// </summary>
     /// <typeparam name="TContext"></typeparam>
-    internal sealed class PipelineBuilder<TContext> : IPipelineBuilder<TContext>
+    internal sealed class PipelineBuilder<TContext> : IPipelineBuilder<TContext>, IPipelineBuilder
         where TContext : class
     {
         private InvokablePipelineLifetime _lifetime = InvokablePipelineLifetime.Singleton;
@@ -50,10 +50,8 @@
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TContext> Add<TStep>()
-            where TStep : class, IBaseStep
+        public IPipelineBuilder<TContext> Add(Type stepType)
         {
-            Type stepType = typeof(TStep);
             Type[] stepInterfaces = stepType.GetInterfaces();
 
             if (!stepInterfaces.Contains(typeof(IStep)) && !stepInterfaces.Contains(typeof(IStep<TContext>)))
@@ -64,6 +62,15 @@
             _buildTimeSteps.Add(stepType);
 
             return this;
+        }
+
+        /// <inheritdoc/>
+        public IPipelineBuilder<TContext> Add<TStep>()
+            where TStep : class, IBaseStep
+        {
+            Type stepType = typeof(TStep);
+
+            return Add(stepType);
         }
 
         /// <inheritdoc/>
@@ -94,6 +101,46 @@
                                               _buildTimeSteps.ToArray());
 
             return pipeline;
+        }
+
+        IPipelineBuilder IPipelineBuilder.Lifetime(InvokablePipelineLifetime lifetime)
+        {
+            Lifetime(lifetime);
+            return this;
+        }
+        IPipelineBuilder IPipelineBuilder.Name(PipelineName? name)
+        {
+            Name(name);
+            return this;
+        }
+
+        IPipelineBuilder IPipelineBuilder.Description(string description)
+        {
+            Description(description);
+            return this;
+        }
+
+        IPipelineBuilder IPipelineBuilder.Add(Type stepType)
+        {
+            Add(stepType);
+            return this;
+        }
+
+        IPipelineBuilder IPipelineBuilder.Add<TStep>()
+        {
+            Add<TStep>();
+            return this;
+        }
+
+        IPipelineBuilder IPipelineBuilder.Add<TStep>(TStep instance)
+        {
+            Add<TStep>(instance);
+            return this;
+        }
+
+        IPipeline IPipelineBuilder.Build()
+        {
+            return Build();
         }
     }
 }

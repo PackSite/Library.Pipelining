@@ -5,10 +5,12 @@ namespace PackSite.Library.Pipelining.Tests
     using System.Threading.Tasks;
     using FluentAssertions;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using PackSite.Library.Pipelining;
-    using PackSite.Library.Pipelining.Exceptions;
     using PackSite.Library.Pipelining.StepActivators;
+    using PackSite.Library.Pipelining.Tests.Data;
     using PackSite.Library.Pipelining.Tests.Data.Contexts;
+    using PackSite.Library.Pipelining.Tests.Data.Extensions;
     using PackSite.Library.Pipelining.Tests.Data.Steps;
     using Xunit;
 
@@ -16,6 +18,38 @@ namespace PackSite.Library.Pipelining.Tests
     {
         private const string DefaultName = "tests:demo";
         private const string DefaultDescription = "Invoked in tests.";
+
+        [Fact]
+        public async Task Should_create_with_initializer_and_invoke_with_DI_container()
+        {
+            // Arrange
+            using ServiceProvider services = new ServiceCollection()
+                .AddOptions()
+                .AddLogging(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Trace))
+                .AddPipelining()
+                .AddPipelineInitializer<SamplePipelineInitializers>()
+                .BuildServiceProvider(true);
+
+            using IServiceScope scope = services.CreateScope();
+            IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
+            IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
+
+            pipelines.Names.Should().BeEmpty();
+
+            await services.FakeHostStartupAsync(async (ct) =>
+            {
+                pipelines.Names.Should().Contain(SamplePipelineInitializers.Names);
+                pipelines.Names.Should().HaveCount(SamplePipelineInitializers.Names.Length);
+
+                SampleContext context = new();
+
+                foreach (PipelineName name in SamplePipelineInitializers.Names)
+                {
+                    IInvokablePipeline<SampleContext> invokablePipeline = pipelineFactory.GetRequiredPipeline<SampleContext>(name);
+                    await invokablePipeline.InvokeAsync(context, ct);
+                }
+            });
+        }
 
         [Theory]
         [InlineData(DefaultName, InvokablePipelineLifetime.Transient)]
@@ -58,7 +92,9 @@ namespace PackSite.Library.Pipelining.Tests
 
             // Act & Assert
             pipelines.Should().BeEmpty();
-            pipeline.TryAddTo(pipelines).Should().BeTrue();
+            pipeline.TryAddTo(pipelines, out IPipeline pipeline2).Should().BeTrue();
+            pipeline.Should().Be(pipeline2);
+
             pipelines.Names.Should().Contain(pipelineName);
             pipelines.Count.Should().Be(1);
             pipelines.Should().Contain(pipeline);
@@ -198,9 +234,9 @@ namespace PackSite.Library.Pipelining.Tests
                 await invokablePipeline.InvokeAsync(context, CancellationToken.None);
             };
 
-            await throwable.Should().ThrowAsync<PipelineException>()
+            await throwable.Should().ThrowAsync<PipelineInvocationException>()
                 .Where(x => x.Pipeline == pipeline && x.Context == context)
-                .WithInnerException<PipelineException, InvalidOperationException>().WithMessage(StepWithContextThatThrowsException.ExceptionMessage);
+                .WithInnerException<PipelineInvocationException, InvalidOperationException>().WithMessage(StepWithContextThatThrowsException.ExceptionMessage);
 
             // Assert
             context.DataIn.Should().ContainInOrder(typeof(StepWithContext1), typeof(StepWithContextThatThrowsException), typeof(StepWithContext2));

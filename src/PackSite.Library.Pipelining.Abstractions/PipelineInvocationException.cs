@@ -1,11 +1,11 @@
-﻿namespace PackSite.Library.Pipelining.Exceptions
+﻿namespace PackSite.Library.Pipelining
 {
     using System;
 
     /// <summary>
-    /// Pipeline exception exception.
+    /// Pipeline invocation exception.
     /// </summary>
-    public sealed class PipelineException : Exception
+    public sealed class PipelineInvocationException : Exception
     {
         /// <summary>
         /// Pipeline input context.
@@ -18,12 +18,12 @@
         public IPipeline Pipeline { get; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="PipelineException"/>.
+        /// Initializes a new instance of <see cref="PipelineInvocationException"/>.
         /// </summary>
         /// <param name="inputContext"></param>
         /// <param name="pipeline"></param>
         /// <param name="innerException"></param>
-        public PipelineException(object? inputContext, IPipeline pipeline, Exception? innerException) :
+        public PipelineInvocationException(object? inputContext, IPipeline pipeline, Exception? innerException) :
             base($"An unhandled error occured while executing pipeline '{pipeline.GetType().FullName ?? pipeline.GetType().Name}' with name '{pipeline.Name}'.", innerException)
         {
             Context = inputContext;

@@ -8,7 +8,7 @@
     /// <summary>
     /// Step activator
     /// </summary>
-    public class ServicesStepActivator : IStepActivator
+    public sealed class ServicesStepActivator : IStepActivator
     {
         private readonly IServiceProvider _serviceProvider;
 

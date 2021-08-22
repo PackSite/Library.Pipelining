@@ -50,6 +50,15 @@
         }
 
         /// <inheritdoc/>
+        public void AddOrReplace(IPipeline pipeline)
+        {
+            PipelineName name = pipeline.Name;
+            _pipelines[name] = pipeline;
+            Removed?.Invoke(this, new PipelineRemovedEventArgs(name));
+            Added?.Invoke(this, new PipelineAddedEventArgs(name));
+        }
+
+        /// <inheritdoc/>
         public bool TryRemove(PipelineName name)
         {
             bool wasRemoved = _pipelines.TryRemove(name, out IPipeline _);

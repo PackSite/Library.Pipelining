@@ -5,7 +5,7 @@
     /// <summary>
     /// Step activator
     /// </summary>
-    public class ActivatorStepActivator : IStepActivator
+    public sealed class ActivatorStepActivator : IStepActivator
     {
         /// <summary>
         /// Initializes a new instance of <see cref="ServicesStepActivator"/>
