@@ -6,6 +6,7 @@
     using PackSite.Library.Pipelining;
     using SampleApp.Extensions;
     using SampleApp.Pipelines.DemoData;
+    using SampleApp.Pipelines.Simple;
 
     public class SampleAppPipelinesInitializer : IPipelineInitializer
     {
@@ -14,9 +15,27 @@
             _ = PipelineBuilder.Create<DemoDataArgs>()
                 .Description("Demo data pipeline.")
                 .Lifetime(InvokablePipelineLifetime.Singleton)
-                .Add<ExceptionLoggingStep>()
-                .Add<DemoDataStep1>()
-                .Add<DemoDataStep2>()
+                //.StepInterceptor<SampleStepInterceptor>()
+                .Step<ExceptionLoggingStep>()
+                .Step<DemoDataStep1>()
+                .Step<DemoDataStep2>()
+                .Build()
+                .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
+
+            _ = PipelineBuilder.Create<SimpleArgs>()
+                .Description("Simple pipeline.")
+                .Lifetime(InvokablePipelineLifetime.Singleton)
+                .Step<SimpleStep1>()
+                .Step<SimpleStep2>()
+                .Step<SimpleStep3>()
+                .Build()
+                .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
+
+            _ = PipelineBuilder.Create<SimpleArgs>()
+                .Name("dynamic-subpipeline-demo")
+                .Description("Simple pipeline that is used as a subpipeline.")
+                .Lifetime(InvokablePipelineLifetime.Singleton)
+                .Step<SubpipelineStep>()
                 .Build()
                 .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
 

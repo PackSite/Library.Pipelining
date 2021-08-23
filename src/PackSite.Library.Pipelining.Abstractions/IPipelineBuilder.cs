@@ -33,7 +33,7 @@
         /// <param name="stepType"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="stepType"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        IPipelineBuilder Add(Type stepType);
+        IPipelineBuilder Step(Type stepType);
 
         /// <summary>
         /// Adds a step to the pipeline.
@@ -41,7 +41,7 @@
         /// <typeparam name="TStep"></typeparam>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        IPipelineBuilder Add<TStep>()
+        IPipelineBuilder Step<TStep>()
             where TStep : class, IBaseStep;
 
         /// <summary>
@@ -52,7 +52,7 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instance"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        IPipelineBuilder Add<TStep>(TStep instance)
+        IPipelineBuilder Step<TStep>(TStep instance)
             where TStep : class, IBaseStep;
 
         /// <summary>
@@ -95,7 +95,7 @@
         /// <param name="stepType"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="stepType"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        new IPipelineBuilder<TArgs> Add(Type stepType);
+        new IPipelineBuilder<TArgs> Step(Type stepType);
 
         /// <summary>
         /// Adds a step to the pipeline.
@@ -103,7 +103,7 @@
         /// <typeparam name="TStep"></typeparam>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        new IPipelineBuilder<TArgs> Add<TStep>()
+        new IPipelineBuilder<TArgs> Step<TStep>()
             where TStep : class, IBaseStep;
 
         /// <summary>
@@ -114,7 +114,7 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instance"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        new IPipelineBuilder<TArgs> Add<TStep>(TStep instance)
+        new IPipelineBuilder<TArgs> Step<TStep>(TStep instance)
             where TStep : class, IBaseStep;
 
         /// <summary>

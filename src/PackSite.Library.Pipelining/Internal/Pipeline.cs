@@ -7,6 +7,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+
     /// <summary>
     /// Pipeline builder.
     /// </summary>
@@ -14,7 +15,13 @@
     internal sealed class Pipeline<TArgs> : IPipeline<TArgs>
         where TArgs : class
     {
-        private static readonly Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> PipelineTermination = (input, invokablePipeline, cancellationToken) => default;
+        /// <summary>
+        /// Step delegate.
+        /// </summary>
+        /// <returns></returns>
+        internal delegate ValueTask ConcreteStepDelegate(TArgs args, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken);
+
+        private static readonly ConcreteStepDelegate PipelineTermination = (input, invokablePipeline, cancellationToken) => default;
         private readonly PipelineCounters _counters = new();
 
 
@@ -69,6 +76,17 @@
         /// <inheritdoc/>
         public IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator)
         {
+            return CreateInvokable(stepActivator, PipelineTermination);
+        }
+
+        /// <inheritdoc/>
+        public IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator, StepDelegate terminationContinuation)
+        {
+            return CreateInvokable(stepActivator, async (input, invokablePipeline, cancellationToken) => await terminationContinuation());
+        }
+
+        private IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator, ConcreteStepDelegate termination)
+        {
             IBaseStep?[] instances = new IBaseStep?[_steps.Length];
 
             for (int i = 0; i < _steps.Length; i++)
@@ -87,11 +105,11 @@
 
             //TODO: pipeline step profiling
 
-            Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> invokeDelegate = PipelineTermination;
+            ConcreteStepDelegate invokeDelegate = termination;
             for (int i = _steps.Length - 1; i >= 0; i--)
             {
                 IBaseStep? baseStep = instances[i];
-                Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> next = invokeDelegate;
+                ConcreteStepDelegate next = invokeDelegate;
 
                 if (baseStep is IStep s)
                 {
@@ -123,6 +141,11 @@
         IInvokablePipeline IPipeline.CreateInvokable(IStepActivator stepActivator)
         {
             return CreateInvokable(stepActivator);
+        }
+
+        IInvokablePipeline IPipeline.CreateInvokable(IStepActivator stepActivator, StepDelegate terminationContinuation)
+        {
+            return CreateInvokable(stepActivator, terminationContinuation);
         }
 
         /// <inheritdoc/>

@@ -22,12 +22,12 @@ namespace PackSite.Library.Pipelining.Tests
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(DefaultName)
                 .Description(DefaultDescription)
-                .Add<StepWithArgs1>()
-                .Add<StepWithArgs1>()
-                .Add<StepWithArgs2>()
-                .Add(new StepWithArgs3())
-                .Add<GenericStep>()
-                .Add<GenericStep>()
+                .Step<StepWithArgs1>()
+                .Step<StepWithArgs1>()
+                .Step<StepWithArgs2>()
+                .Step(new StepWithArgs3())
+                .Step<GenericStep>()
+                .Step<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
 
@@ -107,7 +107,7 @@ namespace PackSite.Library.Pipelining.Tests
             Action action = () =>
             {
                 IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
-                    .Add<InvalidStep>()
+                    .Step<InvalidStep>()
                     .Build();
             };
 

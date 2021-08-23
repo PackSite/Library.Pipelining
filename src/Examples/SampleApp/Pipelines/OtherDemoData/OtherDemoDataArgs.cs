@@ -1,7 +1,9 @@
 ﻿namespace SampleApp.Pipelines.OtherDemoData
 {
-    public class OtherDemoDataArgs
+    using SampleApp.Pipelines.DemoData;
+
+    public class OtherDemoDataArgs : DemoDataArgs
     {
-        public int Value { get; set; }
+
     }
 }

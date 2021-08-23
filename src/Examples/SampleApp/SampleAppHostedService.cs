@@ -9,6 +9,7 @@
     using PackSite.Library.Pipelining;
     using SampleApp.Pipelines.DemoData;
     using SampleApp.Pipelines.OtherDemoData;
+    using SampleApp.Pipelines.Simple;
 
     public sealed class SampleAppHostedService : IHostedService
     {
@@ -49,6 +50,7 @@
 
         private async Task ExecuteAsync(CancellationToken cancellationToken)
         {
+            SimpleArgs simpleArgs = new();
             DemoDataArgs args = new();
             OtherDemoDataArgs otherArgs = new();
 
@@ -59,9 +61,13 @@
                     Console.WriteLine();
                     IInvokablePipelineFactory invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
                     IInvokablePipeline<DemoDataArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<DemoDataArgs>();
+                    IInvokablePipeline<SimpleArgs> invokableSimplePipeline = invokablePipelineFactory.GetRequiredPipeline<SimpleArgs>();
 
                     await invokablePipeline.InvokeAsync(args, cancellationToken);
                     _logger.LogInformation("\n    R1: {@Result}\n    IPC: {@IPCounters}\n    PC: {@PCounters}", args, invokablePipeline.Counters, invokablePipeline.Pipeline.Counters);
+
+                    await invokableSimplePipeline.InvokeAsync(simpleArgs, cancellationToken);
+                    _logger.LogInformation("\n    R2: {@Result}\n    IPC: {@IPCounters}\n    PC: {@PCounters}", simpleArgs, invokableSimplePipeline.Counters, invokableSimplePipeline.Pipeline.Counters);
 
                     IInvokablePipeline<OtherDemoDataArgs>? otherInvokablePipeline = invokablePipelineFactory.GetPipeline<OtherDemoDataArgs>("demo-other");
 
@@ -77,7 +83,7 @@
                         }
                         finally
                         {
-                            _logger.LogInformation("\n    R2: {@Result}\n    IPC: {@IPC}\n    PC: {@PCounters}", otherArgs, otherInvokablePipeline.Counters, otherInvokablePipeline.Pipeline.Counters);
+                            _logger.LogInformation("\n    R3: {@Result}\n    IPC: {@IPC}\n    PC: {@PCounters}", otherArgs, otherInvokablePipeline.Counters, otherInvokablePipeline.Pipeline.Counters);
                         }
                     }
                     Console.WriteLine("Press any key to proceed or press [Ctrl+C] to exit...");

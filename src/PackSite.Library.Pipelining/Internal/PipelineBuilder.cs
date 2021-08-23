@@ -50,7 +50,7 @@
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TArgs> Add(Type stepType)
+        public IPipelineBuilder<TArgs> Step(Type stepType)
         {
             Type[] stepInterfaces = stepType.GetInterfaces();
 
@@ -65,16 +65,16 @@
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TArgs> Add<TStep>()
+        public IPipelineBuilder<TArgs> Step<TStep>()
             where TStep : class, IBaseStep
         {
             Type stepType = typeof(TStep);
 
-            return Add(stepType);
+            return Step(stepType);
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TArgs> Add<TStep>(TStep instance)
+        public IPipelineBuilder<TArgs> Step<TStep>(TStep instance)
             where TStep : class, IBaseStep
         {
             _ = instance ?? throw new ArgumentNullException(nameof(instance));
@@ -117,19 +117,19 @@
             return Description(description);
         }
 
-        IPipelineBuilder IPipelineBuilder.Add(Type stepType)
+        IPipelineBuilder IPipelineBuilder.Step(Type stepType)
         {
-            return Add(stepType);
+            return Step(stepType);
         }
 
-        IPipelineBuilder IPipelineBuilder.Add<TStep>()
+        IPipelineBuilder IPipelineBuilder.Step<TStep>()
         {
-            return Add<TStep>();
+            return Step<TStep>();
         }
 
-        IPipelineBuilder IPipelineBuilder.Add<TStep>(TStep instance)
+        IPipelineBuilder IPipelineBuilder.Step<TStep>(TStep instance)
         {
-            return Add(instance);
+            return Step(instance);
         }
 
         IPipeline IPipelineBuilder.Build()

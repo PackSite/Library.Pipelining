@@ -16,7 +16,7 @@
     {
         private readonly PipelineCounters _pipelineCounters;
         private readonly PipelineCounters _invokablePipelineCounters = new();
-        private readonly Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> _delegate;
+        private readonly Pipeline<TArgs>.ConcreteStepDelegate _delegate;
 
         /// <inheritdoc/>
         public IPipelineCounters Counters => _invokablePipelineCounters;
@@ -31,7 +31,7 @@
         /// <param name="pipeline"></param>
         /// <param name="pipelineCounters"></param>
         /// <param name="delegate"></param>
-        public InvokablePipeline(IPipeline<TArgs> pipeline, PipelineCounters pipelineCounters, Func<TArgs, IInvokablePipeline, CancellationToken, ValueTask> @delegate)
+        public InvokablePipeline(IPipeline<TArgs> pipeline, PipelineCounters pipelineCounters, Pipeline<TArgs>.ConcreteStepDelegate @delegate)
         {
             Pipeline = pipeline;
             _pipelineCounters = pipelineCounters;
