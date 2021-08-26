@@ -27,7 +27,7 @@
 
         private readonly PipelineCounters _counters = new();
 
-        private readonly object[] _steps;
+        private readonly IReadOnlyList<object> _steps;
         private readonly Lazy<IReadOnlyList<Type>> _lazyStepTypes;
 
         private string? _toStringCache;
@@ -54,7 +54,7 @@
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="steps"></param>
-        public Pipeline(InvokablePipelineLifetime lifetime, PipelineName name, string description, object[] steps)
+        public Pipeline(InvokablePipelineLifetime lifetime, PipelineName name, string description, IReadOnlyList<object> steps)
         {
             Lifetime = lifetime;
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -63,7 +63,7 @@
 
             _lazyStepTypes = new Lazy<IReadOnlyList<Type>>(() =>
             {
-                List<Type> types = new(_steps.Length);
+                List<Type> types = new(_steps.Count);
                 foreach (object step in _steps)
                 {
                     Type stepType = step is Type s ? s : step.GetType();
@@ -80,9 +80,9 @@
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            IBaseStep?[] instances = new IBaseStep?[_steps.Length];
+            IBaseStep?[] instances = new IBaseStep?[_steps.Count];
 
-            for (int i = 0; i < _steps.Length; i++)
+            for (int i = 0; i < _steps.Count; i++)
             {
                 object step = _steps[i];
 
@@ -99,7 +99,7 @@
             //TODO: pipeline step profiling
 
             ConcreteStepDelegate? invokeDelegate = null;
-            for (int i = _steps.Length - 1; i >= 0; i--)
+            for (int i = _steps.Count - 1; i >= 0; i--)
             {
                 IBaseStep? baseStep = instances[i];
                 ConcreteStepDelegate? next = invokeDelegate;

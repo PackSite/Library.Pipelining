@@ -1,6 +1,7 @@
 ﻿namespace PackSite.Library.Pipelining
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Pipeline builder.
@@ -54,6 +55,24 @@
         /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
         IPipelineBuilder Step<TStep>(TStep instance)
             where TStep : class, IBaseStep;
+
+        /// <summary>
+        /// Adds a step instances to the pipeline.
+        /// </summary>
+        /// <param name="instances"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
+        /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
+        IPipelineBuilder Steps(IEnumerable<IBaseStep> instances);    
+        
+        /// <summary>
+        /// Adds a step instances to the pipeline.
+        /// </summary>
+        /// <param name="instances"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
+        /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
+        IPipelineBuilder Steps(params IBaseStep[] instances);
 
         /// <summary>
         /// Creates a pipeline.
@@ -116,6 +135,24 @@
         /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
         new IPipelineBuilder<TArgs> Step<TStep>(TStep instance)
             where TStep : class, IBaseStep;
+
+        /// <summary>
+        /// Adds a step instances to the pipeline.
+        /// </summary>
+        /// <param name="instances"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
+        /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
+        new IPipelineBuilder<TArgs> Steps(IEnumerable<IBaseStep> instances);
+
+        /// <summary>
+        /// Adds a step instances to the pipeline.
+        /// </summary>
+        /// <param name="instances"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
+        /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
+        new IPipelineBuilder<TArgs> Steps(params IBaseStep[] instances);
 
         /// <summary>
         /// Creates a pipeline.

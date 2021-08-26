@@ -82,7 +82,7 @@
 
             if (instance is not (IStep or IStep<TArgs>))
             {
-                throw new ArgumentException("Invalid step instance type.", nameof(instance));
+                throw new ArgumentException($"Invalid step instance type '{instance.GetType().FullName}'.", nameof(instance));
             }
 
             _buildTimeSteps.Add(instance);
@@ -91,14 +91,46 @@
         }
 
         /// <inheritdoc/>
+        public IPipelineBuilder<TArgs> Steps(IEnumerable<IBaseStep> instances)
+        {
+            _ = instances ?? throw new ArgumentNullException(nameof(instances));
+            _ = _buildTimeSteps ?? throw new InvalidOperationException("Cannot modify pipeline after build operation.");
+
+            IBaseStep? firstInvalid = instances.FirstOrDefault(x => x is not (IStep or IStep<TArgs>));
+            if (firstInvalid is not null)
+            {
+                throw new ArgumentException($"Invalid step instance type '{firstInvalid.GetType().FullName}'.", nameof(instances));
+            }
+
+            _buildTimeSteps.AddRange(instances);
+
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public IPipelineBuilder<TArgs> Steps(params IBaseStep[] instances)
+        {
+            if (instances.Length == 0)
+            {
+                return this;
+            }
+            else if (instances.Length == 1)
+            {
+                return Step(instances[0]);
+            }
+
+            return Steps((IEnumerable<IBaseStep>)instances);
+        }
+
+        /// <inheritdoc/>
         public IPipeline<TArgs> Build()
         {
             _name ??= typeof(IPipeline<TArgs>).FullName!;
 
             Pipeline<TArgs> pipeline = new(_lifetime,
-                                              _name,
-                                              _description ?? string.Empty,
-                                              _buildTimeSteps.ToArray());
+                                           _name,
+                                           _description ?? string.Empty,
+                                           _buildTimeSteps);
 
             return pipeline;
         }
@@ -130,6 +162,16 @@
         IPipelineBuilder IPipelineBuilder.Step<TStep>(TStep instance)
         {
             return Step(instance);
+        }
+
+        IPipelineBuilder IPipelineBuilder.Steps(IEnumerable<IBaseStep> instances)
+        {
+            return Steps(instances);
+        }
+
+        IPipelineBuilder IPipelineBuilder.Steps(params IBaseStep[] instances)
+        {
+            return Steps(instances);
         }
 
         IPipeline IPipelineBuilder.Build()
