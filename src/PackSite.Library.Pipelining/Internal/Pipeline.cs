@@ -2,11 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using PackSite.Library.Pipelining.Internal.Extensions;
 
     /// <summary>
     /// Pipeline builder.
@@ -19,11 +20,12 @@
         /// Step delegate.
         /// </summary>
         /// <returns></returns>
-        internal delegate ValueTask ConcreteStepDelegate(TArgs args, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken);
+        internal delegate ValueTask ConcreteStepDelegate(TArgs args,
+                                                         IInvokablePipeline invokablePipeline,
+                                                         StepDelegate terminationContinuation,
+                                                         CancellationToken cancellationToken);
 
-        private static readonly ConcreteStepDelegate PipelineTermination = (input, invokablePipeline, cancellationToken) => default;
         private readonly PipelineCounters _counters = new();
-
 
         private readonly object[] _steps;
         private readonly Lazy<IReadOnlyList<Type>> _lazyStepTypes;
@@ -76,17 +78,8 @@
         /// <inheritdoc/>
         public IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator)
         {
-            return CreateInvokable(stepActivator, PipelineTermination);
-        }
+            Stopwatch stopwatch = Stopwatch.StartNew();
 
-        /// <inheritdoc/>
-        public IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator, StepDelegate terminationContinuation)
-        {
-            return CreateInvokable(stepActivator, async (input, invokablePipeline, cancellationToken) => await terminationContinuation());
-        }
-
-        private IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator, ConcreteStepDelegate termination)
-        {
             IBaseStep?[] instances = new IBaseStep?[_steps.Length];
 
             for (int i = 0; i < _steps.Length; i++)
@@ -105,47 +98,75 @@
 
             //TODO: pipeline step profiling
 
-            ConcreteStepDelegate invokeDelegate = termination;
+            ConcreteStepDelegate? invokeDelegate = null;
             for (int i = _steps.Length - 1; i >= 0; i--)
             {
                 IBaseStep? baseStep = instances[i];
-                ConcreteStepDelegate next = invokeDelegate;
+                ConcreteStepDelegate? next = invokeDelegate;
 
-                if (baseStep is IStep s)
+                if (next is not null)
                 {
-                    invokeDelegate = (input, invokablePipeline, ct) =>
+                    if (baseStep is IStep s)
                     {
-                        return s.ExecuteAsync(
-                            input,
-                            () => next(input, invokablePipeline, ct),
-                            invokablePipeline,
-                            ct);
-                    };
+                        invokeDelegate = (input, invokablePipeline, terminationContinuation, ct) =>
+                        {
+                            return s.ExecuteAsync(
+                                input,
+                                () => next(input, invokablePipeline, terminationContinuation, ct),
+                                invokablePipeline,
+                                ct);
+                        };
+                    }
+                    else if (baseStep is IStep<TArgs> sp)
+                    {
+                        invokeDelegate = (input, invokablePipeline, terminationContinuation, ct) =>
+                        {
+                            return sp.ExecuteAsync(
+                                input,
+                                () => next(input, invokablePipeline, terminationContinuation, ct),
+                                (invokablePipeline as IInvokablePipeline<TArgs>)!,
+                                ct);
+                        };
+                    }
                 }
-                else if (baseStep is IStep<TArgs> sp)
+                else
                 {
-                    invokeDelegate = (input, invokablePipeline, ct) =>
+                    if (baseStep is IStep s)
                     {
-                        return sp.ExecuteAsync(
-                            input,
-                            () => next(input, invokablePipeline, ct),
-                            (invokablePipeline as IInvokablePipeline<TArgs>)!,
-                            ct);
-                    };
+                        invokeDelegate = (input, invokablePipeline, terminationContinuation, ct) =>
+                        {
+                            return s.ExecuteAsync(
+                                input,
+                                terminationContinuation,
+                                invokablePipeline,
+                                ct);
+                        };
+                    }
+                    else if (baseStep is IStep<TArgs> sp)
+                    {
+                        invokeDelegate = (input, invokablePipeline, terminationContinuation, ct) =>
+                        {
+                            return sp.ExecuteAsync(
+                                input,
+                                terminationContinuation,
+                                (invokablePipeline as IInvokablePipeline<TArgs>)!,
+                                ct);
+                        };
+                    }
                 }
             }
 
-            return new InvokablePipeline<TArgs>(this, _counters, invokeDelegate);
+            InvokablePipeline<TArgs> invokablePipeline = new(this, _counters, invokeDelegate);
+
+            stopwatch.Stop();
+            _counters.ReportBuilt(stopwatch.ElapsedMicroseconds());
+
+            return invokablePipeline;
         }
 
         IInvokablePipeline IPipeline.CreateInvokable(IStepActivator stepActivator)
         {
             return CreateInvokable(stepActivator);
-        }
-
-        IInvokablePipeline IPipeline.CreateInvokable(IStepActivator stepActivator, StepDelegate terminationContinuation)
-        {
-            return CreateInvokable(stepActivator, terminationContinuation);
         }
 
         /// <inheritdoc/>

@@ -14,12 +14,17 @@
     internal sealed class InvokablePipeline<TArgs> : IInvokablePipeline<TArgs>
         where TArgs : class
     {
+        /// <summary>
+        /// Invokable pipeline termination.
+        /// </summary>
+        internal static readonly StepDelegate Termination = () => default;
+
         private readonly PipelineCounters _pipelineCounters;
-        private readonly PipelineCounters _invokablePipelineCounters = new();
-        private readonly Pipeline<TArgs>.ConcreteStepDelegate _delegate;
+        private readonly InvokablePipelineCounters _invokablePipelineCounters = new();
+        private readonly Pipeline<TArgs>.ConcreteStepDelegate? _delegate;
 
         /// <inheritdoc/>
-        public IPipelineCounters Counters => _invokablePipelineCounters;
+        public IInvokablePipelineCounters Counters => _invokablePipelineCounters;
 
         /// <inheritdoc/>
         public IPipeline<TArgs> Pipeline { get; }
@@ -31,7 +36,7 @@
         /// <param name="pipeline"></param>
         /// <param name="pipelineCounters"></param>
         /// <param name="delegate"></param>
-        public InvokablePipeline(IPipeline<TArgs> pipeline, PipelineCounters pipelineCounters, Pipeline<TArgs>.ConcreteStepDelegate @delegate)
+        public InvokablePipeline(IPipeline<TArgs> pipeline, PipelineCounters pipelineCounters, Pipeline<TArgs>.ConcreteStepDelegate? @delegate)
         {
             Pipeline = pipeline;
             _pipelineCounters = pipelineCounters;
@@ -39,27 +44,49 @@
         }
 
         /// <inheritdoc/>
-        public async ValueTask<TArgs> InvokeAsync(TArgs input, CancellationToken cancellationToken = default)
+        public ValueTask<TArgs> InvokeAsync(TArgs input, CancellationToken cancellationToken = default)
         {
-            Stopwatch stopwatch = new();
-            stopwatch.Start();
+            if (_delegate is null)
+            {
+                _invokablePipelineCounters.Success(0);
+                _pipelineCounters.Success(0);
+
+                return new ValueTask<TArgs>(input);
+            }
+
+            return InvokeAsync(input, Termination, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async ValueTask<TArgs> InvokeAsync(TArgs input, StepDelegate terminationContinuation, CancellationToken cancellationToken = default)
+        {
+            Stopwatch stopwatch = Stopwatch.StartNew();
 
             try
             {
-                await _delegate(input, this, cancellationToken);
+                if (_delegate is null)
+                {
+                    await terminationContinuation();
+                }
+                else
+                {
+                    await _delegate(input, this, terminationContinuation, cancellationToken);
+                }
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
+                long elapsedUsForFailed = stopwatch.ElapsedMicroseconds();
+                this._invokablePipelineCounters.Fail(elapsedUsForFailed);
+                this._pipelineCounters.Fail(elapsedUsForFailed);
 
-                _invokablePipelineCounters.Fail(stopwatch.ElapsedMicroseconds());
-                _pipelineCounters.Fail(stopwatch.ElapsedMicroseconds());
                 throw new PipelineInvocationException(input, Pipeline, ex);
             }
 
             stopwatch.Stop();
-            _invokablePipelineCounters.Success(stopwatch.ElapsedMicroseconds());
-            _pipelineCounters.Success(stopwatch.ElapsedMicroseconds());
+            long elapsedUs = stopwatch.ElapsedMicroseconds();
+            _invokablePipelineCounters.Success(elapsedUs);
+            _pipelineCounters.Success(elapsedUs);
 
             return input;
         }
@@ -68,6 +95,11 @@
         public async ValueTask<object> InvokeAsync(object args, CancellationToken cancellationToken = default)
         {
             return await InvokeAsync((TArgs)args, cancellationToken);
+        }
+
+        public async ValueTask<object> InvokeAsync(object args, StepDelegate terminationContinuation, CancellationToken cancellationToken = default)
+        {
+            return await InvokeAsync((TArgs)args, terminationContinuation, cancellationToken);
         }
     }
 }

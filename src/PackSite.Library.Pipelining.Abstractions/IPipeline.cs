@@ -39,14 +39,6 @@
         /// <param name="stepActivator"></param>
         /// <returns></returns>
         IInvokablePipeline CreateInvokable(IStepActivator stepActivator);
-
-        /// <summary>
-        /// Creates an invokable pipeline.
-        /// </summary>
-        /// <param name="stepActivator"></param>
-        /// <param name="terminationContinuation"></param>
-        /// <returns></returns>
-        IInvokablePipeline CreateInvokable(IStepActivator stepActivator, StepDelegate terminationContinuation);
     }
 
     /// <summary>
@@ -62,13 +54,5 @@
         /// <param name="stepActivator"></param>
         /// <returns></returns>
         new IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator);
-
-        /// <summary>
-        /// Creates an invokable pipeline.
-        /// </summary>
-        /// <param name="stepActivator"></param>
-        /// <param name="terminationContinuation"></param>
-        /// <returns></returns>
-        new IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator, StepDelegate terminationContinuation);
     }
 }

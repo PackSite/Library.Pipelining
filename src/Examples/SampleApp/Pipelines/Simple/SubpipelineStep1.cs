@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using PackSite.Library.Pipelining;
 
-    public class SubpipelineStep : IStep<SimpleArgs>
+    public class SubpipelineStep1 : IStep<SimpleArgs>
     {
         public async ValueTask ExecuteAsync(SimpleArgs args, StepDelegate next, IInvokablePipeline<SimpleArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {

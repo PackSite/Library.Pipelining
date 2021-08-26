@@ -50,7 +50,6 @@
 
         private async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            SimpleArgs simpleArgs = new();
             DemoDataArgs args = new();
             OtherDemoDataArgs otherArgs = new();
 
@@ -58,6 +57,8 @@
             {
                 do
                 {
+                    SimpleArgs simpleArgs = new();
+
                     Console.WriteLine();
                     IInvokablePipelineFactory invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
                     IInvokablePipeline<DemoDataArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<DemoDataArgs>();

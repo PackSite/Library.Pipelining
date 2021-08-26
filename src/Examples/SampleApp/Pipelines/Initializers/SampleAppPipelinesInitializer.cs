@@ -34,8 +34,9 @@
             _ = PipelineBuilder.Create<SimpleArgs>()
                 .Name("dynamic-subpipeline-demo")
                 .Description("Simple pipeline that is used as a subpipeline.")
-                .Lifetime(InvokablePipelineLifetime.Singleton)
-                .Step<SubpipelineStep>()
+                .Lifetime(InvokablePipelineLifetime.Transient)
+                .Step<SubpipelineStep1>()
+                .Step<SubpipelineStep2>()
                 .Build()
                 .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
 

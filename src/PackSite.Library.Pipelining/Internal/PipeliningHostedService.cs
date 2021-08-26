@@ -87,8 +87,7 @@
         {
             try
             {
-                Stopwatch stopwatch = new();
-                stopwatch.Start();
+                Stopwatch stopwatch = Stopwatch.StartNew();
 
                 IReadOnlyList<IPipeline> pipelines = _options.BuildPipelines();
                 List<PipelineName> toPreserve = new(pipelines.Count);

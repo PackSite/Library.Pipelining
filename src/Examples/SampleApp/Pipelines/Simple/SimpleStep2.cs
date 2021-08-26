@@ -2,26 +2,27 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Extensions.Logging;
     using PackSite.Library.Pipelining;
 
     public class SimpleStep2 : IStep<SimpleArgs>
     {
-        private readonly IPipelineCollection _pipelines; //TODO: use IInvokablePipelineFactory to preserve lifetime??? or maybe not??
-        private readonly IStepActivator _stepActivator;
+        private readonly IInvokablePipelineFactory _invokablePipelineFactory;
+        private readonly ILogger _logger;
 
-        public SimpleStep2(IPipelineCollection pipelines, IStepActivator stepActivator)
+        public SimpleStep2(IInvokablePipelineFactory invokablePipelineFactory, ILogger<SimpleStep2> logger)
         {
-            _pipelines = pipelines;
-            _stepActivator = stepActivator;
+            _invokablePipelineFactory = invokablePipelineFactory;
+            _logger = logger;
         }
 
         public async ValueTask ExecuteAsync(SimpleArgs args, StepDelegate next, IInvokablePipeline<SimpleArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
             args.Value += GetType().Name + " > ";
 
-            IPipeline<SimpleArgs> subpipeline = _pipelines.Get<SimpleArgs>("dynamic-subpipeline-demo");
-            IInvokablePipeline<SimpleArgs> invokableSubpipeline = subpipeline.CreateInvokable(_stepActivator, next);
-            await invokableSubpipeline.InvokeAsync(args, cancellationToken);
+            IInvokablePipeline<SimpleArgs> invokableSubpipeline = _invokablePipelineFactory.GetRequiredPipeline<SimpleArgs>("dynamic-subpipeline-demo");
+            await invokableSubpipeline.InvokeAsync(args, next, cancellationToken);
+            _logger.LogInformation("\n[SUBPIPELINE]\nIPC: {@IPCounters}\nPC: {@PCounters}", invokableSubpipeline.Counters, invokableSubpipeline.Pipeline.Counters);
 
             args.Value += GetType().Name + " < ";
         }
