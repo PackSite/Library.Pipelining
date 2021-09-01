@@ -63,8 +63,8 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        IPipelineBuilder Steps(IEnumerable<IBaseStep> instances);    
-        
+        IPipelineBuilder Steps(IEnumerable<IBaseStep> instances);
+
         /// <summary>
         /// Adds a step instances to the pipeline.
         /// </summary>
