@@ -77,8 +77,8 @@
             {
                 stopwatch.Stop();
                 long elapsedUsForFailed = stopwatch.ElapsedMicroseconds();
-                this._invokablePipelineCounters.Fail(elapsedUsForFailed);
-                this._pipelineCounters.Fail(elapsedUsForFailed);
+                _invokablePipelineCounters.Fail(elapsedUsForFailed);
+                _pipelineCounters.Fail(elapsedUsForFailed);
 
                 throw new PipelineInvocationException(input, Pipeline, ex);
             }

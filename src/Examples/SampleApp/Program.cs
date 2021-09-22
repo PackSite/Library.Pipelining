@@ -31,9 +31,13 @@
                     {
                         services.AddOptions();
 
-                        services.AddPipelining()
-                                .Configure<PipeliningConfiguration>(context.Configuration.GetSection("Pipelining"))
-                                .AddPipelineInitializer<SampleAppPipelinesInitializer>();
+                        services.AddPipelining(builder =>
+                        {
+                            builder.Services.Configure<PipeliningConfiguration>(context.Configuration.GetSection("Pipelining"));
+
+                            builder.AddConfiguration()
+                                   .AddInitializer<SampleAppPipelinesInitializer>();
+                        });
 
                         services.AddSingleton<IHostedService, SampleAppHostedService>();
                     })

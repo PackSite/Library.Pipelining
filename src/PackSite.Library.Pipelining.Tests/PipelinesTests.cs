@@ -26,8 +26,10 @@ namespace PackSite.Library.Pipelining.Tests
             using ServiceProvider services = new ServiceCollection()
                 .AddOptions()
                 .AddLogging(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Trace))
-                .AddPipelining()
-                .AddPipelineInitializer<SamplePipelineInitializers>()
+                .AddPipelining(builder =>
+                {
+                    builder.AddInitializer<SamplePipelineInitializer>();
+                })
                 .BuildServiceProvider(true);
 
             using IServiceScope scope = services.CreateScope();
@@ -38,12 +40,80 @@ namespace PackSite.Library.Pipelining.Tests
 
             await services.FakeHostStartupAsync(async (ct) =>
             {
-                pipelines.Names.Should().Contain(SamplePipelineInitializers.Names);
-                pipelines.Names.Should().HaveCount(SamplePipelineInitializers.Names.Length);
+                pipelines.Names.Should().Contain(SamplePipelineInitializer.Names);
+                pipelines.Names.Should().HaveCount(SamplePipelineInitializer.Names.Length);
 
                 SampleArgs args = new();
 
-                foreach (PipelineName name in SamplePipelineInitializers.Names)
+                foreach (PipelineName name in SamplePipelineInitializer.Names)
+                {
+                    IInvokablePipeline<SampleArgs> invokablePipeline = pipelineFactory.GetRequiredPipeline<SampleArgs>(name);
+                    await invokablePipeline.InvokeAsync(args, ct);
+                }
+            });
+        }
+
+        [Fact]
+        public async Task Should_create_with_simple_delegate_initializer_and_invoke_with_DI_container()
+        {
+            // Arrange
+            using ServiceProvider services = new ServiceCollection()
+                .AddOptions()
+                .AddLogging(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Trace))
+                .AddPipelining(builder =>
+                {
+                    builder.AddInitializer(DelegatePipelineInitializer.Simple);
+                })
+                .BuildServiceProvider(true);
+
+            using IServiceScope scope = services.CreateScope();
+            IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
+            IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
+
+            pipelines.Names.Should().BeEmpty();
+
+            await services.FakeHostStartupAsync(async (ct) =>
+            {
+                pipelines.Names.Should().Contain(SamplePipelineInitializer.Names);
+                pipelines.Names.Should().HaveCount(SamplePipelineInitializer.Names.Length);
+
+                SampleArgs args = new();
+
+                foreach (PipelineName name in SamplePipelineInitializer.Names)
+                {
+                    IInvokablePipeline<SampleArgs> invokablePipeline = pipelineFactory.GetRequiredPipeline<SampleArgs>(name);
+                    await invokablePipeline.InvokeAsync(args, ct);
+                }
+            });
+        }
+
+        [Fact]
+        public async Task Should_create_with_coomplex_delegate_initializer_and_invoke_with_DI_container()
+        {
+            // Arrange
+            using ServiceProvider services = new ServiceCollection()
+                .AddOptions()
+                .AddLogging(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Trace))
+                .AddPipelining(builder =>
+                {
+                    builder.AddInitializer(DelegatePipelineInitializer.Complex);
+                })
+                .BuildServiceProvider(true);
+
+            using IServiceScope scope = services.CreateScope();
+            IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
+            IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
+
+            pipelines.Names.Should().BeEmpty();
+
+            await services.FakeHostStartupAsync(async (ct) =>
+            {
+                pipelines.Names.Should().Contain(SamplePipelineInitializer.Names);
+                pipelines.Names.Should().HaveCount(SamplePipelineInitializer.Names.Length);
+
+                SampleArgs args = new();
+
+                foreach (PipelineName name in SamplePipelineInitializer.Names)
                 {
                     IInvokablePipeline<SampleArgs> invokablePipeline = pipelineFactory.GetRequiredPipeline<SampleArgs>(name);
                     await invokablePipeline.InvokeAsync(args, ct);

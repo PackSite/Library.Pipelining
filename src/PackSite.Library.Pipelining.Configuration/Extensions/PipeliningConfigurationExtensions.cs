@@ -1,14 +1,17 @@
-﻿namespace PackSite.Library.Pipelining.Internal.Extensions
+﻿namespace PackSite.Library.Pipelining.Configuration.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
     using PackSite.Library.Pipelining.Configuration;
 
-    internal static class PipeliningConfigurationExtensions
+    /// <summary>
+    /// <see cref="PipeliningConfiguration"/> extensions.
+    /// </summary>
+    public static class PipeliningConfigurationExtensions
     {
         /// <summary>
-        /// Builds pipelnies from options.
+        /// Builds pipelines from options.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -39,7 +42,7 @@
                 throw new NullReferenceException($"Invalid args type '{pipelineDefinition.ArgsType}' in '{pipelineName}' pipeline.");
 
             IPipelineBuilder builder = PipelineBuilder.Create(argsType)
-                .Name(pipelineName ?? string.Empty)
+                .Name(pipelineName)
                 .Description(pipelineDefinition.Description ?? string.Empty)
                 .Lifetime(pipelineDefinition.Lifetime);
 

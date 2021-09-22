@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
     <Authors>$(Company)</Authors>
-    <Description>PackSite pipelining library</Description>
-    <PackageTags>PackSite library pipelining steps</PackageTags>
+    <Description>Microsoft.Extensions.Options based pipelines configuration for PackSite.Library.Pipelining</Description>
+    <PackageTags>PackSite library pipelining steps Microsoft.Extensions.Options configuration</PackageTags>
     <PackageProjectUrl>https://github.com/PackSite/Library.Pipelining</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/PackSite/Library.Pipelining/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <PackageIcon>icon-64px.png</PackageIcon>
@@ -27,19 +27,15 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[5.0,]" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[5.0,]" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[5.0,]" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="[5.0,]" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[3.0,]" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[3.0,]" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="[3.0,]" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="[3.0,]" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PackSite.Library.Pipelining.Abstractions\PackSite.Library.Pipelining.Abstractions.csproj" />
+    <ProjectReference Include="..\PackSite.Library.Pipelining\PackSite.Library.Pipelining.csproj" />
   </ItemGroup>
 
 </Project>

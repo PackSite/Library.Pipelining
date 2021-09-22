@@ -1,5 +1,6 @@
 namespace PackSite.Library.Pipelining.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using FluentAssertions;
@@ -65,7 +66,7 @@ namespace PackSite.Library.Pipelining.Tests
                 .AddOptions()
                 .AddLogging(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Trace))
                 .Configure<PipeliningConfiguration>(configuration.GetSection(DefaultSectionName))
-                .AddPipelining()
+                .AddPipelining(builder => builder.AddConfiguration())
                 .BuildServiceProvider(true);
 
             using IServiceScope scope = services.CreateScope();
@@ -109,11 +110,16 @@ namespace PackSite.Library.Pipelining.Tests
                 .AddOptions()
                 .AddLogging(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Trace))
                 .Configure<PipeliningConfiguration>(configuration.GetSection(DefaultSectionName))
-                .AddPipelining(options =>
+                .AddPipelining(builder =>
                 {
-                    options.Pipelines!["test2"]!.SetArgsType(typeof(SampleArgs));
-                    options.Pipelines!["test2"]!.AddSteps(typeof(StepWithArgs1), typeof(StepWithArgs2));
-                    options.Pipelines!["test2"]!.AddSteps(new[] { typeof(StepWithArgs1), typeof(StepWithArgs2) });
+                    builder.AddConfiguration(options =>
+                    {
+                        _ = options.Pipelines ?? throw new NullReferenceException("Pipelines must not be null");
+
+                        options.Pipelines["test2"]!.SetArgsType(typeof(SampleArgs));
+                        options.Pipelines["test2"]!.AddSteps(typeof(StepWithArgs1), typeof(StepWithArgs2));
+                        options.Pipelines["test2"]!.AddSteps(new[] { typeof(StepWithArgs1), typeof(StepWithArgs2) });
+                    });
                 })
                 .BuildServiceProvider(true);
 

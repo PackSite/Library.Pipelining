@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
     <Authors>$(Company)</Authors>
-    <Description>PackSite items</Description>
-    <PackageTags>PackSite library pipelining</PackageTags>
-    <PackageProjectUrl>https://github.com/PackSite/Pipelining</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/PackSite/Pipelining/blob/main/CHANGELOG.md</PackageReleaseNotes>
+    <Description>PackSite pipelining library abstractions</Description>
+    <PackageTags>PackSite library pipelining steps</PackageTags>
+    <PackageProjectUrl>https://github.com/PackSite/Library.Pipelining</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/PackSite/Library.Pipelining/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <PackageIcon>icon-64px.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
