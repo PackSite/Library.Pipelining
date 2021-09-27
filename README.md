@@ -26,6 +26,4 @@
   - Code-first pipeline definitions during Generic Host start.
   - Code-first pipeline definitions at runtime through `IPipelineCollection`.
   - Configuration-based pipelines definitions using `IOptions` with reloading.
-  - Pipeline counters: executions count (successful and failure) and speed (�s).
-  - 
-
+  - Pipeline counters: executions count (successful and failure) and speed (resolution in microseconds).
