@@ -17,13 +17,16 @@
 
         /// <summary>
         /// Sets a custom pipeline name (default: <code>typeof(IPipeline&lt;TArgs&gt;).FullName</code>).
+        /// Pass null to reset name to default.
         /// </summary>
+        /// <param name="name"></param>
         /// <returns></returns>
         IPipelineBuilder Name(PipelineName? name);
 
         /// <summary>
         /// Sets pipeline description.
         /// </summary>
+        /// <param name="description"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="description"/> is null.</exception>
         IPipelineBuilder Description(string description);

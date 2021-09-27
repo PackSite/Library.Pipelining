@@ -6,20 +6,18 @@
     using PackSite.Library.Pipelining;
 
     /// <summary>
-    /// <see cref="IServiceProvider"/> and <see cref="ActivatorUtilities"/> based step activator.
+    /// <see cref="ActivatorUtilities"/> based step activator.
     /// </summary>
-    public sealed class ServicesStepActivator : IStepActivator
+    public sealed class ActivatorUtilitiesStepActivator : IStepActivator
     {
-        private readonly IServiceProvider _serviceProvider;
-
         private static readonly ConcurrentDictionary<Type, ObjectFactory> _cache = new();
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ServicesStepActivator"/>
+        /// Initializes a new instance of <see cref="ActivatorUtilitiesStepActivator"/>
         /// </summary>
-        public ServicesStepActivator(IServiceProvider serviceProvider)
+        public ActivatorUtilitiesStepActivator()
         {
-            _serviceProvider = serviceProvider;
+
         }
 
         /// <inheritdoc/>
@@ -30,7 +28,7 @@
                 return ActivatorUtilities.CreateFactory(key, Array.Empty<Type>());
             });
 
-            return stepFactory(_serviceProvider, null) as IBaseStep ??
+            return stepFactory(null!, null) as IBaseStep ??
                 throw new InvalidOperationException($"Failed to activate '{stepType.FullName ?? stepType.Name}'");
         }
     }

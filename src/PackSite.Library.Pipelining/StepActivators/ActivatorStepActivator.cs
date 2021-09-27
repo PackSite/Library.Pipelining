@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Step activator
+    /// <see cref="Activator"/> based step activator.
     /// </summary>
     public sealed class ActivatorStepActivator : IStepActivator
     {
