@@ -1,4 +1,4 @@
-﻿namespace PackSite.Library.Pipelining.Tests.Data
+﻿namespace PackSite.Library.Pipelining.Tests.Data.Initializers
 {
     using System.Threading;
     using System.Threading.Tasks;

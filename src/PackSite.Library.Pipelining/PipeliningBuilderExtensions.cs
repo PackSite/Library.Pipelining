@@ -17,10 +17,12 @@
         /// <param name="pipelining"></param>
         /// <typeparam name="TInitializer"></typeparam>
         /// <returns></returns>
-        public static IServiceCollection AddInitializer<TInitializer>(this PipeliningBuilder pipelining)
+        public static PipeliningBuilder AddInitializer<TInitializer>(this PipeliningBuilder pipelining)
             where TInitializer : class, IPipelineInitializer
         {
-            return pipelining.Services.AddScoped<IPipelineInitializer, TInitializer>();
+            pipelining.Services.AddScoped<IPipelineInitializer, TInitializer>();
+
+            return pipelining;
         }
 
         /// <summary>
@@ -29,9 +31,11 @@
         /// <param name="pipelining"></param>
         /// <param name="initializer"></param>
         /// <returns></returns>
-        public static IServiceCollection AddInitializer(this PipeliningBuilder pipelining, Action<IPipelineCollection> initializer)
+        public static PipeliningBuilder AddInitializer(this PipeliningBuilder pipelining, Action<IPipelineCollection> initializer)
         {
-            return pipelining.Services.AddScoped<IPipelineInitializer>((provider) => new PipelineDelegateInitializerProxy.Simple(initializer));
+            pipelining.Services.AddScoped<IPipelineInitializer>((provider) => new PipelineDelegateInitializerProxy.Simple(initializer));
+
+            return pipelining;
         }
 
         /// <summary>
@@ -40,9 +44,11 @@
         /// <param name="pipelining"></param>
         /// <param name="initializer"></param>
         /// <returns></returns>
-        public static IServiceCollection AddInitializer(this PipeliningBuilder pipelining, Func<IServiceProvider, IPipelineCollection, CancellationToken, ValueTask>? initializer)
+        public static PipeliningBuilder AddInitializer(this PipeliningBuilder pipelining, Func<IServiceProvider, IPipelineCollection, CancellationToken, ValueTask>? initializer)
         {
-            return pipelining.Services.AddScoped<IPipelineInitializer>((provider) => new PipelineDelegateInitializerProxy.Complex(provider, initializer));
+            pipelining.Services.AddScoped<IPipelineInitializer>((provider) => new PipelineDelegateInitializerProxy.Complex(provider, initializer));
+
+            return pipelining;
         }
     }
 }

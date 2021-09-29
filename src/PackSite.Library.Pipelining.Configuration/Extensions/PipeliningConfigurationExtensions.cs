@@ -42,7 +42,7 @@
                 throw new NullReferenceException($"Invalid args type '{pipelineDefinition.ArgsType}' in '{pipelineName}' pipeline.");
 
             IPipelineBuilder builder = PipelineBuilder.Create(argsType)
-                .Name(pipelineName)
+                .Name(pipelineDefinition.UseDefaultName ? null : new PipelineName(pipelineName))
                 .Description(pipelineDefinition.Description ?? string.Empty)
                 .Lifetime(pipelineDefinition.Lifetime);
 

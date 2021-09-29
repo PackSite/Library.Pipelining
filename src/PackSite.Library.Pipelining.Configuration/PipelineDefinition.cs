@@ -20,6 +20,11 @@
         public string? ArgsType { get; set; }
 
         /// <summary>
+        /// Whether to use default name instead of name defined in <see cref="PipeliningConfiguration.Pipelines"/> keys.
+        /// </summary>
+        public bool UseDefaultName { get; set; }
+
+        /// <summary>
         /// Pipeline description.
         /// </summary>
         public string? Description { get; set; }

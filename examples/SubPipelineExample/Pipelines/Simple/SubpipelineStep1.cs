@@ -1,0 +1,18 @@
+﻿namespace SubPipelineExample.Pipelines.Simple
+{
+    using System.Threading;
+    using System.Threading.Tasks;
+    using PackSite.Library.Pipelining;
+
+    public class SubpipelineStep1 : IStep<DemoArgs>
+    {
+        public async ValueTask ExecuteAsync(DemoArgs args, StepDelegate next, IInvokablePipeline<DemoArgs> invokablePipeline, CancellationToken cancellationToken = default)
+        {
+            args.Value += GetType().Name + " > ";
+
+            await next();
+
+            args.Value += GetType().Name + " < ";
+        }
+    }
+}

@@ -1,6 +1,7 @@
 namespace PackSite.Library.Pipelining.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
@@ -8,9 +9,9 @@ namespace PackSite.Library.Pipelining.Tests
     using Microsoft.Extensions.Logging;
     using PackSite.Library.Pipelining;
     using PackSite.Library.Pipelining.StepActivators;
-    using PackSite.Library.Pipelining.Tests.Data;
     using PackSite.Library.Pipelining.Tests.Data.Args;
     using PackSite.Library.Pipelining.Tests.Data.Extensions;
+    using PackSite.Library.Pipelining.Tests.Data.Initializers;
     using PackSite.Library.Pipelining.Tests.Data.Steps;
     using Xunit;
 
@@ -237,23 +238,27 @@ namespace PackSite.Library.Pipelining.Tests
                 pipelines.Get<SampleArgs>() :
                 pipelines.Get<SampleArgs>(pipelineName);
 
-            IStepActivator stepActivator = new ActivatorStepActivator();
-            IInvokablePipeline<SampleArgs>? invokablePipeline = pipelineFromCollection?.CreateInvokable(stepActivator);
-            invokablePipeline.Should().NotBeNull();
+            IEnumerable<IStepActivator> stepActivators = new IStepActivator[] { new ActivatorStepActivator(), new ActivatorUtilitiesStepActivator() };
 
-            SampleArgs args = new();
-            await invokablePipeline!.InvokeAsync(args, CancellationToken.None);
+            foreach (var stepActivator in stepActivators)
+            {
+                IInvokablePipeline<SampleArgs>? invokablePipeline = pipelineFromCollection?.CreateInvokable(stepActivator);
+                invokablePipeline.Should().NotBeNull();
 
-            // Assert
-            args.DataIn.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3));
-            args.DataIn.Should().NotContain(typeof(GenericStep));
+                SampleArgs args = new();
+                await invokablePipeline!.InvokeAsync(args, CancellationToken.None);
 
-            args.DataOut.Should().ContainInOrder(typeof(StepWithArgs3), typeof(StepWithArgs2), typeof(StepWithArgs1));
-            args.DataOut.Should().NotContain(typeof(GenericStep));
+                // Assert
+                args.DataIn.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3));
+                args.DataIn.Should().NotContain(typeof(GenericStep));
 
-            // Act & Assert
-            pipelines.TryRemove(pipelineName).Should().BeTrue();
-            pipelines.Count.Should().Be(0);
+                args.DataOut.Should().ContainInOrder(typeof(StepWithArgs3), typeof(StepWithArgs2), typeof(StepWithArgs1));
+                args.DataOut.Should().NotContain(typeof(GenericStep));
+
+                // Act & Assert
+                pipelines.TryRemove(pipelineName).Should().BeTrue();
+                pipelines.Count.Should().Be(0);
+            }
         }
 
         [Theory]

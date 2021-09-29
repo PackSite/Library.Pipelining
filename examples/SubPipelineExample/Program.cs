@@ -1,0 +1,49 @@
+﻿[assembly: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+namespace SubPipelineExample
+{
+    using System;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using PackSite.Library.Pipelining;
+    using SubPipelineExample.Extensions;
+    using SubPipelineExample.Pipelines.Simple;
+
+    public class Program
+    {
+        public static async Task Main(string[] args)
+        {
+            IHostBuilder hostBuidler = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddPipelining(builder =>
+                    {
+                        builder.AddInitializer(pipelines =>
+                        {
+                            _ = PipelineBuilder.Create<DemoArgs>()
+                                .Description("Simple pipeline.")
+                                .Lifetime(InvokablePipelineLifetime.Singleton)
+                                .Step<Step1>()
+                                .Step<Step2>()
+                                .Step<Step3>()
+                                .Build()
+                                .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
+
+                            _ = PipelineBuilder.Create<DemoArgs>()
+                                .Name("dynamic-subpipeline-demo")
+                                .Description("Simple pipeline that is used as a subpipeline.")
+                                .Lifetime(InvokablePipelineLifetime.Transient)
+                                .Step<SubpipelineStep1>()
+                                .Step<SubpipelineStep2>()
+                                .Build()
+                                .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
+                        });
+                    });
+
+                    services.AddHostedService<DemoHostedService>();
+                });
+
+            await hostBuidler.RunConsoleAsync();
+        }
+    }
+}
