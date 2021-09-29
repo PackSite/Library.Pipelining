@@ -26,8 +26,9 @@
             _stepActivator = stepActivator;
             _singletonPipelines = singletonPipelines;
 
-            _pipelines.Cleared += PipelinesCollection_Cleared;
-            _pipelines.Removed += PipelinesCollection_Removed;
+            pipelines.Cleared += PipelinesCollection_Cleared;
+            pipelines.Updated += PipelinesCollection_Updated;
+            pipelines.Removed += PipelinesCollection_Removed;
         }
 
         /// <inheritdoc/>
@@ -92,11 +93,17 @@
             _scopedPipelines.TryRemove(e.PipelineName, out object _);
         }
 
+        private void PipelinesCollection_Updated(object? sender, PipelineUpdatedEventArgs e)
+        {
+            _scopedPipelines.TryRemove(e.PipelineName, out object _);
+        }
+
         /// <inheritdoc/>
         public void Dispose()
         {
             _scopedPipelines.Clear();
             _pipelines.Cleared -= PipelinesCollection_Cleared;
+            _pipelines.Updated -= PipelinesCollection_Updated;
             _pipelines.Removed -= PipelinesCollection_Removed;
         }
 
@@ -115,6 +122,9 @@
             public SingletonPipelines(IPipelineCollection pipelines)
             {
                 _pipelines = pipelines;
+                pipelines.Cleared += PipelinesCollection_Cleared;
+                pipelines.Updated += PipelinesCollection_Updated;
+                pipelines.Removed += PipelinesCollection_Removed;
             }
 
             private void PipelinesCollection_Cleared(object? sender, EventArgs e)
@@ -127,10 +137,16 @@
                 Container.TryRemove(e.PipelineName, out object _);
             }
 
+            private void PipelinesCollection_Updated(object? sender, PipelineUpdatedEventArgs e)
+            {
+                Container.TryRemove(e.PipelineName, out object _);
+            }
+
             public void Dispose()
             {
                 Container.Clear();
                 _pipelines.Cleared -= PipelinesCollection_Cleared;
+                _pipelines.Updated -= PipelinesCollection_Updated;
                 _pipelines.Removed -= PipelinesCollection_Removed;
             }
         }

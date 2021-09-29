@@ -3,9 +3,9 @@
     using System;
 
     /// <summary>
-    /// Arguments of the event invoked when a pipeline was added to <see cref="IPipelineCollection"/>.
+    /// Arguments of the event invoked when a pipeline was updated in <see cref="IPipelineCollection"/>.
     /// </summary>
-    public sealed class PipelineAddedEventArgs : EventArgs
+    public sealed class PipelineUpdatedEventArgs : EventArgs
     {
         /// <summary>
         /// Pipeline name.
@@ -16,7 +16,7 @@
         /// Initializes a new instance of <see cref="PipelineAddedEventArgs"/>.
         /// </summary>
         /// <param name="pipelineName"></param>
-        public PipelineAddedEventArgs(PipelineName pipelineName)
+        public PipelineUpdatedEventArgs(PipelineName pipelineName)
         {
             PipelineName = pipelineName ?? throw new ArgumentNullException(nameof(pipelineName));
         }

@@ -5,7 +5,7 @@
     /// <summary>
     /// Arguments of the event invoked when a pipeline was removed from <see cref="IPipelineCollection"/>.
     /// </summary>
-    public class PipelineRemovedEventArgs : EventArgs
+    public sealed class PipelineRemovedEventArgs : EventArgs
     {
         /// <summary>
         /// Pipeline name.

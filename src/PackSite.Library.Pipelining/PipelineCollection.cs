@@ -17,6 +17,9 @@
         public event EventHandler<PipelineAddedEventArgs>? Added;
 
         /// <inheritdoc/>
+        public event EventHandler<PipelineUpdatedEventArgs>? Updated;
+
+        /// <inheritdoc/>
         public event EventHandler<PipelineRemovedEventArgs>? Removed;
 
         /// <inheritdoc/>
@@ -50,12 +53,30 @@
         }
 
         /// <inheritdoc/>
-        public void AddOrReplace(IPipeline pipeline)
+        public bool AddOrUpdate(IPipeline pipeline)
         {
             PipelineName name = pipeline.Name;
-            _pipelines[name] = pipeline;
-            Removed?.Invoke(this, new PipelineRemovedEventArgs(name));
-            Added?.Invoke(this, new PipelineAddedEventArgs(name));
+
+            bool added = true;
+            _pipelines.AddOrUpdate(
+                name,
+                pipeline,
+                (keyToUpdate, oldPipeline) =>
+                {
+                    added = false;
+                    return pipeline;
+                });
+
+            if (added)
+            {
+                Added?.Invoke(this, new PipelineAddedEventArgs(name));
+            }
+            else
+            {
+                Updated?.Invoke(this, new PipelineUpdatedEventArgs(name));
+            }
+
+            return added;
         }
 
         /// <inheritdoc/>

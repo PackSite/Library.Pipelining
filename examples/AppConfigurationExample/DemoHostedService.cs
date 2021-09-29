@@ -27,28 +27,28 @@
             {
                 try
                 {
-                    using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+                    while (!stoppingToken.IsCancellationRequested)
                     {
-                        Console.WriteLine("Type some text (for a string with length > 15, a demo excpetion is thrown):");
-                        string text = Console.ReadLine() ?? string.Empty;
+                        using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+                        {
+                            string text = "  Lorem ipsum ";
 
-                        TextProcessingArgs pipelineArgs = new(text);
-                        Console.WriteLine("INPUT: {0}", pipelineArgs.Text);
+                            TextProcessingArgs pipelineArgs = new(text);
+                            Console.WriteLine("INPUT: {0}", pipelineArgs.Text);
 
-                        var invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
-                        IInvokablePipeline<TextProcessingArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<TextProcessingArgs>();
+                            var invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
+                            IInvokablePipeline<TextProcessingArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<TextProcessingArgs>();
 
-                        await invokablePipeline.InvokeAsync(pipelineArgs, stoppingToken);
-                        Console.WriteLine("OUTPUT: {0}", pipelineArgs.Text);
+                            await invokablePipeline.InvokeAsync(pipelineArgs, stoppingToken);
+                            Console.WriteLine("OUTPUT: {0}", pipelineArgs.Text);
+                        }
+
+                        await Task.Delay(2500);
                     }
                 }
                 catch (Exception ex)
                 {
                     _logger.LogCritical(ex, "Demo error");
-                }
-                finally
-                {
-                    _appLifetime.StopApplication();
                 }
             }, stoppingToken);
         }

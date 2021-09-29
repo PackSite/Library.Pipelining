@@ -14,6 +14,11 @@
         public event EventHandler<PipelineAddedEventArgs>? Added;
 
         /// <summary>
+        /// Event invoked when a pipeline was updated in <see cref="IPipelineCollection"/>
+        /// </summary>
+        public event EventHandler<PipelineUpdatedEventArgs>? Updated;
+
+        /// <summary>
         /// Event invoked when a pipeline was removed from <see cref="IPipelineCollection"/>
         /// </summary>
         public event EventHandler<PipelineRemovedEventArgs>? Removed;
@@ -39,8 +44,8 @@
         /// Add or replace the specified pipeline.
         /// </summary>
         /// <param name="pipeline"></param>
-        /// <returns>true if pipeline was added successfully; otherwise, false.</returns>
-        void AddOrReplace(IPipeline pipeline);
+        /// <returns>true if pipeline was added, false if was updated</returns>
+        bool AddOrUpdate(IPipeline pipeline);
 
         /// <summary>
         /// Attempts to remove the specified pipeline.

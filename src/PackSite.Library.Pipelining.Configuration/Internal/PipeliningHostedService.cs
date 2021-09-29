@@ -16,9 +16,11 @@
     internal sealed class PipeliningConfigurationHostedService : IHostedService, IDisposable
     {
         private IReadOnlyList<PipelineName> _lastRegistered = new List<PipelineName>();
+        private IDisposable? _optionsMonitor;
+
+        private readonly SemaphoreSlim _lock = new(1, 1);
 
         private readonly IOptionsMonitor<PipeliningConfiguration> _options;
-        private readonly IDisposable _optionsMonitor;
         private readonly IPipelineCollection _pipelineCollection;
         private readonly ILogger _logger;
 
@@ -31,27 +33,22 @@
         public PipeliningConfigurationHostedService(IOptionsMonitor<PipeliningConfiguration> options, IPipelineCollection pipelineCollection, ILoggerFactory loggerFactory)
         {
             _options = options;
-            _optionsMonitor = options.OnChange(OptionsChanged);
 
             _pipelineCollection = pipelineCollection;
             _logger = loggerFactory.CreateLogger("PackSite.Library.Pipelining.Configuration");
         }
 
         /// <inheritdoc/>
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             _logger.LogInformation("Initializing PackSite.Library.Pipelining.Configuration");
 
-            lock (_optionsMonitor)
-            {
-                UpdatePipelines(_options.CurrentValue);
-            }
+            await UpdatePipelinesAsync(_options.CurrentValue, cancellationToken);
+            _optionsMonitor = _options.OnChange(OptionsChanged);
 
             stopwatch.Stop();
             _logger.LogInformation("Succesfully initialized PackSite.Library.Pipelining.Configuration after {Elapsed}", stopwatch.Elapsed);
-
-            return Task.CompletedTask;
         }
 
         /// <inheritdoc/>
@@ -64,25 +61,35 @@
 
         private void OptionsChanged(PipeliningConfiguration pipeliningConfiguration, string namedOptions)
         {
-            lock (_optionsMonitor)
-            {
-                UpdatePipelines(pipeliningConfiguration);
-            }
+            UpdatePipelinesAsync(pipeliningConfiguration, CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        private void UpdatePipelines(PipeliningConfiguration pipeliningConfiguration)
+        private async Task UpdatePipelinesAsync(PipeliningConfiguration pipeliningConfiguration, CancellationToken cancellationToken)
         {
             try
             {
+                await _lock.WaitAsync(cancellationToken);
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
                 IReadOnlyList<IPipeline> pipelines = pipeliningConfiguration.BuildPipelines();
                 List<PipelineName> toPreserve = new(pipelines.Count);
 
+                int added = 0;
+                int updated = 0;
+
                 foreach (IPipeline pipeline in pipelines)
                 {
-                    _pipelineCollection.AddOrReplace(pipeline);
+                    bool r = _pipelineCollection.AddOrUpdate(pipeline);
                     toPreserve.Add(pipeline.Name);
+
+                    if (r)
+                    {
+                        ++added;
+                    }
+                    else
+                    {
+                        ++updated;
+                    }
 
                     Log.UpdatedPipeline(_logger, pipeline.Name);
                 }
@@ -97,7 +104,7 @@
                 _lastRegistered = toPreserve;
 
                 stopwatch.Stop();
-                Log.Updated(_logger, stopwatch.Elapsed, pipelines.Count, pipelinesToRemove.Count);
+                Log.Updated(_logger, stopwatch.Elapsed, added, updated, pipelinesToRemove.Count);
             }
             catch (Exception ex)
             {
@@ -108,11 +115,15 @@
                     throw;
                 }
             }
+            finally
+            {
+                _lock.Release();
+            }
         }
 
         public void Dispose()
         {
-            _optionsMonitor.Dispose();
+            _optionsMonitor?.Dispose();
         }
 
         /// <summary>
@@ -140,11 +151,11 @@
                     new EventId(PackSiteEventId, "UpdatedPipeline"),
                     "Updated pipeline '{Name}'");
 
-            private static readonly Action<ILogger, TimeSpan, int, int, Exception> _updated =
-                LoggerMessage.Define<TimeSpan, int, int>(
+            private static readonly Action<ILogger, TimeSpan, int, int, int, Exception> _updated =
+                LoggerMessage.Define<TimeSpan, int, int, int>(
                     LogLevel.Information,
                     new EventId(PackSiteEventId, "Updated"),
-                    "Updated pipelines collection after {Elapsed} (Inserted: {InsertedCount}; Removed: {RemovedCount})");
+                    "Updated pipelines collection after {Elapsed} (Added: {AddedCount}; Updated: {UpdatedCount}; Removed: {RemovedCount})");
 
             public static void RemovedPipeline(ILogger logger, PipelineName pipelineName)
             {
@@ -161,9 +172,9 @@
                 _updatedPipeline(logger, pipelineName, null!);
             }
 
-            public static void Updated(ILogger logger, TimeSpan elapsed, int inserted, int removed)
+            public static void Updated(ILogger logger, TimeSpan elapsed, int addded, int updated, int removed)
             {
-                _updated(logger, elapsed, inserted, removed, null!);
+                _updated(logger, elapsed, addded, updated, removed, null!);
             }
         }
     }
