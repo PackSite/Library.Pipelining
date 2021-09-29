@@ -72,7 +72,7 @@ namespace PackSite.Library.Pipelining.Tests
             using IServiceScope scope = services.CreateScope();
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
-            await services.FakeHostStartupAsync((ct) =>
+            await services.FakeHostLifecycleAsync((ct) =>
             {
                 pipelines.Names.Should().Contain(DefaultName, "test-pipeline2");
                 pipelines.Names.Should().HaveCount(2);
@@ -126,7 +126,7 @@ namespace PackSite.Library.Pipelining.Tests
             using IServiceScope scope = services.CreateScope();
             IPipelineCollection pipelineCollection = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
-            await services.FakeHostStartupAsync((ct) =>
+            await services.FakeHostLifecycleAsync((ct) =>
                 {
                     pipelineCollection.Names.Should().NotContain("test");
                     pipelineCollection.Names.Should().Contain("test2");

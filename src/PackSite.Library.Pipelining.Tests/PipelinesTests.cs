@@ -1,7 +1,6 @@
 namespace PackSite.Library.Pipelining.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
@@ -39,7 +38,7 @@ namespace PackSite.Library.Pipelining.Tests
 
             pipelines.Names.Should().BeEmpty();
 
-            await services.FakeHostStartupAsync(async (ct) =>
+            await services.FakeHostLifecycleAsync(async (ct) =>
             {
                 pipelines.Names.Should().Contain(SamplePipelineInitializer.Names);
                 pipelines.Names.Should().HaveCount(SamplePipelineInitializer.Names.Length);
@@ -73,7 +72,7 @@ namespace PackSite.Library.Pipelining.Tests
 
             pipelines.Names.Should().BeEmpty();
 
-            await services.FakeHostStartupAsync(async (ct) =>
+            await services.FakeHostLifecycleAsync(async (ct) =>
             {
                 pipelines.Names.Should().Contain(SamplePipelineInitializer.Names);
                 pipelines.Names.Should().HaveCount(SamplePipelineInitializer.Names.Length);
@@ -107,7 +106,7 @@ namespace PackSite.Library.Pipelining.Tests
 
             pipelines.Names.Should().BeEmpty();
 
-            await services.FakeHostStartupAsync(async (ct) =>
+            await services.FakeHostLifecycleAsync(async (ct) =>
             {
                 pipelines.Names.Should().Contain(SamplePipelineInitializer.Names);
                 pipelines.Names.Should().HaveCount(SamplePipelineInitializer.Names.Length);
@@ -193,13 +192,20 @@ namespace PackSite.Library.Pipelining.Tests
         }
 
         [Theory]
-        [InlineData(DefaultName, InvokablePipelineLifetime.Transient)]
-        [InlineData(DefaultName, InvokablePipelineLifetime.Scoped)]
-        [InlineData(DefaultName, InvokablePipelineLifetime.Singleton)]
-        [InlineData(null, InvokablePipelineLifetime.Transient)]
-        [InlineData(null, InvokablePipelineLifetime.Scoped)]
-        [InlineData(null, InvokablePipelineLifetime.Singleton)]
-        public async Task Should_create_and_invoke_without_DI_container(string? pipelineName, InvokablePipelineLifetime lifetime)
+        [InlineData(DefaultName, InvokablePipelineLifetime.Transient, typeof(ActivatorStepActivator))]
+        [InlineData(DefaultName, InvokablePipelineLifetime.Scoped, typeof(ActivatorStepActivator))]
+        [InlineData(DefaultName, InvokablePipelineLifetime.Singleton, typeof(ActivatorStepActivator))]
+        [InlineData(null, InvokablePipelineLifetime.Transient, typeof(ActivatorStepActivator))]
+        [InlineData(null, InvokablePipelineLifetime.Scoped, typeof(ActivatorStepActivator))]
+        [InlineData(null, InvokablePipelineLifetime.Singleton, typeof(ActivatorStepActivator))]
+
+        [InlineData(DefaultName, InvokablePipelineLifetime.Transient, typeof(ActivatorUtilitiesStepActivator))]
+        [InlineData(DefaultName, InvokablePipelineLifetime.Scoped, typeof(ActivatorUtilitiesStepActivator))]
+        [InlineData(DefaultName, InvokablePipelineLifetime.Singleton, typeof(ActivatorUtilitiesStepActivator))]
+        [InlineData(null, InvokablePipelineLifetime.Transient, typeof(ActivatorUtilitiesStepActivator))]
+        [InlineData(null, InvokablePipelineLifetime.Scoped, typeof(ActivatorUtilitiesStepActivator))]
+        [InlineData(null, InvokablePipelineLifetime.Singleton, typeof(ActivatorUtilitiesStepActivator))]
+        public async Task Should_create_and_invoke_without_DI_container(string? pipelineName, InvokablePipelineLifetime lifetime, Type activatorType)
         {
             // Arrange
             bool useDefault = pipelineName is null;
@@ -238,27 +244,24 @@ namespace PackSite.Library.Pipelining.Tests
                 pipelines.Get<SampleArgs>() :
                 pipelines.Get<SampleArgs>(pipelineName);
 
-            IEnumerable<IStepActivator> stepActivators = new IStepActivator[] { new ActivatorStepActivator(), new ActivatorUtilitiesStepActivator() };
+            IStepActivator stepActivator = (IStepActivator)Activator.CreateInstance(activatorType)!;
 
-            foreach (var stepActivator in stepActivators)
-            {
-                IInvokablePipeline<SampleArgs>? invokablePipeline = pipelineFromCollection?.CreateInvokable(stepActivator);
-                invokablePipeline.Should().NotBeNull();
+            IInvokablePipeline<SampleArgs>? invokablePipeline = pipelineFromCollection?.CreateInvokable(stepActivator);
+            invokablePipeline.Should().NotBeNull();
 
-                SampleArgs args = new();
-                await invokablePipeline!.InvokeAsync(args, CancellationToken.None);
+            SampleArgs args = new();
+            await invokablePipeline!.InvokeAsync(args, CancellationToken.None);
 
-                // Assert
-                args.DataIn.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3));
-                args.DataIn.Should().NotContain(typeof(GenericStep));
+            // Assert
+            args.DataIn.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3));
+            args.DataIn.Should().NotContain(typeof(GenericStep));
 
-                args.DataOut.Should().ContainInOrder(typeof(StepWithArgs3), typeof(StepWithArgs2), typeof(StepWithArgs1));
-                args.DataOut.Should().NotContain(typeof(GenericStep));
+            args.DataOut.Should().ContainInOrder(typeof(StepWithArgs3), typeof(StepWithArgs2), typeof(StepWithArgs1));
+            args.DataOut.Should().NotContain(typeof(GenericStep));
 
-                // Act & Assert
-                pipelines.TryRemove(pipelineName).Should().BeTrue();
-                pipelines.Count.Should().Be(0);
-            }
+            // Act & Assert
+            pipelines.TryRemove(pipelineName).Should().BeTrue();
+            pipelines.Count.Should().Be(0);
         }
 
         [Theory]

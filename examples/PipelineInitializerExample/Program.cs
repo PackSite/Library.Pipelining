@@ -5,13 +5,16 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using PackSite.Library.Pipelining;
-    using PackSite.Library.Pipelining.Configuration;
     using PipelineInitializerExample.Extensions;
     using PipelineInitializerExample.Initializers;
     using PipelineInitializerExample.Steps;
 
     public class Program
     {
+        /*
+         * This example demonstrates pipelines configuration using `IPipelineInitializer`.
+         */
+
         public static async Task Main(string[] args)
         {
             IHostBuilder hostBuidler = Host.CreateDefaultBuilder()
@@ -19,8 +22,6 @@
                 {
                     services.AddPipelining(builder =>
                     {
-                        builder.Services.Configure<PipeliningConfiguration>(context.Configuration.GetSection("Pipelining"));
-
                         builder
                             .AddInitializer<SampleInitializer>()
                             .AddInitializer(pipelines =>

@@ -1,4 +1,4 @@
-﻿namespace PackSite.Library.Pipelining.Tests.Data.Extensions
+﻿namespace InvocationPerformanceBenchmark.Extensions
 {
     using System;
     using System.Collections.Generic;
@@ -19,6 +19,26 @@
             }
 
             await func(cancellationToken);
+
+            foreach (IHostedService hostedService in hostedServices)
+            {
+                await hostedService.StopAsync(cancellationToken);
+            }
+        }
+
+        public static async Task FakeHostStartAsync(this IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
+        {
+            IEnumerable<IHostedService> hostedServices = serviceProvider.GetServices<IHostedService>();
+
+            foreach (IHostedService hostedService in hostedServices)
+            {
+                await hostedService.StartAsync(cancellationToken);
+            }
+        }
+
+        public static async Task FakeHostStopAsync(this IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
+        {
+            IEnumerable<IHostedService> hostedServices = serviceProvider.GetServices<IHostedService>();
 
             foreach (IHostedService hostedService in hostedServices)
             {

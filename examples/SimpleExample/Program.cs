@@ -10,6 +10,10 @@ namespace SimpleExample
 
     public class Program
     {
+        /*
+         * This example demonstrates the usage of the library without Generic Host.
+         */
+
         public static async Task Main(string[] args)
         {
             Console.WriteLine("Type some text (for a string with length > 15, a demo excpetion is thrown):");

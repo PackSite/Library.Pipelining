@@ -3,12 +3,15 @@
     using System;
 
     /// <summary>
-    /// Invokable pipeline collection.
+    /// Invokable pipeline factory.
     /// </summary>
     public interface IInvokablePipelineFactory
     {
         /// <summary>
         /// Gets invokable pipeline by name. Returns null when not found.
+        ///
+        /// When requesting a pipeline for subpipelining it's not recommended to retrive pipeline in constructor.
+        /// Instead, retrive it inside ExecuteAsync.
         /// </summary>
         /// <typeparam name="TArgs"></typeparam>
         /// <param name="name"></param>
@@ -18,6 +21,9 @@
 
         /// <summary>
         /// Gets invokable pipeline by its default name name. Returns null when not found.
+        ///
+        /// When requesting a pipeline for subpipelining it's not recommended to retrive pipeline in constructor.
+        /// Instead, retrive it inside ExecuteAsync.
         /// </summary>
         /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>
@@ -26,6 +32,9 @@
 
         /// <summary>
         /// Gets invokable pipeline by name or default.
+        ///
+        /// When requesting a pipeline for subpipelining it's not recommended to retrive pipeline in constructor.
+        /// Instead, retrive it inside ExecuteAsync.
         /// </summary>
         /// <typeparam name="TArgs"></typeparam>
         /// <param name="name"></param>
@@ -36,6 +45,9 @@
 
         /// <summary>
         /// Gets invokable pipeline by its default name name.
+        ///
+        /// When requesting a pipeline for subpipelining it's not recommended to retrive pipeline in constructor.
+        /// Instead, retrive it inside ExecuteAsync.
         /// </summary>
         /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>

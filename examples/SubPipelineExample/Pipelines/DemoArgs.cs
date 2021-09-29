@@ -1,4 +1,4 @@
-﻿namespace SubPipelineExample.Pipelines.Simple
+﻿namespace SubPipelineExample.Pipelines
 {
     public class DemoArgs
     {

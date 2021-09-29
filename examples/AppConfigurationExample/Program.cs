@@ -9,6 +9,17 @@ namespace AppConfigurationExample
 
     public class Program
     {
+        /*
+         * This example demonstrates pipelines configuration using IOptions/IConfiguration.
+         *
+         * `builder.AddConfiguration();` registers a hosted service that registers/updates pipelines in IPipelineCollection
+         * on startup and after configuration update.
+         *
+         * However, it's recommended to use `builder.AddInitializer()` over `builder.AddConfiguration();` for most scenarios
+         * to register all pipelines.
+         *
+         */
+
         public static async Task Main(string[] args)
         {
             IHostBuilder hostBuidler = Host.CreateDefaultBuilder()
@@ -17,7 +28,6 @@ namespace AppConfigurationExample
                     services.AddPipelining(builder =>
                     {
                         builder.Services.Configure<PipeliningConfiguration>(context.Configuration.GetSection("Pipelining"));
-
                         builder.AddConfiguration();
                     });
 

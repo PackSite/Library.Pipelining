@@ -16,7 +16,7 @@
 
 ## Features
   
-  - Uses `Microsoft.Extensions.*` to establish a modular architecture (can also be used without Generic Host but with limited features).
+  - Uses `Microsoft.Extensions.*` to suppoort a modular library design (can also be used without Generic Host but with limited features).
   - Highly asynchronous processing model.
   - Transient, Scoped, and Singleton pipeline lifetime.
   - Pipelines distinguised by custom names or pipeline argument data type.
@@ -27,3 +27,26 @@
   - Code-first pipeline definitions at runtime through `IPipelineCollection`.
   - Configuration-based pipelines definitions using `IOptions` with reloading.
   - Pipeline counters: executions count (successful and failure) and speed (resolution in microseconds).
+  - Very fast step execution (see Benchmarks section).
+
+## Examples
+
+See [Examples folder](https://github.com/PackSite/Library.Pipelining/tree/main/examples) for all library usage examples.
+
+## Benchmarks
+
+```
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19043.1237 (21H1/May2021Update)
+Intel Core i7-4790 CPU 3.60GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
+.NET SDK=5.0.401
+  [Host]     : .NET 5.0.10 (5.0.1021.41214), X64 RyuJIT
+  DefaultJob : .NET 5.0.10 (5.0.1021.41214), X64 RyuJIT
+```
+
+|              Method |     Mean |     Error |    StdDev | Ratio | Rank |
+|-------------------- |---------:|----------:|----------:|------:|-----:|
+|  'Steps.Count == 2' | 1.847 us | 0.0130 us | 0.0115 us |  0.94 |    1 |
+|  'Steps.Count == 1' | 1.957 us | 0.0259 us | 0.0242 us |  1.00 |    2 |
+| 'Steps.Count == 50' | 2.018 us | 0.0079 us | 0.0066 us |  1.03 |    3 |
+| 'Steps.Count == 10' | 2.064 us | 0.0205 us | 0.0182 us |  1.06 |    4 |
+|  'Steps.Count == 5' | 2.101 us | 0.0041 us | 0.0037 us |  1.07 |    5 |

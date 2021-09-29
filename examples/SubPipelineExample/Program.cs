@@ -7,10 +7,14 @@ namespace SubPipelineExample
     using Microsoft.Extensions.Hosting;
     using PackSite.Library.Pipelining;
     using SubPipelineExample.Extensions;
-    using SubPipelineExample.Pipelines.Simple;
+    using SubPipelineExample.Pipelines;
 
     public class Program
     {
+        /*
+         * This example demonstrates the usage of subpipelining.
+         */
+
         public static async Task Main(string[] args)
         {
             IHostBuilder hostBuidler = Host.CreateDefaultBuilder()

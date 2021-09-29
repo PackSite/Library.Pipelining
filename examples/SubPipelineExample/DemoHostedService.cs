@@ -7,7 +7,7 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using PackSite.Library.Pipelining;
-    using SubPipelineExample.Pipelines.Simple;
+    using SubPipelineExample.Pipelines;
 
     public sealed class DemoHostedService : BackgroundService
     {

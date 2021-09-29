@@ -1,4 +1,4 @@
-﻿namespace PackSite.Library.Pipelining.Tests.Extensions
+﻿namespace InvocationPerformanceBenchmark.Extensions
 {
     internal static class BoolExtensions
     {
