@@ -5,8 +5,8 @@
 
     public interface IBenchmark : IAsyncDisposable
     {
-        ValueTask SetupAsync();
+        Task SetupAsync();
 
-        ValueTask BenchmarkAsync();
+        Task BenchmarkAsync();
     }
 }

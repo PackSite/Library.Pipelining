@@ -17,15 +17,14 @@
 ## Features
   
   - Uses `Microsoft.Extensions.*` to suppoort a modular library design (can also be used without Generic Host but with limited features).
-  - Highly asynchronous processing model.
+  - Support for asynchronous processing model.
   - Transient, Scoped, and Singleton pipeline lifetime.
   - Pipelines distinguised by custom names or pipeline argument data type.
   - Fluent pipeline builder (for defining pipeline name, description, and steps).
   - Dynamic subpipelines.
   - Generic and object-based steps.
-  - Code-first pipeline definitions during Generic Host start.
-  - Code-first pipeline definitions at runtime through `IPipelineCollection`.
-  - Configuration-based pipelines definitions using `IOptions` with reloading.
+  - Code-first pipeline definitions during Generic Host start and at runtime through `IPipelineCollection`.
+  - Optional configuration-based pipelines definitions using `IOptions` with reloading.
   - Pipeline counters: executions count (successful and failure) and speed (resolution in microseconds).
   - Very fast step execution (see Benchmarks section).
 
@@ -43,10 +42,11 @@ Intel Core i7-4790 CPU 3.60GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
   DefaultJob : .NET 5.0.10 (5.0.1021.41214), X64 RyuJIT
 ```
 
-|              Method |     Mean |     Error |    StdDev | Ratio | Rank |
-|-------------------- |---------:|----------:|----------:|------:|-----:|
-|  'Steps.Count == 2' | 1.847 us | 0.0130 us | 0.0115 us |  0.94 |    1 |
-|  'Steps.Count == 1' | 1.957 us | 0.0259 us | 0.0242 us |  1.00 |    2 |
-| 'Steps.Count == 50' | 2.018 us | 0.0079 us | 0.0066 us |  1.03 |    3 |
-| 'Steps.Count == 10' | 2.064 us | 0.0205 us | 0.0182 us |  1.06 |    4 |
-|  'Steps.Count == 5' | 2.101 us | 0.0041 us | 0.0037 us |  1.07 |    5 |
+|               Method |       Mean |    Error |   StdDev | Ratio | RatioSD | Rank |
+|--------------------- |-----------:|---------:|---------:|------:|--------:|-----:|
+|    'Loop simulation' |   306.2 ns |  0.97 ns |  0.91 ns |  1.00 |    0.00 |    1 |
+|   'Steps.Count == 1' | 1,779.0 ns | 14.27 ns | 12.65 ns |  5.81 |    0.04 |    2 |
+|   'Steps.Count == 2' | 2,024.5 ns | 24.62 ns | 20.56 ns |  6.61 |    0.06 |    3 |
+|  'Steps.Count == 10' | 2,103.0 ns |  6.48 ns |  5.41 ns |  6.87 |    0.03 |    4 |
+|   'Steps.Count == 5' | 2,110.9 ns | 13.04 ns | 10.89 ns |  6.90 |    0.04 |    4 |
+| 'Steps.Count == 100' | 2,253.0 ns | 10.74 ns |  9.52 ns |  7.36 |    0.04 |    5 |

@@ -18,10 +18,10 @@
         {
             _ = PipelineBuilder.Create<SampleArgs>()
                 .Name(Names[0])
-                .Step<StepWithArgs1>()
-                .Step<StepWithArgs2>()
-                .Step(new StepWithArgs3())
-                .Step<GenericStep>()
+                .AddStep<StepWithArgs1>()
+                .AddStep<StepWithArgs2>()
+                .AddStep(new StepWithArgs3())
+                .AddStep<GenericStep>()
                 .Build().TryAddTo(pipelines);
 
             return default;

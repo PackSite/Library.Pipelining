@@ -22,10 +22,10 @@ namespace SimpleExample
             TextProcessingArgs pipelineArgs = new(text);
 
             IPipeline pipeline = PipelineBuilder.Create<TextProcessingArgs>()
-                .Step<ExceptionHandlingStep>()
-                .Step<ToUpperTransformStep>()
-                .Step<TrimTransformStep>()
-                .Step(new SurroundWithSquareBracketsTransformStep())
+                .AddStep<ExceptionHandlingStep>()
+                .AddStep<ToUpperTransformStep>()
+                .AddStep<TrimTransformStep>()
+                .AddStep(new SurroundWithSquareBracketsTransformStep())
                 .Build();
 
             IInvokablePipeline invokablePipeline = pipeline.CreateInvokable(new ActivatorUtilitiesStepActivator());

@@ -55,7 +55,7 @@
                     Type stepType = Type.GetType(stepAssemblyQualifiedName, AssemblyResolver, null) ??
                         throw new NullReferenceException($"Invalid step type '{stepAssemblyQualifiedName}' in '{pipelineName}' pipeline.");
 
-                    builder.Step(stepType);
+                    builder.AddStep(stepType);
                 }
             }
 

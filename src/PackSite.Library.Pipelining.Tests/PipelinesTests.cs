@@ -146,10 +146,10 @@ namespace PackSite.Library.Pipelining.Tests
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(pipelineName)
                 .Description(DefaultDescription)
-                .Step<StepWithArgs1>()
-                .Step<StepWithArgs2>()
-                .Step(new StepWithArgs3())
-                .Step<GenericStep>()
+                .AddStep<StepWithArgs1>()
+                .AddStep<StepWithArgs2>()
+                .AddStep(new StepWithArgs3())
+                .AddStep<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
 
@@ -217,10 +217,10 @@ namespace PackSite.Library.Pipelining.Tests
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(pipelineName)
                 .Description(DefaultDescription)
-                .Step<StepWithArgs1>()
-                .Step<StepWithArgs2>()
-                .Step(new StepWithArgs3())
-                .Step<GenericStep>()
+                .AddStep<StepWithArgs1>()
+                .AddStep<StepWithArgs2>()
+                .AddStep(new StepWithArgs3())
+                .AddStep<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
 
@@ -288,10 +288,10 @@ namespace PackSite.Library.Pipelining.Tests
             // Act
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(pipelineName)
-                .Step<StepWithArgs1>()
-                .Step<StepWithArgsThatThrowsException>()
-                .Step(new StepWithArgs2())
-                .Step<GenericStep>()
+                .AddStep<StepWithArgs1>()
+                .AddStep<StepWithArgsThatThrowsException>()
+                .AddStep(new StepWithArgs2())
+                .AddStep<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
 
@@ -337,9 +337,11 @@ namespace PackSite.Library.Pipelining.Tests
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
             PipelineName? lastAdded = null;
+            PipelineName? lastUpdated = null;
             PipelineName? lastRemoved = null;
 
             int addedCount = 0;
+            int updatedCount = 0;
             int removedCount = 0;
             int clearedCount = 0;
 
@@ -347,6 +349,12 @@ namespace PackSite.Library.Pipelining.Tests
             {
                 lastAdded = e.PipelineName;
                 ++addedCount;
+            };
+
+            pipelines.Updated += (sender, e) =>
+            {
+                lastUpdated = e.PipelineName;
+                ++updatedCount;
             };
 
             pipelines.Removed += (sender, e) =>
@@ -382,8 +390,15 @@ namespace PackSite.Library.Pipelining.Tests
             removedCount.Should().Be(1);
             clearedCount.Should().Be(0);
 
+            pipelines.AddOrUpdate(pipeline).Should().BeFalse();
+            addedCount.Should().Be(2);
+            updatedCount.Should().Be(1);
+            removedCount.Should().Be(1);
+            clearedCount.Should().Be(0);
+
             pipelines.Clear();
             addedCount.Should().Be(2);
+            updatedCount.Should().Be(1);
             removedCount.Should().Be(1);
             clearedCount.Should().Be(1);
         }

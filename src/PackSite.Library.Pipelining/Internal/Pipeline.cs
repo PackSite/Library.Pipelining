@@ -28,7 +28,7 @@
         private readonly PipelineCounters _counters = new();
 
         private readonly IReadOnlyList<object> _steps;
-        private readonly Lazy<IReadOnlyList<Type>> _lazyStepTypes;
+        private readonly IReadOnlyList<Type> _stepTypes;
 
         private string? _toStringCache;
 
@@ -42,10 +42,10 @@
         public PipelineName Name { get; }
 
         /// <inheritdoc/>
-        public string? Description { get; }
+        public string Description { get; }
 
         /// <inheritdoc/>
-        public IReadOnlyList<Type> Steps => _lazyStepTypes.Value;
+        IReadOnlyList<Type> IPipeline.Steps => _stepTypes;
 
         /// <summary>
         /// Initializes a new instance of <see cref="PipelineBuilder{T}"/>.
@@ -54,25 +54,37 @@
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="steps"></param>
-        public Pipeline(InvokablePipelineLifetime lifetime, PipelineName name, string description, IReadOnlyList<object> steps)
+        /// <param name="stepTypes"></param>
+        public Pipeline(InvokablePipelineLifetime lifetime, PipelineName name, string description, IReadOnlyList<object> steps, IReadOnlyList<Type> stepTypes)
         {
             Lifetime = lifetime;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description ?? throw new ArgumentNullException(nameof(description));
             _steps = steps ?? throw new ArgumentNullException(nameof(steps));
+            _stepTypes = stepTypes ?? throw new ArgumentNullException(nameof(stepTypes));
+        }
 
-            _lazyStepTypes = new Lazy<IReadOnlyList<Type>>(() =>
+        /// <inheritdoc/>
+        public IPipelineBuilder<TArgs> CreateBuilder()
+        {
+            IPipelineBuilder<TArgs> builder = PipelineBuilder.Create<TArgs>()
+                .Name(Name)
+                .Description(Description)
+                .Lifetime(Lifetime);
+
+            foreach (object step in _steps)
             {
-                List<Type> types = new(_steps.Count);
-                foreach (object step in _steps)
+                if (step is Type s)
                 {
-                    Type stepType = step is Type s ? s : step.GetType();
-
-                    types.Add(stepType);
+                    builder.Add(s);
                 }
+                else if (step is IBaseStep baseStep)
+                {
+                    builder.AddStep(baseStep);
+                }
+            }
 
-                return types;
-            });
+            return builder;
         }
 
         /// <inheritdoc/>
@@ -169,6 +181,11 @@
             return CreateInvokable(stepActivator);
         }
 
+        IPipelineBuilder IPipeline.CreateBuilder()
+        {
+            return CreateBuilder();
+        }
+
         /// <inheritdoc/>
         public override string? ToString()
         {
@@ -182,9 +199,9 @@
             builder.Append("PIPELINE '");
             builder.Append(Name);
             builder.Append(" (");
-            builder.Append(Steps.Count);
+            builder.Append(_stepTypes.Count);
 
-            if (Steps.Count == 1)
+            if (_stepTypes.Count == 1)
             {
                 builder.Append(" step)");
             }
@@ -198,7 +215,7 @@
 
             int i = 0;
 
-            foreach (Type step in Steps)
+            foreach (Type step in _stepTypes)
             {
                 builder.Append("  [");
                 builder.Append(i++);
@@ -209,7 +226,7 @@
             builder.AppendLine("  [-] = \\/ /\\");
             --i;
 
-            foreach (Type step in Steps.Reverse())
+            foreach (Type step in _stepTypes.Reverse())
             {
                 builder.Append("  [");
                 builder.Append(i--);

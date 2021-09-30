@@ -1,6 +1,7 @@
 namespace PackSite.Library.Pipelining.Tests
 {
     using System;
+    using System.Collections.Generic;
     using FluentAssertions;
     using PackSite.Library.Pipelining;
     using PackSite.Library.Pipelining.Tests.Data.Args;
@@ -22,12 +23,13 @@ namespace PackSite.Library.Pipelining.Tests
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(DefaultName)
                 .Description(DefaultDescription)
-                .Step<StepWithArgs1>()
-                .Step<StepWithArgs1>()
-                .Step<StepWithArgs2>()
-                .Step(new StepWithArgs3())
-                .Step<GenericStep>()
-                .Step<GenericStep>()
+                .AddStep<StepWithArgs1>()
+                .AddStep<StepWithArgs1>()
+                .AddSteps(new StepWithArgs2(), new StepWithArgs2())
+                .AddSteps(new List<IBaseStep> { new StepWithArgs2(), new StepWithArgs1() })
+                .InsertStep<StepWithArgs3>(0)
+                .AddStep<GenericStep>()
+                .AddStep<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
 
@@ -43,10 +45,9 @@ namespace PackSite.Library.Pipelining.Tests
                 typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs2).FullName,
-                typeof(GenericStep).FullName,
+                typeof(StepWithArgs3).FullName,
                 typeof(GenericStep).FullName,
                 "[0]", "[1]", "[2]", "[3]", "[4]", "[5]");
-            pipeline.ToString().Should().NotContain("[6]");
         }
 
         [Theory]
@@ -107,7 +108,7 @@ namespace PackSite.Library.Pipelining.Tests
             Action action = () =>
             {
                 IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
-                    .Step<InvalidStep>()
+                    .AddStep<InvalidStep>()
                     .Build();
             };
 

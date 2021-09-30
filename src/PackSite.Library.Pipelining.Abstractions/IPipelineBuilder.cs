@@ -6,7 +6,7 @@
     /// <summary>
     /// Pipeline builder.
     /// </summary>
-    public interface IPipelineBuilder
+    public partial interface IPipelineBuilder : IList<Type>
     {
         /// <summary>
         /// Overrides <see cref="IInvokablePipeline"/> lifetime (default: <see cref="InvokablePipelineLifetime.Singleton"/>).
@@ -32,52 +32,6 @@
         IPipelineBuilder Description(string description);
 
         /// <summary>
-        /// Adds a step to the pipeline.
-        /// </summary>
-        /// <param name="stepType"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="stepType"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        IPipelineBuilder Step(Type stepType);
-
-        /// <summary>
-        /// Adds a step to the pipeline.
-        /// </summary>
-        /// <typeparam name="TStep"></typeparam>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        IPipelineBuilder Step<TStep>()
-            where TStep : class, IBaseStep;
-
-        /// <summary>
-        /// Adds a step instance to the pipeline.
-        /// </summary>
-        /// <typeparam name="TStep"></typeparam>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="instance"/> is null.</exception>
-        /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        IPipelineBuilder Step<TStep>(TStep instance)
-            where TStep : class, IBaseStep;
-
-        /// <summary>
-        /// Adds a step instances to the pipeline.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
-        /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        IPipelineBuilder Steps(IEnumerable<IBaseStep> instances);
-
-        /// <summary>
-        /// Adds a step instances to the pipeline.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
-        /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        IPipelineBuilder Steps(params IBaseStep[] instances);
-
-        /// <summary>
         /// Creates a pipeline.
         /// </summary>
         /// <returns></returns>
@@ -88,7 +42,7 @@
     /// Pipeline builder.
     /// </summary>
     /// <typeparam name="TArgs"></typeparam>
-    public interface IPipelineBuilder<TArgs> : IPipelineBuilder
+    public partial interface IPipelineBuilder<TArgs> : IPipelineBuilder
         where TArgs : class
     {
         /// <summary>
@@ -110,52 +64,6 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="description"/> is null.</exception>
         new IPipelineBuilder<TArgs> Description(string description);
-
-        /// <summary>
-        /// Adds a step to the pipeline.
-        /// </summary>
-        /// <param name="stepType"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="stepType"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        new IPipelineBuilder<TArgs> Step(Type stepType);
-
-        /// <summary>
-        /// Adds a step to the pipeline.
-        /// </summary>
-        /// <typeparam name="TStep"></typeparam>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        new IPipelineBuilder<TArgs> Step<TStep>()
-            where TStep : class, IBaseStep;
-
-        /// <summary>
-        /// Adds a step instance to the pipeline.
-        /// </summary>
-        /// <typeparam name="TStep"></typeparam>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="instance"/> is null.</exception>
-        /// <exception cref="ArgumentException">Throws when <typeparamref name="TStep"/> is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/>.</exception>
-        new IPipelineBuilder<TArgs> Step<TStep>(TStep instance)
-            where TStep : class, IBaseStep;
-
-        /// <summary>
-        /// Adds a step instances to the pipeline.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
-        /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        new IPipelineBuilder<TArgs> Steps(IEnumerable<IBaseStep> instances);
-
-        /// <summary>
-        /// Adds a step instances to the pipeline.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
-        /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        new IPipelineBuilder<TArgs> Steps(params IBaseStep[] instances);
 
         /// <summary>
         /// Creates a pipeline.

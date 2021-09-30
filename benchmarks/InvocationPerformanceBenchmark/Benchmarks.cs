@@ -17,7 +17,8 @@ namespace InvocationPerformanceBenchmark
         private readonly IBenchmark InvocationPerformance2 = new Steps2InvocationPerformanceBenchmark();
         private readonly IBenchmark InvocationPerformance5 = new Steps5InvocationPerformanceBenchmark();
         private readonly IBenchmark InvocationPerformance10 = new Steps10InvocationPerformanceBenchmark();
-        private readonly IBenchmark InvocationPerformance50 = new Steps50InvocationPerformanceBenchmark();
+        private readonly IBenchmark InvocationPerformance100 = new Steps100InvocationPerformanceBenchmark();
+        private readonly IBenchmark ManualInvocationPerformance100 = new Steps100ManualInvocationPerformanceBenchmark();
 
         [GlobalSetup]
         public void Setup()
@@ -28,7 +29,8 @@ namespace InvocationPerformanceBenchmark
                 InvocationPerformance2.SetupAsync().GetAwaiter().GetResult();
                 InvocationPerformance5.SetupAsync().GetAwaiter().GetResult();
                 InvocationPerformance10.SetupAsync().GetAwaiter().GetResult();
-                InvocationPerformance50.SetupAsync().GetAwaiter().GetResult();
+                InvocationPerformance100.SetupAsync().GetAwaiter().GetResult();
+                ManualInvocationPerformance100.SetupAsync().GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -46,7 +48,8 @@ namespace InvocationPerformanceBenchmark
                 InvocationPerformance2.DisposeAsync().AsTask().GetAwaiter().GetResult();
                 InvocationPerformance5.DisposeAsync().AsTask().GetAwaiter().GetResult();
                 InvocationPerformance10.DisposeAsync().AsTask().GetAwaiter().GetResult();
-                InvocationPerformance50.DisposeAsync().AsTask().GetAwaiter().GetResult();
+                InvocationPerformance100.DisposeAsync().AsTask().GetAwaiter().GetResult();
+                ManualInvocationPerformance100.DisposeAsync().AsTask().GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -55,34 +58,40 @@ namespace InvocationPerformanceBenchmark
             }
         }
 
-        [Benchmark(Description = "Steps.Count == 1", Baseline = true)]
+        [Benchmark(Description = "Steps.Count == 1")]
         public void Steps1Benchmark()
         {
-            InvocationPerformance1.BenchmarkAsync().AsTask().GetAwaiter().GetResult();
+            InvocationPerformance1.BenchmarkAsync().GetAwaiter().GetResult();
         }
 
         [Benchmark(Description = "Steps.Count == 2")]
         public void Steps2Benchmark()
         {
-            InvocationPerformance2.BenchmarkAsync().AsTask().GetAwaiter().GetResult();
+            InvocationPerformance2.BenchmarkAsync().GetAwaiter().GetResult();
         }
 
         [Benchmark(Description = "Steps.Count == 5")]
         public void Steps5Benchmark()
         {
-            InvocationPerformance5.BenchmarkAsync().AsTask().GetAwaiter().GetResult();
+            InvocationPerformance5.BenchmarkAsync().GetAwaiter().GetResult();
         }
 
         [Benchmark(Description = "Steps.Count == 10")]
         public void Steps10Benchmark()
         {
-            InvocationPerformance5.BenchmarkAsync().AsTask().GetAwaiter().GetResult();
+            InvocationPerformance5.BenchmarkAsync().GetAwaiter().GetResult();
         }
 
-        [Benchmark(Description = "Steps.Count == 50")]
+        [Benchmark(Description = "Steps.Count == 100")]
         public void Steps50Benchmark()
         {
-            InvocationPerformance5.BenchmarkAsync().AsTask().GetAwaiter().GetResult();
+            InvocationPerformance5.BenchmarkAsync().GetAwaiter().GetResult();
+        }
+
+        [Benchmark(Description = "Loop simulation", Baseline = true)]
+        public void LoopSimulationBenchmark()
+        {
+            ManualInvocationPerformance100.BenchmarkAsync().GetAwaiter().GetResult();
         }
 
         public static void Main()

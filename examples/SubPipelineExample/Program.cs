@@ -27,9 +27,9 @@ namespace SubPipelineExample
                             _ = PipelineBuilder.Create<DemoArgs>()
                                 .Description("Simple pipeline.")
                                 .Lifetime(InvokablePipelineLifetime.Singleton)
-                                .Step<Step1>()
-                                .Step<Step2>()
-                                .Step<Step3>()
+                                .AddStep<Step1>()
+                                .AddStep<Step2>()
+                                .AddStep<Step3>()
                                 .Build()
                                 .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
 
@@ -37,8 +37,8 @@ namespace SubPipelineExample
                                 .Name("dynamic-subpipeline-demo")
                                 .Description("Simple pipeline that is used as a subpipeline.")
                                 .Lifetime(InvokablePipelineLifetime.Transient)
-                                .Step<SubpipelineStep1>()
-                                .Step<SubpipelineStep2>()
+                                .AddStep<SubpipelineStep1>()
+                                .AddStep<SubpipelineStep2>()
                                 .Build()
                                 .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
                         });

@@ -8,7 +8,7 @@
     using Microsoft.Extensions.Hosting;
     using PackSite.Library.Pipelining;
 
-    public sealed class Steps2InvocationPerformanceBenchmark : IBenchmark, IAsyncDisposable
+    public sealed class Steps2InvocationPerformanceBenchmark : IBenchmark
     {
         private IHost? HostInstance { get; set; }
         private IServiceScope? Scope { get; set; }
@@ -19,7 +19,7 @@
 
         }
 
-        public async ValueTask SetupAsync()
+        public async Task SetupAsync()
         {
             HostInstance = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
@@ -31,8 +31,8 @@
                             {
                                 _ = PipelineBuilder.Create<ProcessingArgs>()
                                     .Description("Text processing pipeline.")
-                                    .Step<NopStep>()
-                                    .Step<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
                                     .Build()
                                     .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
                             });
@@ -45,7 +45,7 @@
             InvokablePipelineFactory = Scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
         }
 
-        public async ValueTask BenchmarkAsync()
+        public async Task BenchmarkAsync()
         {
             var inf = InvokablePipelineFactory;
             if (inf is not null)
