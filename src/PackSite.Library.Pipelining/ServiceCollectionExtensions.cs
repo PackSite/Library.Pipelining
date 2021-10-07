@@ -21,9 +21,9 @@
         {
             services.TryAddScoped<IStepActivator, ServicesStepActivator>();
 
-            services.AddSingleton<IPipelineCollection, PipelineCollection>()
-                    .AddSingleton<InvokablePipelineFactory.SingletonPipelines>()
-                    .AddScoped<IInvokablePipelineFactory, InvokablePipelineFactory>();
+            services.TryAddSingleton<IPipelineCollection, PipelineCollection>();
+            services.TryAddSingleton<InvokablePipelineFactory.SingletonPipelines>();
+            services.TryAddScoped<IInvokablePipelineFactory, InvokablePipelineFactory>();
 
             services.AddHostedService<PipeliningHostedService>();
 

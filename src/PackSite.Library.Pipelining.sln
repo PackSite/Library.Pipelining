@@ -44,9 +44,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppConfigurationExample", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleExample", "..\examples\SimpleExample\SimpleExample.csproj", "{71E521D2-36E2-4553-91C2-4C03311065A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineInitializerExample", "..\examples\PipelineInitializerExample\PipelineInitializerExample.csproj", "{086D95CE-3255-4212-AF65-E3DA590F01F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PipelineInitializerExample", "..\examples\PipelineInitializerExample\PipelineInitializerExample.csproj", "{086D95CE-3255-4212-AF65-E3DA590F01F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubPipelineExample", "..\examples\SubPipelineExample\SubPipelineExample.csproj", "{B0FFF4AF-2A3D-425D-B396-59B0309C265E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubPipelineExample", "..\examples\SubPipelineExample\SubPipelineExample.csproj", "{B0FFF4AF-2A3D-425D-B396-59B0309C265E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeirdExample", "..\examples\WeirdExample\WeirdExample.csproj", "{4B5A5571-83D2-49B2-AFBA-3C4F234B8A3A}"
 EndProject

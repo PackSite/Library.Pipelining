@@ -2,6 +2,7 @@
 {
     using System;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Options;
     using PackSite.Library.Pipelining.Configuration.Internal;
 
@@ -24,7 +25,7 @@
         }
 
         /// <summary>
-        /// Adds pipelining configuration with default options with default options that can be overriden with configuration action.
+        /// Adds pipelining configuration with default options that can be overriden with configuration action.
         /// Pipelines from configuration are always added after pipelines added/updated by initializer.
         /// You can set options from configuration with:
         /// <code>services.Configure&lt;PipeliningConfiguration&gt;(Configuration.GetSection("Pipelining"));</code>
@@ -37,8 +38,8 @@
             builder.Services.AddOptions<PipeliningConfiguration>()
                             .PostConfigure(config);
 
-            builder.Services.AddSingleton<IValidateOptions<PipeliningConfiguration>, PipeliningConfigurationValidator>()
-                            .AddHostedService<PipeliningConfigurationHostedService>();
+            builder.Services.TryAddSingleton<IValidateOptions<PipeliningConfiguration>, PipeliningConfigurationValidator>();
+            builder.Services.AddHostedService<PipeliningConfigurationHostedService>();
 
             return builder;
         }

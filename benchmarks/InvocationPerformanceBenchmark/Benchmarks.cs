@@ -53,7 +53,7 @@ namespace InvocationPerformanceBenchmark
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine(ex);
+                Console.WriteLine(ex);
                 throw;
             }
         }
