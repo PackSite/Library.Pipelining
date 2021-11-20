@@ -1,41 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
-    <Authors>$(Company)</Authors>
-    <Description>Microsoft.Extensions.Options based pipelines configuration for PackSite.Library.Pipelining</Description>
-    <PackageTags>PackSite library pipelining steps Microsoft.Extensions.Options configuration</PackageTags>
-    <PackageProjectUrl>https://github.com/PackSite/Library.Pipelining</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/PackSite/Library.Pipelining/blob/main/CHANGELOG.md</PackageReleaseNotes>
-    <PackageIcon>icon-64px.png</PackageIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Configurations>Debug;Release</Configurations>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net5.0;netstandard2.1</TargetFrameworks>
+		<Authors>$(Company)</Authors>
+		<Description>Microsoft.Extensions.Options based pipelines configuration for PackSite.Library.Pipelining</Description>
+		<PackageTags>PackSite library pipelining steps Microsoft.Extensions.Options configuration</PackageTags>
+		<PackageProjectUrl>https://github.com/PackSite/Library.Pipelining</PackageProjectUrl>
+		<PackageReleaseNotes>https://github.com/PackSite/Library.Pipelining/blob/main/CHANGELOG.md</PackageReleaseNotes>
+		<PackageIcon>icon-64px.png</PackageIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\..\img\icon-64px.png" Pack="true" PackagePath="" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\img\icon-64px.png" Pack="true" PackagePath="" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
+	</ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <PackageReference Include="Microsoft.Extensions.Options" Version="[5.0,]" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+	</ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <PackageReference Include="Microsoft.Extensions.Options" Version="[3.0,]" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+		<PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PackSite.Library.Pipelining\PackSite.Library.Pipelining.csproj" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PackSite.Library.Pipelining\PackSite.Library.Pipelining.csproj" />
+	</ItemGroup>
 
 </Project>
