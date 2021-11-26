@@ -1,33 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
-    <Authors>$(Company)</Authors>
-    <Description>PackSite pipelining library abstractions</Description>
-    <PackageTags>PackSite library pipelining steps</PackageTags>
-    <PackageProjectUrl>https://github.com/PackSite/Library.Pipelining</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/PackSite/Library.Pipelining/blob/main/CHANGELOG.md</PackageReleaseNotes>
-    <PackageIcon>icon-64px.png</PackageIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Configurations>Debug;Release</Configurations>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net5.0;netstandard2.1</TargetFrameworks>
+		<Authors>$(Company)</Authors>
+		<Description>PackSite pipelining library abstractions</Description>
+		<PackageTags>PackSite library pipelining steps</PackageTags>
+		<PackageProjectUrl>https://github.com/PackSite/Library.Pipelining</PackageProjectUrl>
+		<PackageReleaseNotes>https://github.com/PackSite/Library.Pipelining/blob/main/CHANGELOG.md</PackageReleaseNotes>
+		<PackageIcon>icon-64px.png</PackageIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <RootNamespace>PackSite.Library.Pipelining</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<RootNamespace>PackSite.Library.Pipelining</RootNamespace>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\..\img\icon-64px.png" Pack="true" PackagePath="" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\img\icon-64px.png" Pack="true" PackagePath="" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
+	</ItemGroup>
 
 </Project>
