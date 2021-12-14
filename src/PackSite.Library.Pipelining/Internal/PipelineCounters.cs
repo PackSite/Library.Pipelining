@@ -12,14 +12,28 @@
         private long _successful;
         private long _failed;
 
+        /// <inheritdoc/>
         public long Built => _built;
+
+        /// <inheritdoc/>
         public long Executions => Successful + Failed;
+
+        /// <inheritdoc/>
         public long Successful => _successful;
+
+        /// <inheritdoc/>
         public long Failed => _failed;
 
+        /// <inheritdoc/>
         public double AverageBuiltUs => Built > 0 ? _builtElapsedUs / (double)Built : 0;
+
+        /// <inheritdoc/>
         public double AverageExecutionUs => Executions > 0 ? (_successfulElapsedUs + _failedElapsedUs) / (double)Executions : 0;
+
+        /// <inheritdoc/>
         public double AverageSuccessfulUs => Successful > 0 ? _successfulElapsedUs / (double)Successful : 0;
+
+        /// <inheritdoc/>
         public double AverageFailedUs => Failed > 0 ? _failedElapsedUs / (double)Failed : 0;
 
         /// <summary>

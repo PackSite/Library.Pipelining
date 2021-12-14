@@ -35,18 +35,18 @@ See [Examples folder](https://github.com/PackSite/Library.Pipelining/tree/main/e
 ## Benchmarks
 
 ```
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19043.1237 (21H1/May2021Update)
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19044.1348 (21H2)
 Intel Core i7-4790 CPU 3.60GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
-.NET SDK=5.0.401
-  [Host]     : .NET 5.0.10 (5.0.1021.41214), X64 RyuJIT
-  DefaultJob : .NET 5.0.10 (5.0.1021.41214), X64 RyuJIT
+.NET SDK=6.0.100
+  [Host]     : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
+  DefaultJob : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
 ```
 
-|               Method |       Mean |    Error |   StdDev | Ratio | RatioSD | Rank |
-|--------------------- |-----------:|---------:|---------:|------:|--------:|-----:|
-|    'Loop simulation' |   306.2 ns |  0.97 ns |  0.91 ns |  1.00 |    0.00 |    1 |
-|   'Steps.Count == 1' | 1,779.0 ns | 14.27 ns | 12.65 ns |  5.81 |    0.04 |    2 |
-|   'Steps.Count == 2' | 2,024.5 ns | 24.62 ns | 20.56 ns |  6.61 |    0.06 |    3 |
-|  'Steps.Count == 10' | 2,103.0 ns |  6.48 ns |  5.41 ns |  6.87 |    0.03 |    4 |
-|   'Steps.Count == 5' | 2,110.9 ns | 13.04 ns | 10.89 ns |  6.90 |    0.04 |    4 |
-| 'Steps.Count == 100' | 2,253.0 ns | 10.74 ns |  9.52 ns |  7.36 |    0.04 |    5 |
+|               Method |       Mean |   Error |  StdDev | Ratio | Rank |
+|--------------------- |-----------:|--------:|--------:|------:|-----:|
+|    'Loop simulation' |   304.0 ns | 0.20 ns | 0.18 ns |  1.00 |    1 |
+|   'Steps.Count == 1' | 1,782.0 ns | 3.70 ns | 2.89 ns |  5.86 |    2 |
+|   'Steps.Count == 2' | 1,870.6 ns | 1.69 ns | 1.32 ns |  6.15 |    3 |
+|  'Steps.Count == 10' | 2,128.0 ns | 3.46 ns | 3.24 ns |  7.00 |    4 |
+|   'Steps.Count == 5' | 2,131.5 ns | 4.33 ns | 3.84 ns |  7.01 |    4 |
+| 'Steps.Count == 100' | 2,157.3 ns | 3.10 ns | 2.75 ns |  7.10 |    5 |
