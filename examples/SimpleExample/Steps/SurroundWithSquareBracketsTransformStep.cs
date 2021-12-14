@@ -16,6 +16,8 @@
                 throw new ApplicationException("Text too long.");
             }
 
+            await Task.Delay(1000, cancellationToken);
+
             await next();
         }
     }

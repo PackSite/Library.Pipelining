@@ -10,6 +10,11 @@
         {
             args.Text = args.Text.Trim();
 
+            if (args.Text == "ABORT")
+            {
+                args.Abort();
+            }
+
             await next();
         }
     }

@@ -122,6 +122,8 @@
                     {
                         invokeDelegate = (input, invokablePipeline, terminationContinuation, ct) =>
                         {
+                            ct.ThrowIfCancellationRequested();
+
                             return s.ExecuteAsync(
                                 input,
                                 () => next(input, invokablePipeline, terminationContinuation, ct),
@@ -133,6 +135,8 @@
                     {
                         invokeDelegate = (input, invokablePipeline, terminationContinuation, ct) =>
                         {
+                            ct.ThrowIfCancellationRequested();
+
                             return sp.ExecuteAsync(
                                 input,
                                 () => next(input, invokablePipeline, terminationContinuation, ct),
@@ -147,6 +151,8 @@
                     {
                         invokeDelegate = (input, invokablePipeline, terminationContinuation, ct) =>
                         {
+                            ct.ThrowIfCancellationRequested();
+
                             return s.ExecuteAsync(
                                 input,
                                 terminationContinuation,
@@ -158,6 +164,8 @@
                     {
                         invokeDelegate = (input, invokablePipeline, terminationContinuation, ct) =>
                         {
+                            ct.ThrowIfCancellationRequested();
+
                             return sp.ExecuteAsync(
                                 input,
                                 terminationContinuation,
