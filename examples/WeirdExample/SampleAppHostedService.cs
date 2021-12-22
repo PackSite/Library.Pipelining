@@ -48,45 +48,43 @@
             DemoDataArgs args = new();
             OtherDemoDataArgs otherArgs = new();
 
-            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+            await using AsyncServiceScope scope = _serviceScopeFactory.CreateAsyncScope();
+
+            do
             {
-                do
+                SimpleArgs simpleArgs = new();
+
+                Console.WriteLine();
+                IInvokablePipelineFactory invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
+                IInvokablePipeline<DemoDataArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<DemoDataArgs>();
+                IInvokablePipeline<SimpleArgs> invokableSimplePipeline = invokablePipelineFactory.GetRequiredPipeline<SimpleArgs>();
+
+                await invokablePipeline.InvokeAsync(args, cancellationToken);
+                _logger.LogInformation("\n    R1: {@Result}\n    IPC: {@IPCounters}\n    PC: {@PCounters}", args, invokablePipeline.Counters, invokablePipeline.Pipeline.Counters);
+
+                await invokableSimplePipeline.InvokeAsync(simpleArgs, cancellationToken);
+                _logger.LogInformation("\n    R2: {@Result}\n    IPC: {@IPCounters}\n    PC: {@PCounters}", simpleArgs, invokableSimplePipeline.Counters, invokableSimplePipeline.Pipeline.Counters);
+
+                IInvokablePipeline<OtherDemoDataArgs>? otherInvokablePipeline = invokablePipelineFactory.GetPipeline<OtherDemoDataArgs>("demo-other");
+
+                if (otherInvokablePipeline is not null)
                 {
-                    SimpleArgs simpleArgs = new();
-
-                    Console.WriteLine();
-                    IInvokablePipelineFactory invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
-                    IInvokablePipeline<DemoDataArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<DemoDataArgs>();
-                    IInvokablePipeline<SimpleArgs> invokableSimplePipeline = invokablePipelineFactory.GetRequiredPipeline<SimpleArgs>();
-
-                    await invokablePipeline.InvokeAsync(args, cancellationToken);
-                    _logger.LogInformation("\n    R1: {@Result}\n    IPC: {@IPCounters}\n    PC: {@PCounters}", args, invokablePipeline.Counters, invokablePipeline.Pipeline.Counters);
-
-                    await invokableSimplePipeline.InvokeAsync(simpleArgs, cancellationToken);
-                    _logger.LogInformation("\n    R2: {@Result}\n    IPC: {@IPCounters}\n    PC: {@PCounters}", simpleArgs, invokableSimplePipeline.Counters, invokableSimplePipeline.Pipeline.Counters);
-
-                    IInvokablePipeline<OtherDemoDataArgs>? otherInvokablePipeline = invokablePipelineFactory.GetPipeline<OtherDemoDataArgs>("demo-other");
-
-                    if (otherInvokablePipeline is not null)
+                    try
                     {
-                        try
-                        {
-                            await otherInvokablePipeline.InvokeAsync(otherArgs, cancellationToken);
-                        }
-                        catch (Exception)
-                        {
-
-                        }
-                        finally
-                        {
-                            _logger.LogInformation("\n    R3: {@Result}\n    IPC: {@IPC}\n    PC: {@PCounters}", otherArgs, otherInvokablePipeline.Counters, otherInvokablePipeline.Pipeline.Counters);
-                        }
+                        await otherInvokablePipeline.InvokeAsync(otherArgs, cancellationToken);
                     }
-                    Console.WriteLine("Press any key to proceed or press [Ctrl+C] to exit...");
+                    catch (Exception)
+                    {
 
-                } while (Console.ReadKey(true).KeyChar > 0 && !cancellationToken.IsCancellationRequested);
-            }
+                    }
+                    finally
+                    {
+                        _logger.LogInformation("\n    R3: {@Result}\n    IPC: {@IPC}\n    PC: {@PCounters}", otherArgs, otherInvokablePipeline.Counters, otherInvokablePipeline.Pipeline.Counters);
+                    }
+                }
+                Console.WriteLine("Press any key to proceed or press [Ctrl+C] to exit...");
+
+            } while (Console.ReadKey(true).KeyChar > 0 && !cancellationToken.IsCancellationRequested);
         }
-
     }
 }

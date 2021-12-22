@@ -38,7 +38,7 @@
         /// </summary>
         /// <param name="stepActivator"></param>
         /// <returns></returns>
-        IInvokablePipeline CreateInvokable(IStepActivator stepActivator);
+        IInvokablePipeline CreateInvokable(IBaseStepActivator stepActivator);
 
         /// <summary>
         /// Creates a builder instance.
@@ -59,7 +59,7 @@
         /// </summary>
         /// <param name="stepActivator"></param>
         /// <returns></returns>
-        new IInvokablePipeline<TArgs> CreateInvokable(IStepActivator stepActivator);
+        new IInvokablePipeline<TArgs> CreateInvokable(IBaseStepActivator stepActivator);
 
         /// <summary>
         /// Creates a builder instance.

@@ -1,8 +1,8 @@
 ﻿namespace PackSite.Library.Pipelining
 {
     using System;
+    using System.Linq;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.DependencyInjection.Extensions;
     using PackSite.Library.Pipelining.Internal;
     using PackSite.Library.Pipelining.StepActivators;
 
@@ -19,15 +19,20 @@
         /// <returns></returns>
         public static IServiceCollection AddPipelining(this IServiceCollection services, Action<PipeliningBuilder>? builder = null)
         {
-            services.TryAddScoped<IStepActivator, ServicesStepActivator>();
+            PipeliningBuilder p = new(services);
 
-            services.TryAddSingleton<IPipelineCollection, PipelineCollection>();
-            services.TryAddSingleton<InvokablePipelineFactory.SingletonPipelines>();
-            services.TryAddScoped<IInvokablePipelineFactory, InvokablePipelineFactory>();
+            if (!services.Any(x => x.ServiceType == typeof(InvokablePipelineFactory.SingletonPipelines))) // Single check instad of three TryAdd... calls
+            {
+                services.AddSingleton<IPipelineCollection, PipelineCollection>();
+                services.AddSingleton<InvokablePipelineFactory.SingletonPipelines>();
+                services.AddScoped<IInvokablePipelineFactory, InvokablePipelineFactory>();
 
-            services.AddHostedService<PipeliningHostedService>();
+                services.AddHostedService<PipeliningHostedService>();
 
-            builder?.Invoke(new PipeliningBuilder(services));
+                p.AddStepActivator<ServicesStepActivator>();
+            }
+
+            builder?.Invoke(p);
 
             return services;
         }

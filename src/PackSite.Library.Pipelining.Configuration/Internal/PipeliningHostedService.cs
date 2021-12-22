@@ -133,48 +133,48 @@
         {
             private const int PackSiteEventId = 8083;
 
-            private static readonly Action<ILogger, string, Exception> _removedPipeline =
+            private static readonly Action<ILogger, string, Exception?> _removedPipeline =
                 LoggerMessage.Define<string>(
                     LogLevel.Debug,
-                    new EventId(PackSiteEventId, "RemovedPipeline"),
+                    new EventId(PackSiteEventId, nameof(RemovedPipeline)),
                     "Removed pipeline '{Name}'");
 
-            private static readonly Action<ILogger, Exception> _clearedPipelines =
+            private static readonly Action<ILogger, Exception?> _clearedPipelines =
                 LoggerMessage.Define(
                     LogLevel.Debug,
-                    new EventId(PackSiteEventId, "ClearedPipelines"),
+                    new EventId(PackSiteEventId, nameof(ClearedPipelines)),
                     "Cleared pipelines");
 
-            private static readonly Action<ILogger, string, Exception> _updatedPipeline =
+            private static readonly Action<ILogger, string, Exception?> _updatedPipeline =
                 LoggerMessage.Define<string>(
                     LogLevel.Debug,
-                    new EventId(PackSiteEventId, "UpdatedPipeline"),
+                    new EventId(PackSiteEventId, nameof(UpdatedPipeline)),
                     "Updated pipeline '{Name}'");
 
-            private static readonly Action<ILogger, TimeSpan, int, int, int, Exception> _updated =
+            private static readonly Action<ILogger, TimeSpan, int, int, int, Exception?> _updated =
                 LoggerMessage.Define<TimeSpan, int, int, int>(
                     LogLevel.Information,
-                    new EventId(PackSiteEventId, "Updated"),
+                    new EventId(PackSiteEventId, nameof(Updated)),
                     "Updated pipelines collection after {Elapsed} (Added: {AddedCount}; Updated: {UpdatedCount}; Removed: {RemovedCount})");
 
             public static void RemovedPipeline(ILogger logger, PipelineName pipelineName)
             {
-                _removedPipeline(logger, pipelineName, null!);
+                _removedPipeline(logger, pipelineName, null);
             }
 
             public static void ClearedPipelines(ILogger logger)
             {
-                _clearedPipelines(logger, null!);
+                _clearedPipelines(logger, null);
             }
 
             public static void UpdatedPipeline(ILogger logger, PipelineName pipelineName)
             {
-                _updatedPipeline(logger, pipelineName, null!);
+                _updatedPipeline(logger, pipelineName, null);
             }
 
             public static void Updated(ILogger logger, TimeSpan elapsed, int addded, int updated, int removed)
             {
-                _updated(logger, elapsed, addded, updated, removed, null!);
+                _updated(logger, elapsed, addded, updated, removed, null);
             }
         }
     }

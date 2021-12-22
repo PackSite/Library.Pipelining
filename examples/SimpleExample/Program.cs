@@ -29,7 +29,6 @@ namespace SimpleExample
                 .AddStep(new SurroundWithSquareBracketsTransformStep())
                 .Build();
 
-
             IInvokablePipeline invokablePipeline = pipeline.CreateInvokable(new ActivatorUtilitiesStepActivator());
             await invokablePipeline.InvokeAsync(pipelineArgs, cancellationTokenSource.Token);
 

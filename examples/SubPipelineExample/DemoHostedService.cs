@@ -28,7 +28,7 @@
             {
                 try
                 {
-                    using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+                    await using (AsyncServiceScope scope = _serviceScopeFactory.CreateAsyncScope())
                     {
                         DemoArgs pipelineArgs = new();
 

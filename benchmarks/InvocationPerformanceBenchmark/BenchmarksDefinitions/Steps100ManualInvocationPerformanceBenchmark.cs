@@ -1,12 +1,11 @@
 ﻿namespace InvocationPerformanceBenchmark.BenchmarksDefinitions
 {
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using InvocationPerformanceBenchmark.Steps;
 
     public sealed class Steps100ManualInvocationPerformanceBenchmark : IBenchmark
     {
-        private readonly NopStep Step = new();
-
         public Steps100ManualInvocationPerformanceBenchmark()
         {
 
@@ -17,14 +16,21 @@
             return Task.CompletedTask;
         }
 
+        [MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
         public Task BenchmarkAsync()
         {
-            var args = new ProcessingArgs();
+            ProcessingArgs args = new();
 
-            for (int i = 0; i < 100; i++)
+            for (int m = 0; m < 100; m++)
             {
-                ++args.Value;
-                --args.Value;
+                for (int i = 0; i < 100; i++)
+                {
+                    ++args.Value;
+
+                    //await Task.Yield();
+
+                    --args.Value;
+                }
             }
 
             return Task.CompletedTask;

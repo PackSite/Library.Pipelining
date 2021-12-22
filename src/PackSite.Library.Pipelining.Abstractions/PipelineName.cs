@@ -59,7 +59,7 @@
         /// <inheritdoc/>
         public bool Equals(PipelineName? other)
         {
-            return other is PipelineName && Value.Equals(other.Value);
+            return other is not null && Value.Equals(other.Value);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@
         /// <inheritdoc/>
         public int CompareTo(PipelineName? other)
         {
-            if (other is not PipelineName)
+            if (other is null)
             {
                 return -1;
             }

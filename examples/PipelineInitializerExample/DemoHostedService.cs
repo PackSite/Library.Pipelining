@@ -27,7 +27,7 @@
             {
                 try
                 {
-                    using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+                    await using (AsyncServiceScope scope = _serviceScopeFactory.CreateAsyncScope())
                     {
                         Console.WriteLine("Type some text (for a string with length > 15, a demo excpetion is thrown):");
                         string text = Console.ReadLine() ?? string.Empty;

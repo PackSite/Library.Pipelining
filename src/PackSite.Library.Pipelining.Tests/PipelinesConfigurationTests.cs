@@ -69,7 +69,7 @@ namespace PackSite.Library.Pipelining.Tests
                 .AddPipelining(builder => builder.AddConfiguration())
                 .BuildServiceProvider(true);
 
-            using IServiceScope scope = services.CreateScope();
+            await using AsyncServiceScope scope = services.CreateAsyncScope();
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
             await services.FakeHostLifecycleAsync((ct) =>
@@ -123,7 +123,7 @@ namespace PackSite.Library.Pipelining.Tests
                 })
                 .BuildServiceProvider(true);
 
-            using IServiceScope scope = services.CreateScope();
+            await using AsyncServiceScope scope = services.CreateAsyncScope();
             IPipelineCollection pipelineCollection = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
             await services.FakeHostLifecycleAsync((ct) =>

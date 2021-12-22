@@ -32,7 +32,7 @@ namespace PackSite.Library.Pipelining.Tests
                 })
                 .BuildServiceProvider(true);
 
-            using IServiceScope scope = services.CreateScope();
+            await using AsyncServiceScope scope = services.CreateAsyncScope();
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
             IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
 
@@ -66,7 +66,7 @@ namespace PackSite.Library.Pipelining.Tests
                 })
                 .BuildServiceProvider(true);
 
-            using IServiceScope scope = services.CreateScope();
+            await using AsyncServiceScope scope = services.CreateAsyncScope();
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
             IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
 
@@ -100,7 +100,7 @@ namespace PackSite.Library.Pipelining.Tests
                 })
                 .BuildServiceProvider(true);
 
-            using IServiceScope scope = services.CreateScope();
+            await using AsyncServiceScope scope = services.CreateAsyncScope();
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
             IInvokablePipelineFactory pipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
 
@@ -138,8 +138,7 @@ namespace PackSite.Library.Pipelining.Tests
                 .AddPipelining()
                 .BuildServiceProvider(true);
 
-            using IServiceScope scope = services.CreateScope();
-
+            await using AsyncServiceScope scope = services.CreateAsyncScope();
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
             // Act
@@ -281,8 +280,7 @@ namespace PackSite.Library.Pipelining.Tests
                 .AddPipelining()
                 .BuildServiceProvider(true);
 
-            using IServiceScope scope = services.CreateScope();
-
+            await using AsyncServiceScope scope = services.CreateAsyncScope();
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
             // Act
@@ -325,15 +323,14 @@ namespace PackSite.Library.Pipelining.Tests
         }
 
         [Fact]
-        public void Should_fire_events()
+        public async Task Should_fire_events()
         {
             // Arrange
             using ServiceProvider services = new ServiceCollection()
                 .AddPipelining()
                 .BuildServiceProvider(true);
 
-            using IServiceScope scope = services.CreateScope();
-
+            await using AsyncServiceScope scope = services.CreateAsyncScope();
             IPipelineCollection pipelines = scope.ServiceProvider.GetRequiredService<IPipelineCollection>();
 
             PipelineName? lastAdded = null;

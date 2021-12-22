@@ -47,10 +47,10 @@
 
         public async Task BenchmarkAsync()
         {
-            var inf = InvokablePipelineFactory;
-            if (inf is not null)
+            IInvokablePipeline<ProcessingArgs> invokablePipeline = InvokablePipelineFactory!.GetRequiredPipeline<ProcessingArgs>();
+
+            for (int m = 0; m < 100; m++)
             {
-                IInvokablePipeline<ProcessingArgs> invokablePipeline = inf.GetRequiredPipeline<ProcessingArgs>();
                 await invokablePipeline.InvokeAsync(new ProcessingArgs());
             }
         }

@@ -11,7 +11,7 @@
     public sealed class Steps100InvocationPerformanceBenchmark : IBenchmark
     {
         private IHost? HostInstance { get; set; }
-        private IServiceScope? Scope { get; set; }
+        private AsyncServiceScope? Scope { get; set; }
         private IInvokablePipelineFactory? InvokablePipelineFactory { get; set; }
 
         public Steps100InvocationPerformanceBenchmark()
@@ -31,6 +31,7 @@
                             {
                                 _ = PipelineBuilder.Create<ProcessingArgs>()
                                     .Description("Text processing pipeline.")
+                                    // 10
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -43,7 +44,7 @@
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
 
-                                    //
+                                    // 20
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -56,7 +57,7 @@
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
 
-                                    //
+                                    // 30
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -69,7 +70,7 @@
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
 
-                                    //
+                                    // 40
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -82,7 +83,7 @@
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
 
-                                    //
+                                    // 50
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -95,7 +96,7 @@
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
 
-                                    //--
+                                    // 60
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -108,7 +109,7 @@
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
 
-                                    //
+                                    // 70
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -121,7 +122,7 @@
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
 
-                                    //
+                                    // 80
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -134,7 +135,7 @@
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
 
-                                    //
+                                    // 90
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -147,7 +148,7 @@
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
 
-                                    //
+                                    // 100
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
@@ -168,16 +169,16 @@
                 .Build();
 
             await HostInstance.Services.FakeHostStartAsync();
-            Scope = HostInstance.Services.CreateScope();
-            InvokablePipelineFactory = Scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
+            Scope = HostInstance.Services.CreateAsyncScope();
+            InvokablePipelineFactory = Scope!.Value.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
         }
 
         public async Task BenchmarkAsync()
         {
-            var inf = InvokablePipelineFactory;
-            if (inf is not null)
+            IInvokablePipeline<ProcessingArgs> invokablePipeline = InvokablePipelineFactory!.GetRequiredPipeline<ProcessingArgs>();
+
+            for (int m = 0; m < 100; m++)
             {
-                IInvokablePipeline<ProcessingArgs> invokablePipeline = inf.GetRequiredPipeline<ProcessingArgs>();
                 await invokablePipeline.InvokeAsync(new ProcessingArgs());
             }
         }
@@ -187,7 +188,12 @@
             if (HostInstance is not null)
             {
                 InvokablePipelineFactory = null;
-                Scope?.Dispose();
+
+                if (Scope is not null)
+                {
+                    await Scope.Value.DisposeAsync();
+                }
+
                 await HostInstance.Services.FakeHostStopAsync();
                 HostInstance.Dispose();
                 HostInstance = null;

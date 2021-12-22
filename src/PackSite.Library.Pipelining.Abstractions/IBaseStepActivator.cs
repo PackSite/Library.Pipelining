@@ -3,9 +3,9 @@
     using System;
 
     /// <summary>
-    /// Step activator
+    /// Singleton step activator.
     /// </summary>
-    public interface IStepActivator
+    public interface IBaseStepActivator
     {
         /// <summary>
         /// Creates a new instance of a pipeline step.

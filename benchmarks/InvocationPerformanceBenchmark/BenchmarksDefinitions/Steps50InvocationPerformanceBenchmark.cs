@@ -8,13 +8,13 @@
     using Microsoft.Extensions.Hosting;
     using PackSite.Library.Pipelining;
 
-    public sealed class Steps10InvocationPerformanceBenchmark : IBenchmark
+    public sealed class Steps50InvocationPerformanceBenchmark : IBenchmark
     {
         private IHost? HostInstance { get; set; }
         private IServiceScope? Scope { get; set; }
         private IInvokablePipelineFactory? InvokablePipelineFactory { get; set; }
 
-        public Steps10InvocationPerformanceBenchmark()
+        public Steps50InvocationPerformanceBenchmark()
         {
 
         }
@@ -31,6 +31,59 @@
                             {
                                 _ = PipelineBuilder.Create<ProcessingArgs>()
                                     .Description("Text processing pipeline.")
+                                    // 10
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+
+                                    // 20
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+
+                                    // 30
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+
+                                    // 40
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+                                    .AddStep<NopStep>()
+
+                                    // 50
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()
                                     .AddStep<NopStep>()

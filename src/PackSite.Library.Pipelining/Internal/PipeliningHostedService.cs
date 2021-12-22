@@ -34,7 +34,7 @@
             _logger.LogInformation("Initializing PackSite.Library.Pipelining");
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+            await using (AsyncServiceScope scope = _serviceScopeFactory.CreateAsyncScope())
             {
                 IEnumerable<IPipelineInitializer> initializers = scope.ServiceProvider.GetServices<IPipelineInitializer>();
 
@@ -64,15 +64,15 @@
         {
             private const int PackSiteEventId = 8083;
 
-            private static readonly Action<ILogger, Exception> _clearedPipelines =
+            private static readonly Action<ILogger, Exception?> _clearedPipelines =
                 LoggerMessage.Define(
                     LogLevel.Debug,
-                    new EventId(PackSiteEventId, "ClearedPipelines"),
+                    new EventId(PackSiteEventId, nameof(ClearedPipelines)),
                     "Cleared pipelines");
 
             public static void ClearedPipelines(ILogger logger)
             {
-                _clearedPipelines(logger, null!);
+                _clearedPipelines(logger, null);
             }
         }
     }

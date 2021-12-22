@@ -15,13 +15,20 @@
         where TArgs : class
     {
         /// <summary>
-        /// Invokable pipeline termination.
+        /// Step delegate.
         /// </summary>
-        internal static readonly StepDelegate Termination = () => default;
+        /// <returns></returns>
+        internal delegate ValueTask ConcreteStepDelegate(IBaseStep[] steps,
+                                                         ref int index,
+                                                         TArgs args,
+                                                         StepDelegate terminationContinuation,
+                                                         CancellationToken cancellationToken);
 
         private readonly PipelineCounters _pipelineCounters;
         private readonly InvokablePipelineCounters _invokablePipelineCounters = new();
-        private readonly Pipeline<TArgs>.ConcreteStepDelegate? _delegate;
+        private readonly IStep?[] _universalSteps;
+        private readonly IStep<TArgs>?[] _genericSteps;
+        private readonly int _stepsCount;
 
         /// <inheritdoc/>
         public IInvokablePipelineCounters Counters => _invokablePipelineCounters;
@@ -35,18 +42,25 @@
         /// </summary>
         /// <param name="pipeline"></param>
         /// <param name="pipelineCounters"></param>
-        /// <param name="delegate"></param>
-        public InvokablePipeline(IPipeline<TArgs> pipeline, PipelineCounters pipelineCounters, Pipeline<TArgs>.ConcreteStepDelegate? @delegate)
+        /// <param name="universalSteps"></param>
+        /// <param name="genericSteps"></param>
+        public InvokablePipeline(IPipeline<TArgs> pipeline,
+                                 PipelineCounters pipelineCounters,
+                                 IStep?[] universalSteps,
+                                 IStep<TArgs>?[] genericSteps)
         {
             Pipeline = pipeline;
             _pipelineCounters = pipelineCounters;
-            _delegate = @delegate;
+            _universalSteps = universalSteps;
+            _genericSteps = genericSteps;
+
+            _stepsCount = Math.Max(universalSteps.Length, genericSteps.Length);
         }
 
         /// <inheritdoc/>
         public ValueTask<TArgs> InvokeAsync(TArgs input, CancellationToken cancellationToken = default)
         {
-            if (_delegate is null)
+            if (_universalSteps.Length <= 0)
             {
                 _invokablePipelineCounters.Success(0);
                 _pipelineCounters.Success(0);
@@ -54,24 +68,19 @@
                 return new ValueTask<TArgs>(input);
             }
 
-            return InvokeAsync(input, Termination, cancellationToken);
+            return InvokeAsync(input, null, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public async ValueTask<TArgs> InvokeAsync(TArgs input, StepDelegate terminationContinuation, CancellationToken cancellationToken = default)
+        public async ValueTask<TArgs> InvokeAsync(TArgs input, StepDelegate? terminationContinuation, CancellationToken cancellationToken = default)
         {
+            //TODO: pipeline step profiling
+
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             try
             {
-                if (_delegate is null)
-                {
-                    await terminationContinuation();
-                }
-                else
-                {
-                    await _delegate(input, this, terminationContinuation, cancellationToken);
-                }
+                await StepAsync(0, input, terminationContinuation, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -91,13 +100,50 @@
             return input;
         }
 
+        private async ValueTask StepAsync(int index,
+                                          TArgs args,
+                                          StepDelegate? terminationContinuation,
+                                          CancellationToken cancellationToken)
+        {
+            if (index >= _stepsCount)
+            {
+                if (terminationContinuation is not null)
+                {
+                    await terminationContinuation();
+                }
+
+                return;
+            }
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            ValueTask Next()
+            {
+                return StepAsync(index + 1, args, terminationContinuation, cancellationToken);
+            }
+
+            IStep<TArgs>? genericStep = _genericSteps[index];
+            if (genericStep is not null)
+            {
+                await genericStep.ExecuteAsync(args, Next, this, cancellationToken);
+            }
+            else
+            {
+                IStep? universalStep = _universalSteps[index];
+                if (universalStep is not null)
+                {
+                    await universalStep.ExecuteAsync(args, Next, this, cancellationToken);
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public async ValueTask<object> InvokeAsync(object args, CancellationToken cancellationToken = default)
         {
             return await InvokeAsync((TArgs)args, cancellationToken);
         }
 
-        public async ValueTask<object> InvokeAsync(object args, StepDelegate terminationContinuation, CancellationToken cancellationToken = default)
+        public async ValueTask<object> InvokeAsync(object args, StepDelegate? terminationContinuation, CancellationToken cancellationToken = default)
         {
             return await InvokeAsync((TArgs)args, terminationContinuation, cancellationToken);
         }

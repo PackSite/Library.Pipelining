@@ -10,13 +10,11 @@
 
     public sealed class DemoHostedService : BackgroundService
     {
-        private readonly IHostApplicationLifetime _appLifetime;
         private readonly ILogger _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public DemoHostedService(IHostApplicationLifetime appLifetime, ILogger<DemoHostedService> logger, IServiceScopeFactory serviceScopeFactory)
+        public DemoHostedService(ILogger<DemoHostedService> logger, IServiceScopeFactory serviceScopeFactory)
         {
-            _appLifetime = appLifetime;
             _logger = logger;
             _serviceScopeFactory = serviceScopeFactory;
         }
@@ -29,7 +27,7 @@
                 {
                     while (!stoppingToken.IsCancellationRequested)
                     {
-                        using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+                        await using (AsyncServiceScope scope = _serviceScopeFactory.CreateAsyncScope())
                         {
                             string text = "  Lorem ipsum ";
 
