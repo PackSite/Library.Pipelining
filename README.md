@@ -21,11 +21,12 @@
   - Transient, Scoped, and Singleton pipeline lifetime.
   - Pipelines distinguised by custom names or pipeline argument data type.
   - Fluent pipeline builder (for defining pipeline name, description, and steps).
+  - Highly configurable  steps order using `Add`, `Insert`, `InsertBefore`, `InsertAfter` methods.
   - Dynamic subpipelines.
   - Generic and object-based steps.
   - Code-first pipeline definitions during Generic Host start and at runtime through `IPipelineCollection`.
   - Optional configuration-based pipelines definitions using `IOptions` with reloading.
-  - Pipeline counters: executions count (successful and failure) and speed (resolution in microseconds).
+  - Pipeline counters: executions count (successful and failure) and speed (microsecond resolution).
   - Very fast step execution (see Benchmarks section).
 
 ## Examples
