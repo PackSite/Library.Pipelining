@@ -1,13 +1,18 @@
 ﻿namespace PackSite.Library.Pipelining
 {
     using System;
-    using System.Collections.Generic;
+    using PackSite.Library.Pipelining.Internal;
 
     /// <summary>
     /// Pipeline builder.
     /// </summary>
-    public partial interface IPipelineBuilder : IList<Type>
+    public partial interface IPipelineBuilder
     {
+        /// <summary>
+        /// Step collection.
+        /// </summary>
+        IStepCollection Steps { get; }
+
         /// <summary>
         /// Overrides <see cref="IInvokablePipeline"/> lifetime (default: <see cref="InvokablePipelineLifetime.Singleton"/>).
         /// </summary>

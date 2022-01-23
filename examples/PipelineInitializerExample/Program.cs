@@ -29,9 +29,9 @@
                                 _ = PipelineBuilder.Create<TextProcessingArgs>()
                                     .Description("Text processing pipeline.")
                                     .Lifetime(InvokablePipelineLifetime.Scoped)
-                                    .AddStep<ToUpperTransformStep>()
-                                    .AddStep<TrimTransformStep>()
-                                    .AddStep(new SurroundWithSquareBracketsTransformStep())
+                                    .Add<ToUpperTransformStep>()
+                                    .Add<TrimTransformStep>()
+                                    .Add(new SurroundWithSquareBracketsTransformStep())
                                     .Build()
                                     .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
                             });

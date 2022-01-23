@@ -14,19 +14,21 @@ namespace SimpleExample
          * This example demonstrates the usage of the library without Generic Host.
          */
 
-        public static async Task Main(string[] args)
+        public static async Task Main()
         {
-            Console.WriteLine("Type some text (for a string with length > 15, a demo excpetion is thrown):");
+            Console.WriteLine("Type some text (for a string with length > 15, a demo exception is thrown):");
             string text = Console.ReadLine() ?? string.Empty;
 
             using CancellationTokenSource cancellationTokenSource = new();
             TextProcessingArgs pipelineArgs = new(text, cancellationTokenSource);
 
+
+            // Create pipeline: ExceptionHandlingStep <-> ToUpperTransformStep <-> TrimTransformStep <-> SurroundWithSquareBracketsTransformStep
             IPipeline pipeline = PipelineBuilder.Create<TextProcessingArgs>()
-                .AddStep<ExceptionHandlingStep>()
-                .AddStep<ToUpperTransformStep>()
-                .AddStep<TrimTransformStep>()
-                .AddStep(new SurroundWithSquareBracketsTransformStep())
+                .Add<ExceptionHandlingStep>()
+                .InsertAfter<ToUpperTransformStep, ExceptionHandlingStep>()
+                .Add(new SurroundWithSquareBracketsTransformStep())
+                .InsertBefore<TrimTransformStep, SurroundWithSquareBracketsTransformStep>()
                 .Build();
 
             IInvokablePipeline invokablePipeline = pipeline.CreateInvokable(new ActivatorUtilitiesStepActivator());

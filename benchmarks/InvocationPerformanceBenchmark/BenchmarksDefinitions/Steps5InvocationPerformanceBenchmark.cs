@@ -31,11 +31,11 @@
                             {
                                 _ = PipelineBuilder.Create<ProcessingArgs>()
                                     .Description("Text processing pipeline.")
-                                    .AddStep<NopStep>()
-                                    .AddStep<NopStep>()
-                                    .AddStep<NopStep>()
-                                    .AddStep<NopStep>()
-                                    .AddStep<NopStep>()
+                                    .Add<NopStep>()
+                                    .Add<NopStep>()
+                                    .Add<NopStep>()
+                                    .Add<NopStep>()
+                                    .Add<NopStep>()
                                     .Build()
                                     .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
                             });

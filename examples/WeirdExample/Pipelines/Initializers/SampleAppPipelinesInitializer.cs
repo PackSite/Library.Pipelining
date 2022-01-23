@@ -16,18 +16,18 @@
                 .Description("Demo data pipeline.")
                 .Lifetime(InvokablePipelineLifetime.Singleton)
                 //.StepInterceptor<SampleStepInterceptor>()
-                .AddStep<ExceptionLoggingStep>()
-                .AddStep<DemoDataStep1>()
-                .AddStep<DemoDataStep2>()
+                .Add<ExceptionLoggingStep>()
+                .Add<DemoDataStep1>()
+                .Add<DemoDataStep2>()
                 .Build()
                 .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
 
             _ = PipelineBuilder.Create<SimpleArgs>()
                 .Description("Simple pipeline.")
                 .Lifetime(InvokablePipelineLifetime.Singleton)
-                .AddStep<SimpleStep1>()
-                .AddStep<SimpleStep2>()
-                .AddStep<SimpleStep3>()
+                .Add<SimpleStep1>()
+                .Add<SimpleStep2>()
+                .Add<SimpleStep3>()
                 .Build()
                 .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
 
@@ -35,8 +35,8 @@
                 .Name("dynamic-subpipeline-demo")
                 .Description("Simple pipeline that is used as a subpipeline.")
                 .Lifetime(InvokablePipelineLifetime.Transient)
-                .AddStep<SubpipelineStep1>()
-                .AddStep<SubpipelineStep2>()
+                .Add<SubpipelineStep1>()
+                .Add<SubpipelineStep2>()
                 .Build()
                 .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
 

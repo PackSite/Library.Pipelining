@@ -7,7 +7,7 @@
     internal sealed partial class PipelineBuilder<TArgs>
     {
         /// <inheritdoc/>
-        public IPipelineBuilder<TArgs> AddStep(IBaseStep instance)
+        public IPipelineBuilder<TArgs> Add(IBaseStep instance)
         {
             _ = instance ?? throw new ArgumentNullException(nameof(instance));
 
@@ -16,47 +16,46 @@
                 throw new ArgumentException($"Invalid step instance type '{instance.GetType().FullName}'.", nameof(instance));
             }
 
-            _steps.Add(instance);
-            _stepTypes.Add(instance.GetType());
+            Steps.Add(instance);
 
             return this;
         }
 
-        IPipelineBuilder IPipelineBuilder.AddStep(IBaseStep instance)
+        IPipelineBuilder IPipelineBuilder.Add(IBaseStep instance)
         {
-            return AddStep(instance);
+            return Add(instance);
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TArgs> AddSteps(IEnumerable<IBaseStep> instances)
+        public IPipelineBuilder<TArgs> AddRange(IEnumerable<IBaseStep> instances)
         {
             foreach (IBaseStep instance in instances)
             {
-                AddStep(instance);
+                Add(instance);
             }
 
             return this;
         }
 
-        IPipelineBuilder IPipelineBuilder.AddSteps(IEnumerable<IBaseStep> instances)
+        IPipelineBuilder IPipelineBuilder.AddRange(IEnumerable<IBaseStep> instances)
         {
-            return AddSteps(instances);
+            return AddRange(instances);
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TArgs> AddSteps(params IBaseStep[] instances)
+        public IPipelineBuilder<TArgs> AddRange(params IBaseStep[] instances)
         {
             for (int i = 0; i < instances.Length; i++)
             {
-                AddStep(instances[i]);
+                Add(instances[i]);
             }
 
             return this;
         }
 
-        IPipelineBuilder IPipelineBuilder.AddSteps(params IBaseStep[] instances)
+        IPipelineBuilder IPipelineBuilder.AddRange(params IBaseStep[] instances)
         {
-            return AddSteps(instances);
+            return AddRange(instances);
         }
     }
 }

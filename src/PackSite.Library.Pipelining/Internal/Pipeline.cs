@@ -73,7 +73,7 @@
                 }
                 else if (step is IBaseStep baseStep)
                 {
-                    builder.AddStep(baseStep);
+                    builder.Add(baseStep);
                 }
             }
 

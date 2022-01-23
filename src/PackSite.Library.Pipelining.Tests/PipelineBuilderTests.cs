@@ -23,13 +23,13 @@ namespace PackSite.Library.Pipelining.Tests
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(DefaultName)
                 .Description(DefaultDescription)
-                .AddStep<StepWithArgs1>()
-                .AddStep<StepWithArgs1>()
-                .AddSteps(new StepWithArgs2(), new StepWithArgs2())
-                .AddSteps(new List<IBaseStep> { new StepWithArgs2(), new StepWithArgs1() })
-                .InsertStep<StepWithArgs3>(0)
-                .AddStep<GenericStep>()
-                .AddStep<GenericStep>()
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs1>()
+                .AddRange(new StepWithArgs2(), new StepWithArgs2())
+                .AddRange(new List<IBaseStep> { new StepWithArgs2(), new StepWithArgs1() })
+                .Insert<StepWithArgs3>(0)
+                .Add<GenericStep>()
+                .Add<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
 
@@ -38,16 +38,132 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Name.Should().Be(DefaultName);
             pipeline.Description.Should().Be(DefaultDescription);
             pipeline.Lifetime.Should().Be(lifetime);
-            pipeline.Steps.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(GenericStep), typeof(GenericStep));
+
+            pipeline.Steps.Should().ContainInOrder(
+                typeof(StepWithArgs3),
+                typeof(StepWithArgs1),
+                typeof(StepWithArgs1),
+                typeof(StepWithArgs2),
+                typeof(StepWithArgs2),
+                typeof(StepWithArgs2),
+                typeof(StepWithArgs1),
+                typeof(GenericStep),
+                typeof(GenericStep));
+            pipeline.Steps.Should().HaveCount(9);
 
             pipeline.ToString().Should().NotBeNull();
             pipeline.ToString().Should().ContainAll(
-                typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs2).FullName,
                 typeof(StepWithArgs3).FullName,
                 typeof(GenericStep).FullName,
                 "[0]", "[1]", "[2]", "[3]", "[4]", "[5]");
+        }
+
+        [Theory]
+        [InlineData(InvokablePipelineLifetime.Transient)]
+        [InlineData(InvokablePipelineLifetime.Scoped)]
+        [InlineData(InvokablePipelineLifetime.Singleton)]
+        public void Should_create_pipeline_with_after(InvokablePipelineLifetime lifetime)
+        {
+            // Act
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
+                .Name(DefaultName)
+                .Description(DefaultDescription)
+                .Add<StepWithArgs1>()
+                .Insert<StepWithArgs3>(1)
+                .InsertAfter<StepWithArgs2, StepWithArgs1>()
+                .Lifetime(lifetime)
+                .Build();
+
+            // Assert
+            pipeline.Should().NotBeNull();
+            pipeline.Name.Should().Be(DefaultName);
+            pipeline.Description.Should().Be(DefaultDescription);
+            pipeline.Lifetime.Should().Be(lifetime);
+            pipeline.Steps.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3));
+            pipeline.Steps.Should().HaveCount(3);
+
+            pipeline.ToString().Should().NotBeNull();
+            pipeline.ToString().Should().ContainAll(
+                typeof(StepWithArgs1).FullName,
+                typeof(StepWithArgs2).FullName,
+                typeof(StepWithArgs3).FullName,
+                "[0]", "[1]", "[2]");
+        }
+
+        [Theory]
+        [InlineData(InvokablePipelineLifetime.Transient)]
+        [InlineData(InvokablePipelineLifetime.Scoped)]
+        [InlineData(InvokablePipelineLifetime.Singleton)]
+        public void Should_create_pipeline_with_before(InvokablePipelineLifetime lifetime)
+        {
+            // Act
+            IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
+                .Name(DefaultName)
+                .Description(DefaultDescription)
+                .Add<StepWithArgs1>()
+                .Insert<StepWithArgs3>(1)
+                .InsertBefore<StepWithArgs2, StepWithArgs3>()
+                .Lifetime(lifetime)
+                .Build();
+
+            // Assert
+            pipeline.Should().NotBeNull();
+            pipeline.Name.Should().Be(DefaultName);
+            pipeline.Description.Should().Be(DefaultDescription);
+            pipeline.Lifetime.Should().Be(lifetime);
+            pipeline.Steps.Should().ContainInOrder(typeof(StepWithArgs1), typeof(StepWithArgs2), typeof(StepWithArgs3));
+            pipeline.Steps.Should().HaveCount(3);
+
+            pipeline.ToString().Should().NotBeNull();
+            pipeline.ToString().Should().ContainAll(
+                typeof(StepWithArgs1).FullName,
+                typeof(StepWithArgs2).FullName,
+                typeof(StepWithArgs3).FullName,
+                "[0]", "[1]", "[2]");
+        }
+
+        [Theory]
+        [InlineData(InvokablePipelineLifetime.Transient)]
+        [InlineData(InvokablePipelineLifetime.Scoped)]
+        [InlineData(InvokablePipelineLifetime.Singleton)]
+        public void Should_create_pipeline_with_cleared_steps(InvokablePipelineLifetime lifetime)
+        {
+            // Act
+            IPipelineBuilder<SampleArgs> pipelineBuilder = PipelineBuilder.Create<SampleArgs>()
+                .Name(DefaultName)
+                .Description(DefaultDescription)
+                .Add<StepWithArgs1>()
+                .Add(typeof(StepWithArgs1))
+                .Insert<StepWithArgs3>(1)
+                .Insert(1, typeof(StepWithArgs3))
+                .Insert(1, new StepWithArgs3())
+                .InsertBefore(new StepWithArgs2(), typeof(StepWithArgs3))
+                .InsertBefore<StepWithArgs3>(new StepWithArgs2())
+                .InsertAfter(new StepWithArgs2(), typeof(StepWithArgs3))
+                .InsertBefore<StepWithArgs2, StepWithArgs3>();
+
+            pipelineBuilder.Steps.Clear();
+
+            IPipeline<SampleArgs> pipeline = pipelineBuilder
+                .Lifetime(lifetime)
+                .Build();
+
+            // Assert
+            pipeline.Should().NotBeNull();
+            pipeline.Name.Should().Be(DefaultName);
+            pipeline.Description.Should().Be(DefaultDescription);
+            pipeline.Lifetime.Should().Be(lifetime);
+
+            pipeline.Steps.Should().BeEmpty();
+
+            pipeline.ToString().Should().NotBeNull();
+            pipeline.ToString().Should().NotContainAll(
+                typeof(StepWithArgs1).FullName,
+                typeof(StepWithArgs2).FullName,
+                typeof(StepWithArgs3).FullName,
+                "[0]", "[1]", "[2]");
         }
 
         [Theory]
@@ -108,12 +224,23 @@ namespace PackSite.Library.Pipelining.Tests
             Action action = () =>
             {
                 IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
-                    .AddStep<InvalidStep>()
+                    .Add<InvalidStep>()
                     .Build();
             };
 
             // Assert
-            action.Should().Throw<ArgumentException>().WithMessage("*Invalid step instance type.*");
+            action.Should().Throw<ArgumentException>().WithMessage("*Invalid step instance type*");
+
+            // Act
+            action = () =>
+            {
+                IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
+                    .Insert<InvalidStep>(0)
+                    .Build();
+            };
+
+            // Assert
+            action.Should().Throw<ArgumentException>().WithMessage("*Invalid step instance type*");
         }
 
         [Theory]

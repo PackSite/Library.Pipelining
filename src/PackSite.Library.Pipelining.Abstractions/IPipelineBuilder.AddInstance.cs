@@ -12,7 +12,7 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instance"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        IPipelineBuilder AddStep(IBaseStep instance);
+        IPipelineBuilder Add(IBaseStep instance);
 
         /// <summary>
         /// Adds a step instances to the pipeline.
@@ -21,7 +21,7 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        IPipelineBuilder AddSteps(IEnumerable<IBaseStep> instances);
+        IPipelineBuilder AddRange(IEnumerable<IBaseStep> instances);
 
         /// <summary>
         /// Adds a step instances to the pipeline.
@@ -30,7 +30,7 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        IPipelineBuilder AddSteps(params IBaseStep[] instances);
+        IPipelineBuilder AddRange(params IBaseStep[] instances);
     }
 
     public partial interface IPipelineBuilder<TArgs>
@@ -42,7 +42,7 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instance"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        new IPipelineBuilder<TArgs> AddStep(IBaseStep instance);
+        new IPipelineBuilder<TArgs> Add(IBaseStep instance);
 
         /// <summary>
         /// Adds a step instances to the pipeline.
@@ -51,7 +51,7 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        new IPipelineBuilder<TArgs> AddSteps(IEnumerable<IBaseStep> instances);
+        new IPipelineBuilder<TArgs> AddRange(IEnumerable<IBaseStep> instances);
 
         /// <summary>
         /// Adds a step instances to the pipeline.
@@ -60,6 +60,6 @@
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Throws when <paramref name="instances"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws when an instance that is not <see cref="IStep"/> or <see cref="IStep{TArgs}"/> was found.</exception>
-        new IPipelineBuilder<TArgs> AddSteps(params IBaseStep[] instances);
+        new IPipelineBuilder<TArgs> AddRange(params IBaseStep[] instances);
     }
 }

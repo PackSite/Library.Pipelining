@@ -15,10 +15,10 @@
                 .Name("text-processsing-pipeline")
                 .Description("Text processing pipeline.")
                 .Lifetime(InvokablePipelineLifetime.Scoped)
-                .AddStep<ExceptionHandlingStep>()
-                .AddStep<ToUpperTransformStep>()
-                .AddStep<TrimTransformStep>()
-                .AddStep(new SurroundWithSquareBracketsTransformStep())
+                .Add<ExceptionHandlingStep>()
+                .Add<ToUpperTransformStep>()
+                .Add<TrimTransformStep>()
+                .Add(new SurroundWithSquareBracketsTransformStep())
                 .Build()
                 .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
 

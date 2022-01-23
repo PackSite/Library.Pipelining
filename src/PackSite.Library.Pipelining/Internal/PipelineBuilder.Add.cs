@@ -6,32 +6,32 @@
     internal sealed partial class PipelineBuilder<TArgs>
     {
         /// <inheritdoc/>
-        public IPipelineBuilder<TArgs> AddStep(Type stepType)
+        public IPipelineBuilder<TArgs> Add(Type stepType)
         {
-            Add(stepType);
+            Steps.Add(stepType);
 
             return this;
         }
 
-        IPipelineBuilder IPipelineBuilder.AddStep(Type stepType)
+        IPipelineBuilder IPipelineBuilder.Add(Type stepType)
         {
-            Add(stepType);
+            Steps.Add(stepType);
 
             return this;
         }
 
         /// <inheritdoc/>
-        public IPipelineBuilder<TArgs> AddStep<TStep>()
+        public IPipelineBuilder<TArgs> Add<TStep>()
             where TStep : class, IBaseStep
         {
-            Add(typeof(TStep));
+            Steps.Add(typeof(TStep));
 
             return this;
         }
 
-        IPipelineBuilder IPipelineBuilder.AddStep<TStep>()
+        IPipelineBuilder IPipelineBuilder.Add<TStep>()
         {
-            Add(typeof(TStep));
+            Steps.Add(typeof(TStep));
 
             return this;
         }

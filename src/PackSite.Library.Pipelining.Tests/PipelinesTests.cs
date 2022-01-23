@@ -145,10 +145,10 @@ namespace PackSite.Library.Pipelining.Tests
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(pipelineName)
                 .Description(DefaultDescription)
-                .AddStep<StepWithArgs1>()
-                .AddStep<StepWithArgs2>()
-                .AddStep(new StepWithArgs3())
-                .AddStep<GenericStep>()
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs2>()
+                .Add(new StepWithArgs3())
+                .Add<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
 
@@ -216,10 +216,10 @@ namespace PackSite.Library.Pipelining.Tests
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(pipelineName)
                 .Description(DefaultDescription)
-                .AddStep<StepWithArgs1>()
-                .AddStep<StepWithArgs2>()
-                .AddStep(new StepWithArgs3())
-                .AddStep<GenericStep>()
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs2>()
+                .Add(new StepWithArgs3())
+                .Add<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
 
@@ -286,10 +286,10 @@ namespace PackSite.Library.Pipelining.Tests
             // Act
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
                 .Name(pipelineName)
-                .AddStep<StepWithArgs1>()
-                .AddStep<StepWithArgsThatThrowsException>()
-                .AddStep(new StepWithArgs2())
-                .AddStep<GenericStep>()
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgsThatThrowsException>()
+                .Add(new StepWithArgs2())
+                .Add<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
 

@@ -14,10 +14,10 @@
         {
             _ = PipelineBuilder.Create<SampleArgs>()
                 .Name(Names[0])
-                .AddStep<StepWithArgs1>()
-                .AddStep<StepWithArgs2>()
-                .AddStep(new StepWithArgs3())
-                .AddStep<GenericStep>()
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs2>()
+                .Add(new StepWithArgs3())
+                .Add<GenericStep>()
                 .Build().TryAddTo(pipelines);
         };
 
@@ -25,10 +25,10 @@
         {
             _ = PipelineBuilder.Create<SampleArgs>()
                 .Name(Names[0])
-                .AddStep<StepWithArgs1>()
-                .AddStep<StepWithArgs2>()
-                .AddStep(new StepWithArgs3())
-                .AddStep<GenericStep>()
+                .Add<StepWithArgs1>()
+                .Add<StepWithArgs2>()
+                .Add(new StepWithArgs3())
+                .Add<GenericStep>()
                 .Build().TryAddTo(pipelines);
 
             return default;

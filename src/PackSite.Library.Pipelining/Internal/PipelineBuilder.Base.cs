@@ -1,7 +1,6 @@
 ﻿namespace PackSite.Library.Pipelining.Internal
 {
     using System;
-    using System.Collections.Generic;
     using PackSite.Library.Pipelining;
 
     /// <summary>
@@ -11,25 +10,12 @@
     internal sealed partial class PipelineBuilder<TArgs> : IPipelineBuilder<TArgs>
         where TArgs : class
     {
-        private readonly List<object> _steps = new();
-        private readonly List<Type> _stepTypes = new();
-
         private InvokablePipelineLifetime _lifetime = InvokablePipelineLifetime.Singleton;
         private PipelineName? _name;
         private string? _description;
 
         /// <inheritdoc/>
-        public int Count => _steps.Count;
-
-        /// <inheritdoc/>
-        public bool IsReadOnly => false;
-
-        /// <inheritdoc/>
-        public Type this[int index]
-        {
-            get => _stepTypes[index];
-            set => Insert(index, value);
-        }
+        public IStepCollection Steps { get; } = new StepCollection<TArgs>();
 
         /// <summary>
         /// Initializes a new instance of <see cref="PipelineBuilder{TArgs}"/>.
@@ -86,8 +72,8 @@
             Pipeline<TArgs> pipeline = new(_lifetime,
                                            _name,
                                            _description ?? string.Empty,
-                                           _steps,
-                                           _stepTypes);
+                                           Steps.StepInstances,
+                                           Steps.StepTypes);
 
             return pipeline;
         }

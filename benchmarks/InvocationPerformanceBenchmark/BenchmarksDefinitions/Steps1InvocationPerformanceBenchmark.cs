@@ -31,7 +31,7 @@
                             {
                                 _ = PipelineBuilder.Create<ProcessingArgs>()
                                     .Description("Text processing pipeline.")
-                                    .AddStep<NopStep>()
+                                    .Add<NopStep>()
                                     .Build()
                                     .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
                             });
