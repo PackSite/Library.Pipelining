@@ -30,9 +30,9 @@
             _stepActivator = stepActivator;
             _singletonPipelines = singletonPipelines;
 
-            pipelines.Cleared += PipelinesCollection_Cleared;
-            pipelines.Updated += PipelinesCollection_Updated;
-            pipelines.Removed += PipelinesCollection_Removed;
+            pipelines.Cleared += PipelineCollection_Cleared;
+            pipelines.Updated += PipelineCollection_Updated;
+            pipelines.Removed += PipelineCollection_Removed;
         }
 
         /// <inheritdoc/>
@@ -84,17 +84,17 @@
             return GetRequiredPipeline<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
         }
 
-        private void PipelinesCollection_Cleared(object? sender, EventArgs e)
+        private void PipelineCollection_Cleared(object? sender, EventArgs e)
         {
             _scopedPipelines.Clear();
         }
 
-        private void PipelinesCollection_Removed(object? sender, PipelineRemovedEventArgs e)
+        private void PipelineCollection_Removed(object? sender, PipelineRemovedEventArgs e)
         {
             _scopedPipelines.TryRemove(e.PipelineName, out _);
         }
 
-        private void PipelinesCollection_Updated(object? sender, PipelineUpdatedEventArgs e)
+        private void PipelineCollection_Updated(object? sender, PipelineUpdatedEventArgs e)
         {
             _scopedPipelines.TryRemove(e.PipelineName, out _);
         }
@@ -103,9 +103,9 @@
         public void Dispose()
         {
             _scopedPipelines.Clear();
-            _pipelines.Cleared -= PipelinesCollection_Cleared;
-            _pipelines.Updated -= PipelinesCollection_Updated;
-            _pipelines.Removed -= PipelinesCollection_Removed;
+            _pipelines.Cleared -= PipelineCollection_Cleared;
+            _pipelines.Updated -= PipelineCollection_Updated;
+            _pipelines.Removed -= PipelineCollection_Removed;
         }
 
         /// <summary>
@@ -125,9 +125,9 @@
                 _pipelines = pipelines;
                 _stepActivator = stepActivator;
 
-                pipelines.Cleared += PipelinesCollection_Cleared;
-                pipelines.Updated += PipelinesCollection_Updated;
-                pipelines.Removed += PipelinesCollection_Removed;
+                pipelines.Cleared += PipelineCollection_Cleared;
+                pipelines.Updated += PipelineCollection_Updated;
+                pipelines.Removed += PipelineCollection_Removed;
             }
 
             /// <summary>
@@ -144,17 +144,17 @@
                 }, pipeline).Value;
             }
 
-            private void PipelinesCollection_Cleared(object? sender, EventArgs e)
+            private void PipelineCollection_Cleared(object? sender, EventArgs e)
             {
                 _container.Clear();
             }
 
-            private void PipelinesCollection_Removed(object? sender, PipelineRemovedEventArgs e)
+            private void PipelineCollection_Removed(object? sender, PipelineRemovedEventArgs e)
             {
                 _container.TryRemove(e.PipelineName, out var _);
             }
 
-            private void PipelinesCollection_Updated(object? sender, PipelineUpdatedEventArgs e)
+            private void PipelineCollection_Updated(object? sender, PipelineUpdatedEventArgs e)
             {
                 _container.TryRemove(e.PipelineName, out var _);
             }
@@ -164,9 +164,9 @@
             {
                 _container.Clear();
 
-                _pipelines.Cleared -= PipelinesCollection_Cleared;
-                _pipelines.Updated -= PipelinesCollection_Updated;
-                _pipelines.Removed -= PipelinesCollection_Removed;
+                _pipelines.Cleared -= PipelineCollection_Cleared;
+                _pipelines.Updated -= PipelineCollection_Updated;
+                _pipelines.Removed -= PipelineCollection_Removed;
             }
         }
     }

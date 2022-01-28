@@ -9,29 +9,46 @@
     public interface IPipelineCollection : IReadOnlyCollection<IPipeline>
     {
         /// <summary>
-        /// Event invoked when a pipeline was added to <see cref="IPipelineCollection"/>
+        /// Event invoked when this collection changed.
         /// </summary>
-        public event EventHandler<PipelineAddedEventArgs>? Added;
+        event EventHandler? Changed;
 
         /// <summary>
-        /// Event invoked when a pipeline was updated in <see cref="IPipelineCollection"/>
+        /// Event invoked when a pipeline was added to <see cref="IPipelineCollection"/>.
+        /// NOTE: This event is fired after <see cref="Changed"/>.
         /// </summary>
-        public event EventHandler<PipelineUpdatedEventArgs>? Updated;
+        event EventHandler<PipelineAddedEventArgs>? Added;
 
         /// <summary>
-        /// Event invoked when a pipeline was removed from <see cref="IPipelineCollection"/>
+        /// Event invoked when a pipeline was updated in <see cref="IPipelineCollection"/>.
+        /// NOTE: This event is fired after <see cref="Changed"/>.
         /// </summary>
-        public event EventHandler<PipelineRemovedEventArgs>? Removed;
+        event EventHandler<PipelineUpdatedEventArgs>? Updated;
+
+        /// <summary>
+        /// Event invoked when a pipeline was removed from <see cref="IPipelineCollection"/>.
+        /// NOTE: This event is fired after <see cref="Changed"/>.
+        /// </summary>
+        event EventHandler<PipelineRemovedEventArgs>? Removed;
 
         /// <summary>
         /// Event invoked when a pipeline collection was cleared.
+        /// NOTE: This event is fired after <see cref="Changed"/>.
         /// </summary>
-        public event EventHandler? Cleared;
+        event EventHandler? Cleared;
 
         /// <summary>
         /// Pipeline names.
         /// </summary>
         IReadOnlyList<PipelineName> Names { get; }
+
+        /// <summary>
+        /// Get or set (add or update) pipeline.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Throws when pipeline with specified name was not found.</exception>
+        IPipeline this[PipelineName name] { get; set; }
 
         /// <summary>
         /// Attempts to add the specified pipeline.
@@ -66,7 +83,7 @@
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Throws when pipeline with specified name was not found.</exception>
-        public IPipeline<TArgs> Get<TArgs>(PipelineName name)
+        IPipeline<TArgs> Get<TArgs>(PipelineName name)
             where TArgs : class;
 
         /// <summary>
@@ -75,7 +92,7 @@
         /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Throws when pipeline with specified name was not found.</exception>
-        public IPipeline<TArgs> Get<TArgs>()
+        IPipeline<TArgs> Get<TArgs>()
             where TArgs : class;
 
         /// <summary>
@@ -94,5 +111,20 @@
         /// <returns></returns>
         IPipeline<TArgs>? GetOrDefault<TArgs>()
             where TArgs : class;
+
+        /// <summary>
+        /// Get pipeline by name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Throws when pipeline with specified name was not found.</exception>
+        IPipeline Get(PipelineName name);
+
+        /// <summary>
+        /// Get pipeline by name. Returns null when not found.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IPipeline? GetOrDefault(PipelineName name);
     }
 }

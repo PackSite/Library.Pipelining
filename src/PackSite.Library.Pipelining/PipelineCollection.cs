@@ -14,6 +14,9 @@
         private readonly ConcurrentDictionary<PipelineName, IPipeline> _pipelines = new();
 
         /// <inheritdoc/>
+        public event EventHandler? Changed;
+
+        /// <inheritdoc/>
         public event EventHandler<PipelineAddedEventArgs>? Added;
 
         /// <inheritdoc/>
@@ -31,6 +34,13 @@
         /// <inheritdoc/>
         public int Count => _pipelines.Count;
 
+        /// <inheritdoc/>
+        public IPipeline this[PipelineName name]
+        {
+            get => Get(name);
+            set => AddOrUpdate(value);
+        }
+
         /// <summary>
         /// Initializes a new instance of <see cref="PipelineCollection"/>.
         /// </summary>
@@ -44,9 +54,10 @@
         {
             bool wasAdded = _pipelines.TryAdd(pipeline.Name, pipeline);
 
-            if (wasAdded && Added is not null)
+            if (wasAdded)
             {
-                Added(this, new PipelineAddedEventArgs(pipeline.Name));
+                Changed?.Invoke(this, EventArgs.Empty);
+                Added?.Invoke(this, new PipelineAddedEventArgs(pipeline.Name));
             }
 
             return wasAdded;
@@ -67,6 +78,8 @@
                     return pipeline;
                 });
 
+            Changed?.Invoke(this, EventArgs.Empty);
+
             if (added)
             {
                 Added?.Invoke(this, new PipelineAddedEventArgs(name));
@@ -84,9 +97,10 @@
         {
             bool wasRemoved = _pipelines.TryRemove(name, out IPipeline _);
 
-            if (wasRemoved && Removed is not null)
+            if (wasRemoved)
             {
-                Removed(this, new PipelineRemovedEventArgs(name));
+                Changed?.Invoke(this, EventArgs.Empty);
+                Removed?.Invoke(this, new PipelineRemovedEventArgs(name));
             }
 
             return wasRemoved;
@@ -96,6 +110,8 @@
         public void Clear()
         {
             _pipelines.Clear();
+
+            Changed?.Invoke(this, EventArgs.Empty);
             Cleared?.Invoke(this, EventArgs.Empty);
         }
 
@@ -126,6 +142,19 @@
             where TArgs : class
         {
             return GetOrDefault<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
+        }
+
+        /// <inheritdoc/>
+        public IPipeline Get(PipelineName name)
+        {
+            return _pipelines.GetValueOrDefault(name) ??
+                throw new ArgumentException($"Cannot get pipeline. Pipeline '{name}' not found.", nameof(name));
+        }
+
+        /// <inheritdoc/>
+        public IPipeline? GetOrDefault(PipelineName name)
+        {
+            return _pipelines.GetValueOrDefault(name);
         }
 
         /// <inheritdoc/>

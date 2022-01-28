@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{F61F50C9-6428-4BE7-AE39-DF333029D19E}"
 	ProjectSection(SolutionItems) = preProject
@@ -53,6 +53,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{354F484B-94AA-433C-9711-006E3A588F07}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvocationPerformanceBenchmark", "..\benchmarks\InvocationPerformanceBenchmark\InvocationPerformanceBenchmark.csproj", "{2379E7E1-4ECB-4383-9837-C2EA9C196852}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackSite.Library.Pipelining.Validation", "PackSite.Library.Pipelining.Validation\PackSite.Library.Pipelining.Validation.csproj", "{C313A9C9-53E4-43C8-9F16-8DB7DC563405}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackSite.Library.Pipelining.Validation.Abstractions", "PackSite.Library.Pipelining.Validation.Abstractions\PackSite.Library.Pipelining.Validation.Abstractions.csproj", "{508628F4-FD4F-4D1B-84C0-228171294570}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -184,6 +188,30 @@ Global
 		{2379E7E1-4ECB-4383-9837-C2EA9C196852}.Release|x64.Build.0 = Release|Any CPU
 		{2379E7E1-4ECB-4383-9837-C2EA9C196852}.Release|x86.ActiveCfg = Release|Any CPU
 		{2379E7E1-4ECB-4383-9837-C2EA9C196852}.Release|x86.Build.0 = Release|Any CPU
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Debug|x64.ActiveCfg = Debug|x64
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Debug|x64.Build.0 = Debug|x64
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Debug|x86.ActiveCfg = Debug|x86
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Debug|x86.Build.0 = Debug|x86
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Release|x64.ActiveCfg = Release|x64
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Release|x64.Build.0 = Release|x64
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Release|x86.ActiveCfg = Release|x86
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405}.Release|x86.Build.0 = Release|x86
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Debug|x64.ActiveCfg = Debug|x64
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Debug|x64.Build.0 = Debug|x64
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Debug|x86.ActiveCfg = Debug|x86
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Debug|x86.Build.0 = Debug|x86
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Release|x64.ActiveCfg = Release|x64
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Release|x64.Build.0 = Release|x64
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Release|x86.ActiveCfg = Release|x86
+		{508628F4-FD4F-4D1B-84C0-228171294570}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,6 +228,8 @@ Global
 		{B0FFF4AF-2A3D-425D-B396-59B0309C265E} = {E7177480-AEAE-4717-AC94-71DA1884AA88}
 		{4B5A5571-83D2-49B2-AFBA-3C4F234B8A3A} = {E7177480-AEAE-4717-AC94-71DA1884AA88}
 		{2379E7E1-4ECB-4383-9837-C2EA9C196852} = {354F484B-94AA-433C-9711-006E3A588F07}
+		{C313A9C9-53E4-43C8-9F16-8DB7DC563405} = {62124109-EF94-44B8-9C30-1D631E0CE06C}
+		{508628F4-FD4F-4D1B-84C0-228171294570} = {62124109-EF94-44B8-9C30-1D631E0CE06C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {11986FC9-BE93-49E2-AC90-F4C6028A7E6E}
