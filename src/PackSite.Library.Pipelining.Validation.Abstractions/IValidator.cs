@@ -4,12 +4,12 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Represents a pipeline validator.
+    /// Represents a validator.
     /// </summary>
-    public interface IPipelineValidator
+    public interface IValidator
     {
         /// <summary>
-        /// Validates pipeline from the collection.
+        /// Validates a pipeline from the collection or a collection itself.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="cancellationToken"></param>

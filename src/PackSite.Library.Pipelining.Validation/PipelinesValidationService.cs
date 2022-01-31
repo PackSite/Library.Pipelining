@@ -21,23 +21,23 @@
         }
 
         /// <inheritdoc/>
-        public async Task<ValidationResult> ValidateAsync(IPipelineCollection pipelines, IEnumerable<IPipelineValidator> validators, CancellationToken cancellationToken = default)
+        public async Task<ValidationResult> ValidateAsync(IPipelineCollection pipelines, IEnumerable<IValidator> validators, CancellationToken cancellationToken = default)
         {
             ValidationResult result = new();
 
-            foreach (IPipelineValidator validator in validators)
+            foreach (IValidator validator in validators)
             {
                 ValidationContext context = new(validator, pipelines);
                 await validator.ValidateAsync(context, cancellationToken);
 
-                result.Errors.AddRange(validatorResult.Errors);
+                result.Errors.AddRange(context.Errors);
             }
 
             return result;
         }
 
         /// <inheritdoc/>
-        public async Task ValidateAndThrow(IPipelineCollection pipelines, IEnumerable<IPipelineValidator> validators, CancellationToken cancellationToken = default)
+        public async Task ValidateAndThrowAsync(IPipelineCollection pipelines, IEnumerable<IValidator> validators, CancellationToken cancellationToken = default)
         {
             ValidationResult validationResults = await ValidateAsync(pipelines, validators, cancellationToken);
 

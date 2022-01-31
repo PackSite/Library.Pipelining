@@ -17,7 +17,7 @@
         /// <summary>
         /// A collection of errors
         /// </summary>
-        public IList<ValidationFailure> Errors { get; }
+        public IList<ValidationFailure> Errors { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ValidationResult"/>.

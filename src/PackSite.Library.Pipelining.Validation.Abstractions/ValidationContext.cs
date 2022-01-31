@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
 
+    //TODO: add CollectionValidationContext, PipelineValidationContext, StepValidationContext
+
     /// <summary>
     /// Pipeline validation results returned by <see cref="IPipelinesValidationService"/>
     /// </summary>
@@ -11,7 +13,7 @@
         /// <summary>
         /// Validator instance.
         /// </summary>
-        public IPipelineValidator Validator { get; }
+        public IValidator Validator { get; }
 
         /// <summary>
         /// A collection of all pipelines.
@@ -34,7 +36,7 @@
         /// <param name="validator"></param>
         /// <param name="pipelines"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public ValidationContext(IPipelineValidator validator, IPipelineCollection pipelines)
+        public ValidationContext(IValidator validator, IPipelineCollection pipelines)
         {
             Validator = validator;
             Pipelines = pipelines;

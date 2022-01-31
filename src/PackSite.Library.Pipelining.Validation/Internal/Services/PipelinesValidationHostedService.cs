@@ -16,7 +16,7 @@
     {
         private readonly IPipelineCollection _pipelineCollection;
         private readonly IPipelinesValidationService _pipelinesValidationService;
-        private readonly IEnumerable<IPipelineValidator> _validators;
+        private readonly IEnumerable<IValidator> _validators;
 
         private PipelinesValidationOptions _options;
         private readonly IDisposable _optionsMonitor;
@@ -30,7 +30,7 @@
         public PipelinesValidationHostedService(IPipelineCollection pipelineCollection,
                                                 IPipelinesValidationService pipelinesValidationService,
                                                 IOptionsMonitor<PipelinesValidationOptions> options,
-                                                IEnumerable<IPipelineValidator> validators,
+                                                IEnumerable<IValidator> validators,
                                                 ILoggerFactory loggerFactory)
         {
             _pipelineCollection = pipelineCollection;

@@ -16,15 +16,16 @@
         /// <param name="validators"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ValidationResult> ValidateAsync(IPipelineCollection pipelines, IEnumerable<IPipelineValidator> validators, CancellationToken cancellationToken = default);
+        Task<ValidationResult> ValidateAsync(IPipelineCollection pipelines, IEnumerable<IValidator> validators, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Validates pipelines in <paramref name="pipelines"/> using <paramref name="validators"/>.
         /// </summary>
         /// <param name="pipelines"></param>
         /// <param name="validators"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="PipelinesValidationException">Throws when pipelines validaiton fails for one or more pipelines.</exception>
-        Task ValidateAndThrowAsync(IPipelineCollection pipelines, IEnumerable<IPipelineValidator> validators, CancellationToken cancellationToken = default);
+        Task ValidateAndThrowAsync(IPipelineCollection pipelines, IEnumerable<IValidator> validators, CancellationToken cancellationToken = default);
     }
 }
