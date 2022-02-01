@@ -72,7 +72,7 @@
         /// <param name="pipelining"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static PipeliningBuilder AddValidator(this PipeliningBuilder pipelining, Action<ValidationContext> action)
+        public static PipeliningBuilder AddValidator(this PipeliningBuilder pipelining, Action<ValidatorContext> action)
         {
             return pipelining.AddValidator(new InlineValidator(action));
         }
@@ -84,7 +84,7 @@
         /// <param name="pipelining"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static PipeliningBuilder AddValidator(this PipeliningBuilder pipelining, Func<ValidationContext, CancellationToken, ValueTask> func)
+        public static PipeliningBuilder AddValidator(this PipeliningBuilder pipelining, Func<ValidatorContext, CancellationToken, ValueTask> func)
         {
             return pipelining.AddValidator(new InlineValidator(func));
         }

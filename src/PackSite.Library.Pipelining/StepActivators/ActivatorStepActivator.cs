@@ -19,7 +19,7 @@
         public IBaseStep Create(Type stepType)
         {
             return Activator.CreateInstance(stepType) as IBaseStep ??
-                throw new InvalidOperationException($"Failed to activate '{stepType.FullName ?? stepType.Name}'");
+                throw new InvalidOperationException($"Failed to activate '{stepType}'");
         }
     }
 }

@@ -52,7 +52,7 @@
 
             if (!stepInterfaces.Contains(typeof(IStep)) && !stepInterfaces.Contains(typeof(IStep<TArgs>)))
             {
-                throw new ArgumentException(nameof(TArgs), $"Invalid step instance type '{stepType}'. Must implement '{typeof(IStep).FullName}' or '{typeof(IStep<TArgs>).FullName}'.");
+                throw new ArgumentException(nameof(TArgs), $"Invalid step instance type '{stepType}'. Must implement '{typeof(IStep)}' or '{typeof(IStep<TArgs>)}'.");
             }
 
             _steps.Insert(index, stepType);
@@ -66,7 +66,7 @@
 
             if (instance is not (IStep or IStep<TArgs>))
             {
-                throw new ArgumentException(nameof(TArgs), $"Invalid step instance type '{instance.GetType()}'. Must implement '{typeof(IStep).FullName}' or '{typeof(IStep<TArgs>).FullName}'.");
+                throw new ArgumentException(nameof(TArgs), $"Invalid step instance type '{instance.GetType()}'. Must implement '{typeof(IStep)}' or '{typeof(IStep<TArgs>)}'.");
             }
 
             _steps.Insert(index, instance);
@@ -89,7 +89,7 @@
 
             if (!stepInterfaces.Contains(typeof(IStep)) && !stepInterfaces.Contains(typeof(IStep<TArgs>)))
             {
-                throw new ArgumentException(nameof(TArgs), $"Invalid step instance type '{stepType}'. Must implement '{typeof(IStep).FullName}' or '{typeof(IStep<TArgs>).FullName}'.");
+                throw new ArgumentException(nameof(TArgs), $"Invalid step instance type '{stepType}'. Must implement '{typeof(IStep)}' or '{typeof(IStep<TArgs>)}'.");
             }
 
             _steps.Add(stepType);
@@ -103,7 +103,7 @@
 
             if (instance is not (IStep or IStep<TArgs>))
             {
-                throw new ArgumentException($"Invalid step instance type '{instance.GetType()}'. Must implement '{typeof(IStep).FullName}' or '{typeof(IStep<TArgs>).FullName}'.", nameof(instance));
+                throw new ArgumentException($"Invalid step instance type '{instance.GetType()}'. Must implement '{typeof(IStep)}' or '{typeof(IStep<TArgs>)}'.", nameof(instance));
             }
 
             _steps.Add(instance);

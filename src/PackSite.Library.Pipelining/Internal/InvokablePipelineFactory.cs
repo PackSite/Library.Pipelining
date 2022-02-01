@@ -67,21 +67,21 @@
             where TArgs : class
         {
             return GetPipeline<TArgs>(name) ??
-                throw new ArgumentException($"Cannot get invokable pipeline. Pipeline '{name}' not found or '{typeof(TArgs).FullName ?? typeof(TArgs).Name}' is an invalid type for '{name}' pipeline.", nameof(name));
+                throw new ArgumentException($"Cannot get invokable pipeline. Pipeline '{name}' not found or '{typeof(TArgs)}' is an invalid type for '{name}' pipeline.", nameof(name));
         }
 
         /// <inheritdoc/>
         public IInvokablePipeline<TArgs>? GetPipeline<TArgs>()
             where TArgs : class
         {
-            return GetPipeline<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
+            return GetPipeline<TArgs>(IPipeline<TArgs>.DefaultName);
         }
 
         /// <inheritdoc/>
         public IInvokablePipeline<TArgs> GetRequiredPipeline<TArgs>()
             where TArgs : class
         {
-            return GetRequiredPipeline<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
+            return GetRequiredPipeline<TArgs>(IPipeline<TArgs>.DefaultName);
         }
 
         private void PipelineCollection_Cleared(object? sender, EventArgs e)

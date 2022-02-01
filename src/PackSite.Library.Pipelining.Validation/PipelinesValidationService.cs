@@ -6,6 +6,7 @@
     using PackSite.Library.Pipelining;
     using PackSite.Library.Pipelining.Validation.Internal.Extensions;
     using PackSite.Library.Pipelining.Validation.Internal.Services;
+    using PackSite.Library.Pipelining.Validation.Validators;
 
     /// <summary>
     /// Default implementation of <see cref="IPipelinesValidationService"/>.
@@ -27,7 +28,7 @@
 
             foreach (IValidator validator in validators)
             {
-                ValidationContext context = new(validator, pipelines);
+                ValidatorContext context = new(validator, pipelines);
                 await validator.ValidateAsync(context, cancellationToken);
 
                 result.Errors.AddRange(context.Errors);
@@ -43,7 +44,7 @@
 
             if (!validationResults.IsValid)
             {
-                throw new PipelinesValidationException(validationResults);
+                throw new ValidationException(validationResults);
             }
         }
     }

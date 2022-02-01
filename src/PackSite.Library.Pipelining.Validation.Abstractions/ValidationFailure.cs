@@ -42,6 +42,11 @@
         /// </summary>
         public ValidationFailure(ValidationTarget target, string errorMessage)
         {
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                throw new ArgumentException($"'{nameof(errorMessage)}' cannot be null or whitespace.", nameof(errorMessage));
+            }
+
             Target = target;
             ErrorMessage = errorMessage;
         }

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using PackSite.Library.Pipelining.Validation.Validators;
 
     /// <summary>
     /// Represents a service that validates pipelines.
@@ -25,7 +26,7 @@
         /// <param name="validators"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        /// <exception cref="PipelinesValidationException">Throws when pipelines validaiton fails for one or more pipelines.</exception>
+        /// <exception cref="ValidationException">Throws when pipelines validaiton fails for one or more pipelines.</exception>
         Task ValidateAndThrowAsync(IPipelineCollection pipelines, IEnumerable<IValidator> validators, CancellationToken cancellationToken = default);
     }
 }

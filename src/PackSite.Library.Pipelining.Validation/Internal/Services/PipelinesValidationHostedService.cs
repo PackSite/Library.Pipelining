@@ -11,6 +11,7 @@
     using PackSite.Library.Pipelining;
     using PackSite.Library.Pipelining.Validation;
     using PackSite.Library.Pipelining.Validation.Internal.Utils;
+    using PackSite.Library.Pipelining.Validation.Validators;
 
     internal sealed class PipelinesValidationHostedService : IHostedService, IDisposable
     {
@@ -89,7 +90,7 @@
             {
                 await _pipelinesValidationService.ValidateAndThrowAsync(_pipelineCollection, _validators, cancellationToken);
             }
-            catch (PipelinesValidationException pex)
+            catch (ValidationException pex)
             {
                 Log.ValidationFailure(logger, pex);
             }
@@ -151,7 +152,7 @@
                 _validatingPipelinesOnCollectionChange(logger, null);
             }
 
-            public static void ValidationFailure(ILogger logger, PipelinesValidationException ex)
+            public static void ValidationFailure(ILogger logger, ValidationException ex)
             {
                 _validationFailure(logger, ex.ValidationResult, ex);
             }

@@ -132,7 +132,7 @@ namespace PackSite.Library.Pipelining.Tests
         {
             // Arrange
             bool useDefault = pipelineName is null;
-            pipelineName ??= typeof(IPipeline<SampleArgs>).FullName!;
+            pipelineName ??= IPipeline<SampleArgs>.DefaultName;
 
             using ServiceProvider services = new ServiceCollection()
                 .AddPipelining()
@@ -208,13 +208,12 @@ namespace PackSite.Library.Pipelining.Tests
         {
             // Arrange
             bool useDefault = pipelineName is null;
-            pipelineName ??= typeof(IPipeline<SampleArgs>).FullName!;
 
             IPipelineCollection pipelines = new PipelineCollection();
 
             // Act
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
-                .Name(pipelineName)
+                .Name(pipelineName is null ? null : new PipelineName(pipelineName))
                 .Description(DefaultDescription)
                 .Add<StepWithArgs1>()
                 .Add<StepWithArgs2>()
@@ -222,6 +221,8 @@ namespace PackSite.Library.Pipelining.Tests
                 .Add<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
+
+            pipelineName ??= IPipeline<SampleArgs>.DefaultName;
 
             // Assert
             pipeline.Should().NotBeNull();
@@ -274,7 +275,6 @@ namespace PackSite.Library.Pipelining.Tests
         {
             // Arrange
             bool useDefault = pipelineName is null;
-            pipelineName ??= typeof(IPipeline<SampleArgs>).FullName!;
 
             using ServiceProvider services = new ServiceCollection()
                 .AddPipelining()
@@ -285,13 +285,16 @@ namespace PackSite.Library.Pipelining.Tests
 
             // Act
             IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
-                .Name(pipelineName)
+                .Name(pipelineName is null ? null : new PipelineName(pipelineName))
                 .Add<StepWithArgs1>()
                 .Add<StepWithArgsThatThrowsException>()
                 .Add(new StepWithArgs2())
                 .Add<GenericStep>()
                 .Lifetime(lifetime)
                 .Build();
+
+
+            pipelineName ??= IPipeline<SampleArgs>.DefaultName;
 
             pipelines.TryAdd(pipeline).Should().BeTrue();
 

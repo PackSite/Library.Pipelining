@@ -67,7 +67,7 @@
         /// <inheritdoc/>
         public IPipeline<TArgs> Build()
         {
-            _name ??= typeof(IPipeline<TArgs>).FullName!;
+            _name ??= IPipeline<TArgs>.DefaultName;
 
             Pipeline<TArgs> pipeline = new(_lifetime,
                                            _name,

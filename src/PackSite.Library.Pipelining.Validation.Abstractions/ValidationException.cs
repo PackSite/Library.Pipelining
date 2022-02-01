@@ -5,7 +5,7 @@
     /// <summary>
     /// An exception thrown when pipelines validation fails for one or more pipelines.
     /// </summary>
-    public class PipelinesValidationException : Exception
+    public class ValidationException : Exception
     {
         /// <summary>
         /// Validation result.
@@ -13,9 +13,9 @@
         public ValidationResult ValidationResult { get; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="PipelinesValidationException"/>.
+        /// Initializes a new instance of <see cref="ValidationException"/>.
         /// </summary>
-        public PipelinesValidationException(ValidationResult validationResult) :
+        public ValidationException(ValidationResult validationResult) :
             base($"Pipelines validation failed.")
         {
             ValidationResult = validationResult;

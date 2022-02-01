@@ -1,4 +1,4 @@
-﻿namespace PackSite.Library.Pipelining.Validation
+﻿namespace PackSite.Library.Pipelining.Validation.Validators
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -14,6 +14,6 @@
         /// <param name="context"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        ValueTask ValidateAsync(ValidationContext context, CancellationToken cancellationToken = default);
+        ValueTask ValidateAsync(ValidatorContext context, CancellationToken cancellationToken = default);
     }
 }

@@ -31,7 +31,7 @@
             });
 
             return stepFactory(_serviceProvider, null) as IBaseStep ??
-                throw new InvalidOperationException($"Failed to activate '{stepType.FullName ?? stepType.Name}'");
+                throw new InvalidOperationException($"Failed to activate '{stepType}'");
         }
     }
 }

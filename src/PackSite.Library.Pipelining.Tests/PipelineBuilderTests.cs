@@ -196,7 +196,7 @@ namespace PackSite.Library.Pipelining.Tests
                 .Build();
 
             // Assert
-            pipeline.Name.Should().Be(typeof(IPipeline<SampleArgs>).FullName!);
+            pipeline.Name.Should().Be(IPipeline<SampleArgs>.DefaultName);
             pipeline.Description.Should().Be(DefaultDescription);
             pipeline.Lifetime.Should().Be(InvokablePipelineLifetime.Singleton);
             pipeline.Steps.Should().BeEmpty();
@@ -210,7 +210,7 @@ namespace PackSite.Library.Pipelining.Tests
                 .Build();
 
             // Assert
-            pipeline.Name.Should().Be(typeof(IPipeline<SampleArgs>).FullName!);
+            pipeline.Name.Should().Be(IPipeline<SampleArgs>.DefaultName);
             pipeline.Description.Should().BeEmpty();
             pipeline.Lifetime.Should().Be(InvokablePipelineLifetime.Singleton);
             pipeline.Steps.Should().BeEmpty();

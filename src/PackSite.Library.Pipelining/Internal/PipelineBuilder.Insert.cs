@@ -12,7 +12,7 @@
 
             if (instance is not (IStep or IStep<TArgs>))
             {
-                throw new ArgumentException($"Invalid step instance type '{instance.GetType().FullName}'.", nameof(instance));
+                throw new ArgumentException($"Invalid step instance type '{instance.GetType()}'.", nameof(instance));
             }
 
             Steps.Insert(index, instance);

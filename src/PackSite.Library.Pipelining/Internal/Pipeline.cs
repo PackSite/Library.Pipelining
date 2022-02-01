@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using PackSite.Library.Pipelining.Internal.Extensions;
@@ -19,7 +20,7 @@
         private readonly IReadOnlyList<object> _steps;
         private readonly IReadOnlyList<Type> _stepTypes;
 
-        private string? _toStringCache;
+        private string? _toStepsStringCache;
 
         /// <inheritdoc/>
         public IPipelineCounters Counters => _counters;
@@ -35,6 +36,9 @@
 
         /// <inheritdoc/>
         IReadOnlyList<Type> IPipeline.Steps => _stepTypes;
+
+        /// <inheritdoc/>
+        public Type ArgumentType { get; }
 
         /// <summary>
         /// Initializes a new instance of <see cref="PipelineBuilder{T}"/>.
@@ -55,6 +59,8 @@
             Description = description ?? throw new ArgumentNullException(nameof(description));
             _steps = steps ?? throw new ArgumentNullException(nameof(steps));
             _stepTypes = stepTypes ?? throw new ArgumentNullException(nameof(stepTypes));
+
+            ArgumentType = typeof(TArgs);
         }
 
         /// <inheritdoc/>
@@ -141,15 +147,39 @@
         /// <inheritdoc/>
         public override string? ToString()
         {
-            if (_toStringCache is not null)
+            return ToString(null, null);
+        }
+
+        /// <inheritdoc/>
+        public string ToString(string? format, IFormatProvider? formatProvider)
+        {
+            if (string.IsNullOrWhiteSpace(format))
             {
-                return _toStringCache;
+                format = "f";
+            }
+
+            formatProvider ??= CultureInfo.CurrentCulture;
+
+            return format.ToLowerInvariant() switch
+            {
+                "n" or "name" or "d" or "default" => Name,
+                "f" or "full" or "fullname" => $"{Name}, {IPipeline<TArgs>.DefaultName}",
+                "s" or "steps" => ToStepsString(formatProvider),
+
+                _ => throw new FormatException($"The {format} format string is not supported."),
+            };
+        }
+
+        private string ToStepsString(IFormatProvider formatProvider)
+        {
+            if (_toStepsStringCache is not null)
+            {
+                return _toStepsStringCache;
             }
 
             StringBuilder builder = new();
 
-            builder.Append("PIPELINE '");
-            builder.Append(Name);
+            builder.Append(ToString("f", null));
             builder.Append(" (");
             builder.Append(_stepTypes.Count);
 
@@ -172,7 +202,7 @@
                 builder.Append("  [");
                 builder.Append(i++);
                 builder.Append("] = ");
-                builder.AppendLine(step.FullName ?? step.Name);
+                builder.AppendLine(step.FullName?.ToString(formatProvider));
             }
 
             builder.AppendLine("  [-] = \\/ /\\");
@@ -183,13 +213,13 @@
                 builder.Append("  [");
                 builder.Append(i--);
                 builder.Append("] = ");
-                builder.AppendLine(step.FullName ?? step.Name);
+                builder.AppendLine(step.FullName?.ToString(formatProvider));
             }
 
             builder.AppendLine("}");
-            _toStringCache = builder.ToString();
+            _toStepsStringCache = builder.ToString();
 
-            return _toStringCache;
+            return _toStepsStringCache;
         }
     }
 }

@@ -20,7 +20,7 @@
         IPipelineBuilder Lifetime(InvokablePipelineLifetime lifetime);
 
         /// <summary>
-        /// Sets a custom pipeline name (default: <code>typeof(IPipeline&lt;TArgs&gt;).FullName</code>).
+        /// Sets a custom pipeline name (default: <code>IPipeline&lt;TArgs&gt;.DefaultName</code>).
         /// Pass null to reset name to default.
         /// </summary>
         /// <param name="name"></param>
@@ -57,7 +57,7 @@
         new IPipelineBuilder<TArgs> Lifetime(InvokablePipelineLifetime lifetime);
 
         /// <summary>
-        /// Sets a custom pipeline name (default: <code>typeof(IPipeline&lt;TArgs&gt;).FullName</code>).
+        /// Sets a custom pipeline name (default: <code>IPipeline&lt;TArgs&gt;.DefaultName</code>).
         /// </summary>
         /// <returns></returns>
         new IPipelineBuilder<TArgs> Name(PipelineName? name);

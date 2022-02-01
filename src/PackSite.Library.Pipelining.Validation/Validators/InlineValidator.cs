@@ -9,13 +9,13 @@
     /// </summary>
     public class InlineValidator : IValidator
     {
-        private readonly Func<ValidationContext, CancellationToken, ValueTask> _validator;
+        private readonly Func<ValidatorContext, CancellationToken, ValueTask> _validator;
 
         /// <summary>
         /// Initializes a new instance of <see cref="InlineValidator"/>.
         /// </summary>
         /// <param name="action"></param>
-        public InlineValidator(Action<ValidationContext> action)
+        public InlineValidator(Action<ValidatorContext> action)
         {
             _ = action ?? throw new ArgumentNullException(nameof(action));
 
@@ -31,13 +31,13 @@
         /// Initializes a new instance of <see cref="InlineValidator"/>.
         /// </summary>
         /// <param name="func"></param>
-        public InlineValidator(Func<ValidationContext, CancellationToken, ValueTask> func)
+        public InlineValidator(Func<ValidatorContext, CancellationToken, ValueTask> func)
         {
             _validator = func ?? throw new ArgumentNullException(nameof(func));
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask ValidateAsync(ValidationContext context, CancellationToken cancellationToken = default)
+        public virtual async ValueTask ValidateAsync(ValidatorContext context, CancellationToken cancellationToken = default)
         {
             await _validator(context, cancellationToken);
         }
