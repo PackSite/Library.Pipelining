@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		..\codecov.yml = ..\codecov.yml
 		Directory.Build.props = Directory.Build.props
 		local-deploy.ps1 = local-deploy.ps1
+		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{30523791-68C8-4A99-8D90-729BD4ACA34E}"
@@ -57,7 +58,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackSite.Library.Pipelining
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackSite.Library.Pipelining.Validation.Abstractions", "PackSite.Library.Pipelining.Validation.Abstractions\PackSite.Library.Pipelining.Validation.Abstractions.csproj", "{508628F4-FD4F-4D1B-84C0-228171294570}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidationExample", "..\examples\ValidationExample\ValidationExample.csproj", "{53012D61-D901-4879-B1CD-050CAC49E91C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationExample", "..\examples\ValidationExample\ValidationExample.csproj", "{53012D61-D901-4879-B1CD-050CAC49E91C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
