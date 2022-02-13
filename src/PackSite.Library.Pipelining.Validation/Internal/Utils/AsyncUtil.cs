@@ -11,7 +11,7 @@
     /// <remarks>
     /// https://cpratt.co/async-tips-tricks/
     /// </remarks>
-    public static class AsyncUtil
+    internal static class AsyncUtil
     {
         private static readonly TaskFactory _myTaskFactory = new(CancellationToken.None,
             TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
