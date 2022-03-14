@@ -123,6 +123,7 @@
 
         public void Dispose()
         {
+            _lock.Dispose();
             _optionsMonitor?.Dispose();
         }
 

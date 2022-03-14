@@ -25,7 +25,7 @@
         /// <inheritdoc/>
         public IBaseStep Create(Type stepType)
         {
-            ObjectFactory stepFactory = _cache.GetOrAdd(stepType, (key) =>
+            ObjectFactory stepFactory = _cache.GetOrAdd(stepType, (key) => // The factory may run mutliple times but we don't care since we don't want to add overhead with lazy
             {
                 return ActivatorUtilities.CreateFactory(key, Array.Empty<Type>());
             });
