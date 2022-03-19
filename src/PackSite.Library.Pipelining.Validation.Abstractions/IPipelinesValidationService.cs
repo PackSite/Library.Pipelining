@@ -26,7 +26,7 @@
         /// <param name="validators"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        /// <exception cref="ValidationException">Throws when pipelines validaiton fails for one or more pipelines.</exception>
+        /// <exception cref="ValidationException">Throws when pipelines validation fails for one or more pipelines.</exception>
         Task ValidateAndThrowAsync(IPipelineCollection pipelines, IEnumerable<IValidator> validators, CancellationToken cancellationToken = default);
     }
 }

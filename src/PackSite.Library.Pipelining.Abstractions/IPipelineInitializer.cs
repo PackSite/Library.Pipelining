@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Pippeline initializer.
+    /// Pipeline initializer.
     /// </summary>
     public interface IPipelineInitializer
     {

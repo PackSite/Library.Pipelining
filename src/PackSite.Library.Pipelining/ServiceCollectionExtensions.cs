@@ -23,7 +23,7 @@
 
             PipeliningBuilder p = new(services, isSubsequentCall);
 
-            if (!isSubsequentCall) // Single check instad of three TryAdd... calls
+            if (!isSubsequentCall) // Single check instead of three TryAdd... calls
             {
                 services.AddSingleton<IPipelineCollection, PipelineCollection>();
                 services.AddSingleton<InvokablePipelineFactory.SingletonPipelines>();

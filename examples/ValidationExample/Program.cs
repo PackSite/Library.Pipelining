@@ -27,7 +27,7 @@
                             .AddInitializer(pipelines =>
                             {
                                 _ = PipelineBuilder.Create<TextProcessingArgs>()
-                                    .Name("text-processsing-pipeline")
+                                    .Name("text-processing-pipeline")
                                     .Description("Text processing pipeline.")
                                     .Lifetime(InvokablePipelineLifetime.Scoped)
                                     .Add<ExceptionHandlingStep>()
@@ -39,7 +39,7 @@
                             })
                             .AddValidator(context =>
                             {
-                                context.ContainsPipeline("text-processsing-pipeline")
+                                context.ContainsPipeline("text-processing-pipeline")
                                     .SuchThat(pipeline =>
                                     {
                                         //pipeline.HaveSteps();
@@ -51,7 +51,7 @@
 
                                 context.ContainsPipeline<TextProcessingArgs>();
                                 context.ContainsPipeline(typeof(TextProcessingArgs));
-                                context.ContainsPipeline(context.Pipelines.Get("text-processsing-pipeline"));
+                                context.ContainsPipeline(context.Pipelines.Get("text-processing-pipeline"));
 
                                 context.NotContainsPipeline("invalid");
                                 context.NotContainsPipeline<Program>();

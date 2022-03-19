@@ -52,7 +52,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Steps.Should().HaveCount(9);
 
             pipeline.ToString().Should().NotBeNull();
-            pipeline.ToString().Should().ContainAll(
+            pipeline.ToString("steps", null).Should().ContainAll(
                 typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs2).FullName,
                 typeof(StepWithArgs3).FullName,
@@ -85,7 +85,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Steps.Should().HaveCount(3);
 
             pipeline.ToString().Should().NotBeNull();
-            pipeline.ToString().Should().ContainAll(
+            pipeline.ToString("steps", null).Should().ContainAll(
                 typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs2).FullName,
                 typeof(StepWithArgs3).FullName,
@@ -117,7 +117,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Steps.Should().HaveCount(3);
 
             pipeline.ToString().Should().NotBeNull();
-            pipeline.ToString().Should().ContainAll(
+            pipeline.ToString("s", null).Should().ContainAll(
                 typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs2).FullName,
                 typeof(StepWithArgs3).FullName,

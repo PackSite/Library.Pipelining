@@ -24,7 +24,7 @@
         /// <param name="pipeline"></param>
         /// <param name="innerException"></param>
         public PipelineInvocationException(object? args, IPipeline pipeline, Exception? innerException) :
-            base($"An unhandled error occured while executing pipeline '{pipeline.GetType().FullName ?? pipeline.GetType().Name}' with name '{pipeline.Name}'.", innerException)
+            base($"An unhandled error occurred while executing pipeline '{pipeline.GetType().FullName ?? pipeline.GetType().Name}' with name '{pipeline.Name}'.", innerException)
         {
             Args = args;
             Pipeline = pipeline;

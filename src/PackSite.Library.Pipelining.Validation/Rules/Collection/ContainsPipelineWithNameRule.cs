@@ -7,7 +7,7 @@
     using PackSite.Library.Pipelining.Validation.Validators;
 
     /// <summary>
-    /// Validator that checks whether collection containts a pipeline with specific name in it.
+    /// Validator that checks whether collection contains a pipeline with specific name in it.
     /// </summary>
     public class ContainsPipelineWithNameRule : CollectionRule
     {

@@ -9,7 +9,7 @@
     using PackSite.Library.Pipelining.Validation.Validators;
 
     /// <summary>
-    /// Validator that checks whether collection does not contain a pipeline with provided arguemnt type in it.
+    /// Validator that checks whether collection does not contain a pipeline with provided argument type in it.
     /// </summary>
     public class NotContainsPipelineWithArgumentTypeRule : CollectionRule
     {

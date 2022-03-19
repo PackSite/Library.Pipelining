@@ -20,7 +20,7 @@
         {
             args.Value += GetType().Name + " > ";
 
-            IInvokablePipeline<SimpleArgs> invokableSubpipeline = _invokablePipelineFactory.GetRequiredPipeline<SimpleArgs>("dynamic-subpipeline-demo");
+            IInvokablePipeline<SimpleArgs> invokableSubpipeline = _invokablePipelineFactory.GetRequiredPipeline<SimpleArgs>("dynamic-sub-pipeline-demo");
             await invokableSubpipeline.InvokeAsync(args, next, cancellationToken);
             _logger.LogInformation("\n[SUBPIPELINE]\nIPC: {@IPCounters}\nPC: {@PCounters}", invokableSubpipeline.Counters, invokableSubpipeline.Pipeline.Counters);
 

@@ -20,7 +20,7 @@
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine("An exception occured while executing '{0}' pipeline:", invokablePipeline.Pipeline.Name);
+                Console.Error.WriteLine("An exception occurred while executing '{0}' pipeline:", invokablePipeline.Pipeline.Name);
                 Console.Error.WriteLine(ex.Message);
 
                 // Retry

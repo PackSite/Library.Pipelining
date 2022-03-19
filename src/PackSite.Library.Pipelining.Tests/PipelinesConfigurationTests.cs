@@ -80,7 +80,7 @@ namespace PackSite.Library.Pipelining.Tests
                 return Task.CompletedTask;
             });
 
-            pipelines.Names.Should().BeEmpty();
+            pipelines.Names.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -135,7 +135,7 @@ namespace PackSite.Library.Pipelining.Tests
                     return Task.CompletedTask;
                 });
 
-            pipelineCollection.Names.Should().BeEmpty();
+            pipelineCollection.Names.Should().NotBeEmpty();
         }
     }
 }

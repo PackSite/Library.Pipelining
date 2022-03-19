@@ -29,14 +29,14 @@
                 {
                     await using (AsyncServiceScope scope = _serviceScopeFactory.CreateAsyncScope())
                     {
-                        Console.WriteLine("Type some text (for a string with length > 15, a demo excpetion is thrown):");
+                        Console.WriteLine("Type some text (for a string with length > 15, a demo exception is thrown):");
                         string text = Console.ReadLine() ?? string.Empty;
 
                         TextProcessingArgs pipelineArgs = new(text);
                         Console.WriteLine("INPUT: {0}", pipelineArgs.Text);
 
                         var invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
-                        IInvokablePipeline<TextProcessingArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<TextProcessingArgs>("text-processsing-pipeline");
+                        IInvokablePipeline<TextProcessingArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<TextProcessingArgs>("text-processing-pipeline");
 
                         await invokablePipeline.InvokeAsync(pipelineArgs, stoppingToken);
                         Console.WriteLine("OUTPUT: {0}", pipelineArgs.Text);

@@ -48,7 +48,7 @@
             _optionsMonitor = _options.OnChange(OptionsChanged);
 
             stopwatch.Stop();
-            _logger.LogInformation("Succesfully initialized PackSite.Library.Pipelining.Configuration after {Elapsed}", stopwatch.Elapsed);
+            _logger.LogInformation("Successfully initialized PackSite.Library.Pipelining.Configuration after {Elapsed}", stopwatch.Elapsed);
         }
 
         /// <inheritdoc/>

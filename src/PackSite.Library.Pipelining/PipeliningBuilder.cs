@@ -4,7 +4,7 @@
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// Pipelining extension registration root aka. pipeling builder.
+    /// Pipelining extension registration root aka. pipelining builder.
     /// </summary>
     public sealed class PipeliningBuilder
     {
@@ -14,7 +14,7 @@
         public IServiceCollection Services { get; }
 
         /// <summary>
-        /// Whether this instance was created as a result of a subsequernt call to <see cref="ServiceCollectionExtensions.AddPipelining(IServiceCollection, System.Action{PipeliningBuilder}?)"/>.
+        /// Whether this instance was created as a result of a subsequent call to <see cref="ServiceCollectionExtensions.AddPipelining(IServiceCollection, System.Action{PipeliningBuilder}?)"/>.
         /// </summary>
         public bool IsSubsequentCall { get; }
 

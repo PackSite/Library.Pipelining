@@ -12,7 +12,7 @@ namespace SubPipelineExample
     public class Program
     {
         /*
-         * This example demonstrates the usage of subpipelining.
+         * This example demonstrates the usage of sub-pipelining.
          */
 
         public static async Task Main(string[] args)
@@ -34,8 +34,8 @@ namespace SubPipelineExample
                                 .TryAddTo(pipelines).NullifyFalse() ?? throw new ApplicationException();
 
                             _ = PipelineBuilder.Create<DemoArgs>()
-                                .Name("dynamic-subpipeline-demo")
-                                .Description("Simple pipeline that is used as a subpipeline.")
+                                .Name("dynamic-sub-pipeline-demo")
+                                .Description("Simple pipeline that is used as a sub-pipeline.")
                                 .Lifetime(InvokablePipelineLifetime.Transient)
                                 .Add<SubpipelineStep1>()
                                 .Add<SubpipelineStep2>()

@@ -30,7 +30,7 @@
         /// Pipeline validator.
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="InvalidOperationException">Throws when And() operation is not suppored for this context.</exception>
+        /// <exception cref="InvalidOperationException">Throws when And() operation is not supported for this context.</exception>
         public ValidatorContext SuchThat()
         {
             return SuchThatContext ?? throw new InvalidOperationException("And() operation is not supported for this context.");
@@ -41,7 +41,7 @@
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        /// <exception cref="InvalidOperationException">Throws when And() operation is not suppored for this context.</exception>
+        /// <exception cref="InvalidOperationException">Throws when And() operation is not supported for this context.</exception>
         public ValidatorContext SuchThat(Action<ValidatorContext> action)
         {
             _ = SuchThatContext ?? throw new InvalidOperationException("And() operation is not supported for this context.");

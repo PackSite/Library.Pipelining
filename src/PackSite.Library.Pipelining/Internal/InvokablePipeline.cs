@@ -8,7 +8,7 @@
     using PackSite.Library.Pipelining.Internal.Extensions;
 
     /// <summary>
-    /// Invokable pipleline.
+    /// Invokable pipeline.
     /// </summary>
     /// <typeparam name="TArgs"></typeparam>
     internal sealed class InvokablePipeline<TArgs> : IInvokablePipeline<TArgs>
