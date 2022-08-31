@@ -83,12 +83,12 @@
         /// <inheritdoc/>
         public IInvokablePipeline<TArgs> CreateInvokable(IBaseStepActivator stepActivator)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            var stopwatch = Stopwatch.StartNew();
 
             IReadOnlyList<object> tmp = _steps;
 
-            IStep?[] universalSteps = new IStep?[tmp.Count];
-            IStep<TArgs>?[] genericSteps = new IStep<TArgs>?[tmp.Count];
+            var universalSteps = new IStep?[tmp.Count];
+            var genericSteps = new IStep<TArgs>?[tmp.Count];
 
             for (int i = 0; i < tmp.Count; i++)
             {

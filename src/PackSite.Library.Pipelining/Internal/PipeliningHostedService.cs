@@ -32,7 +32,7 @@
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Initializing PackSite.Library.Pipelining");
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            var stopwatch = Stopwatch.StartNew();
 
             await using (AsyncServiceScope scope = _serviceScopeFactory.CreateAsyncScope())
             {
@@ -43,6 +43,7 @@
                     await pi.RegisterAsync(_pipelineCollection, cancellationToken);
                 }
             }
+
             stopwatch.Stop();
 
             _logger.LogInformation("Succesfully initialized PackSite.Library.Pipelining after {Elapsed}", stopwatch.Elapsed);

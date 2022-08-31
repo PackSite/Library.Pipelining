@@ -1,4 +1,4 @@
-﻿namespace PackSite.Library.Pipelining.Internal
+﻿namespace PackSite.Library.Pipelining
 {
     using System;
     using System.Collections.Generic;

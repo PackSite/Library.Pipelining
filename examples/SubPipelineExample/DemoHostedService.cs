@@ -32,7 +32,7 @@
                     {
                         DemoArgs pipelineArgs = new();
 
-                        var invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
+                        IInvokablePipelineFactory invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
                         IInvokablePipeline<DemoArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<DemoArgs>();
 
                         await invokablePipeline.InvokeAsync(pipelineArgs, stoppingToken);

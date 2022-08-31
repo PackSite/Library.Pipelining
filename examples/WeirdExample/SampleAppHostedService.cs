@@ -82,6 +82,7 @@
                         _logger.LogInformation("\n    R3: {@Result}\n    IPC: {@IPC}\n    PC: {@PCounters}", otherArgs, otherInvokablePipeline.Counters, otherInvokablePipeline.Pipeline.Counters);
                     }
                 }
+
                 Console.WriteLine("Press any key to proceed or press [Ctrl+C] to exit...");
 
             } while (Console.ReadKey(true).KeyChar > 0 && !cancellationToken.IsCancellationRequested);

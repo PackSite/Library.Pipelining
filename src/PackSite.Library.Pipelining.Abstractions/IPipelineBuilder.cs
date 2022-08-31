@@ -1,7 +1,6 @@
 ﻿namespace PackSite.Library.Pipelining
 {
     using System;
-    using PackSite.Library.Pipelining.Internal;
 
     /// <summary>
     /// Pipeline builder.

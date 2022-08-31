@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using PackSite.Library.Pipelining;
 
     internal sealed class StepCollection<TArgs> : IStepCollection
         where TArgs : class

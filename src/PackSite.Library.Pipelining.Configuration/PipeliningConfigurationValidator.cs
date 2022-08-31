@@ -16,7 +16,7 @@
 
             if (options.Pipelines is not null)
             {
-                foreach (var p in options.Pipelines)
+                foreach (KeyValuePair<string, PipelineDefinition?> p in options.Pipelines)
                 {
                     if (p.Key is not null && string.IsNullOrWhiteSpace(p.Key))
                     {

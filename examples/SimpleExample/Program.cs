@@ -22,7 +22,6 @@ namespace SimpleExample
             using CancellationTokenSource cancellationTokenSource = new();
             TextProcessingArgs pipelineArgs = new(text, cancellationTokenSource);
 
-
             // Create pipeline: ExceptionHandlingStep <-> ToUpperTransformStep <-> TrimTransformStep <-> SurroundWithSquareBracketsTransformStep
             IPipeline pipeline = PipelineBuilder.Create<TextProcessingArgs>()
                 .Add<ExceptionHandlingStep>()

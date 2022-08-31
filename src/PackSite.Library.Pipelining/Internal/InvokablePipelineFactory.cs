@@ -151,12 +151,12 @@
 
             private void PipelinesCollection_Removed(object? sender, PipelineRemovedEventArgs e)
             {
-                _container.TryRemove(e.PipelineName, out var _);
+                _container.TryRemove(e.PipelineName, out Lazy<IInvokablePipeline> _);
             }
 
             private void PipelinesCollection_Updated(object? sender, PipelineUpdatedEventArgs e)
             {
-                _container.TryRemove(e.PipelineName, out var _);
+                _container.TryRemove(e.PipelineName, out Lazy<IInvokablePipeline> _);
             }
 
             /// <inheritdoc/>

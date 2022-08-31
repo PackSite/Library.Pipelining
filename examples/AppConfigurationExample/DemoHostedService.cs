@@ -34,7 +34,7 @@
                             TextProcessingArgs pipelineArgs = new(text);
                             Console.WriteLine("INPUT: {0}", pipelineArgs.Text);
 
-                            var invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
+                            IInvokablePipelineFactory invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
                             IInvokablePipeline<TextProcessingArgs> invokablePipeline = invokablePipelineFactory.GetRequiredPipeline<TextProcessingArgs>();
 
                             await invokablePipeline.InvokeAsync(pipelineArgs, stoppingToken);

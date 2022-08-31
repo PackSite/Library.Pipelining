@@ -36,7 +36,7 @@
                         TextProcessingArgs pipelineArgs1 = new(text);
                         Console.WriteLine("INPUT: {0}", pipelineArgs0.Text);
 
-                        var invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
+                        IInvokablePipelineFactory invokablePipelineFactory = scope.ServiceProvider.GetRequiredService<IInvokablePipelineFactory>();
                         IInvokablePipeline<TextProcessingArgs> invokablePipeline0 = invokablePipelineFactory.GetRequiredPipeline<TextProcessingArgs>();
                         IInvokablePipeline<TextProcessingArgs> invokablePipeline1 = invokablePipelineFactory.GetRequiredPipeline<TextProcessingArgs>("text-processsing-pipeline");
 

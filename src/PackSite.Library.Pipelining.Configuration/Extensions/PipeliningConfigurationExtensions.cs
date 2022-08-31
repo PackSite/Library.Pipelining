@@ -21,7 +21,7 @@
 
             if (options.Pipelines is Dictionary<string, PipelineDefinition?> pipelinesToBuild)
             {
-                foreach (var pipelineDefinition in pipelinesToBuild)
+                foreach (KeyValuePair<string, PipelineDefinition?> pipelineDefinition in pipelinesToBuild)
                 {
                     if (pipelineDefinition.Value?.Enabled ?? false)
                     {

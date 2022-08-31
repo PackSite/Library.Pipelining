@@ -76,7 +76,7 @@
         {
             //TODO: pipeline step profiling
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            var stopwatch = Stopwatch.StartNew();
 
             try
             {
