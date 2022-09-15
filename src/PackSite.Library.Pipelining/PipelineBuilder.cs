@@ -30,7 +30,7 @@
         /// <returns></returns>
         public static IPipelineBuilder Create(Type type)
         {
-            ObjectFactory factory = _cache.GetOrAdd(type, (key) => // The factory may run mutliple times but we don't care since we don't want to add overhead with lazy
+            ObjectFactory factory = _cache.GetOrAdd(type, static (key) => // The factory may run multiple times but we don't care since we don't want to add overhead with lazy
             {
                 Type builderType = typeof(PipelineBuilder<>).MakeGenericType(key);
                 return ActivatorUtilities.CreateFactory(builderType, Array.Empty<Type>());

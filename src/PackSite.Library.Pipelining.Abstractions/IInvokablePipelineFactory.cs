@@ -10,8 +10,8 @@
         /// <summary>
         /// Gets invokable pipeline by name. Returns null when not found.
         ///
-        /// When requesting a pipeline for subpipelining it's not recommended to retrive pipeline in constructor.
-        /// Instead, retrive it inside ExecuteAsync.
+        /// When requesting a pipeline for sub-pipelining it's not recommended to retrieve pipeline in constructor.
+        /// Instead, retrieve it inside ExecuteAsync.
         /// </summary>
         /// <typeparam name="TArgs"></typeparam>
         /// <param name="name"></param>
@@ -20,10 +20,10 @@
             where TArgs : class;
 
         /// <summary>
-        /// Gets invokable pipeline by its default name name. Returns null when not found.
+        /// Gets invokable pipeline by its default name. Returns null when not found.
         ///
-        /// When requesting a pipeline for subpipelining it's not recommended to retrive pipeline in constructor.
-        /// Instead, retrive it inside ExecuteAsync.
+        /// When requesting a pipeline for sub-pipelining it's not recommended to retrieve pipeline in constructor.
+        /// Instead, retrieve it inside ExecuteAsync.
         /// </summary>
         /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>
@@ -33,8 +33,8 @@
         /// <summary>
         /// Gets invokable pipeline by name or default.
         ///
-        /// When requesting a pipeline for subpipelining it's not recommended to retrive pipeline in constructor.
-        /// Instead, retrive it inside ExecuteAsync.
+        /// When requesting a pipeline for sub-pipelining it's not recommended to retrieve pipeline in constructor.
+        /// Instead, retrieve it inside ExecuteAsync.
         /// </summary>
         /// <typeparam name="TArgs"></typeparam>
         /// <param name="name"></param>
@@ -44,10 +44,10 @@
             where TArgs : class;
 
         /// <summary>
-        /// Gets invokable pipeline by its default name name.
+        /// Gets invokable pipeline by its default name.
         ///
-        /// When requesting a pipeline for subpipelining it's not recommended to retrive pipeline in constructor.
-        /// Instead, retrive it inside ExecuteAsync.
+        /// When requesting a pipeline for sub-pipelining it's not recommended to retrieve pipeline in constructor.
+        /// Instead, retrieve it inside ExecuteAsync.
         /// </summary>
         /// <typeparam name="TArgs"></typeparam>
         /// <returns></returns>

@@ -23,7 +23,7 @@
             }
             catch (Exception)
             {
-                _logger.LogError("An exception occured while executing '{0}' pipeline", invokablePipeline.Pipeline.Name);
+                _logger.LogError("An exception occurred while executing '{0}' pipeline", invokablePipeline.Pipeline.Name);
 
                 // Retry
                 //await invokablePipeline.InvokeAsync(args, cancellationToken);

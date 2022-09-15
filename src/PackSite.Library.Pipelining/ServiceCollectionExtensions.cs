@@ -19,9 +19,11 @@
         /// <returns></returns>
         public static IServiceCollection AddPipelining(this IServiceCollection services, Action<PipeliningBuilder>? builder = null)
         {
-            PipeliningBuilder p = new(services);
+            bool isSubsequentCall = services.Any(x => x.ServiceType == typeof(InvokablePipelineFactory.SingletonPipelines));
 
-            if (!services.Any(x => x.ServiceType == typeof(InvokablePipelineFactory.SingletonPipelines))) // Single check instad of three TryAdd... calls
+            PipeliningBuilder p = new(services, isSubsequentCall);
+
+            if (!isSubsequentCall) // Single check instead of three TryAdd... calls
             {
                 services.AddSingleton<IPipelineCollection, PipelineCollection>();
                 services.AddSingleton<InvokablePipelineFactory.SingletonPipelines>();

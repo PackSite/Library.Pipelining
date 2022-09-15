@@ -17,7 +17,7 @@
         {
             args.Value += GetType().Name + " > ";
 
-            IInvokablePipeline<DemoArgs> invokableSubpipeline = _invokablePipelineFactory.GetRequiredPipeline<DemoArgs>("dynamic-subpipeline-demo");
+            IInvokablePipeline<DemoArgs> invokableSubpipeline = _invokablePipelineFactory.GetRequiredPipeline<DemoArgs>("dynamic-sub-pipeline-demo");
             await invokableSubpipeline.InvokeAsync(args, next, cancellationToken);
 
             args.Value += GetType().Name + " < ";

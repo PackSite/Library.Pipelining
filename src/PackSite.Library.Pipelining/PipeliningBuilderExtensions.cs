@@ -34,7 +34,7 @@
         }
 
         /// <summary>
-        /// Adds pipeline initalizer.
+        /// Adds pipeline initializer.
         /// </summary>
         /// <param name="pipelining"></param>
         /// <typeparam name="TInitializer"></typeparam>
@@ -48,7 +48,7 @@
         }
 
         /// <summary>
-        /// Adds pipeline initalizer.
+        /// Adds pipeline initializer.
         /// </summary>
         /// <param name="pipelining"></param>
         /// <param name="initializer"></param>
@@ -61,7 +61,7 @@
         }
 
         /// <summary>
-        /// Adds pipeline initalizer.
+        /// Adds pipeline initializer.
         /// </summary>
         /// <param name="pipelining"></param>
         /// <param name="initializer"></param>

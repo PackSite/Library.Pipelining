@@ -12,7 +12,7 @@
         public ValueTask RegisterAsync(IPipelineCollection pipelines, CancellationToken cancellationToken)
         {
             _ = PipelineBuilder.Create<TextProcessingArgs>()
-                .Name("text-processsing-pipeline")
+                .Name("text-processing-pipeline")
                 .Description("Text processing pipeline.")
                 .Lifetime(InvokablePipelineLifetime.Scoped)
                 .Add<ExceptionHandlingStep>()

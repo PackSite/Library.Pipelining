@@ -52,7 +52,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Steps.Should().HaveCount(9);
 
             pipeline.ToString().Should().NotBeNull();
-            pipeline.ToString().Should().ContainAll(
+            pipeline.ToString("steps", null).Should().ContainAll(
                 typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs2).FullName,
                 typeof(StepWithArgs3).FullName,
@@ -85,7 +85,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Steps.Should().HaveCount(3);
 
             pipeline.ToString().Should().NotBeNull();
-            pipeline.ToString().Should().ContainAll(
+            pipeline.ToString("steps", null).Should().ContainAll(
                 typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs2).FullName,
                 typeof(StepWithArgs3).FullName,
@@ -117,7 +117,7 @@ namespace PackSite.Library.Pipelining.Tests
             pipeline.Steps.Should().HaveCount(3);
 
             pipeline.ToString().Should().NotBeNull();
-            pipeline.ToString().Should().ContainAll(
+            pipeline.ToString("s", null).Should().ContainAll(
                 typeof(StepWithArgs1).FullName,
                 typeof(StepWithArgs2).FullName,
                 typeof(StepWithArgs3).FullName,
@@ -181,7 +181,7 @@ namespace PackSite.Library.Pipelining.Tests
 
             // Assert
             pipeline.Should().NotBeNull();
-            pipeline.Name.Should().Be(DefaultName);
+            pipeline.Name.Should().Be(expected: DefaultName);
             pipeline.Description.Should().Be(DefaultDescription);
             pipeline.Lifetime.Should().Be(lifetime);
             pipeline.Steps.Should().BeEmpty();
@@ -196,7 +196,7 @@ namespace PackSite.Library.Pipelining.Tests
                 .Build();
 
             // Assert
-            pipeline.Name.Should().Be(typeof(IPipeline<SampleArgs>).FullName!);
+            pipeline.Name.Should().Be(IPipeline<SampleArgs>.DefaultName);
             pipeline.Description.Should().Be(DefaultDescription);
             pipeline.Lifetime.Should().Be(InvokablePipelineLifetime.Singleton);
             pipeline.Steps.Should().BeEmpty();
@@ -210,7 +210,7 @@ namespace PackSite.Library.Pipelining.Tests
                 .Build();
 
             // Assert
-            pipeline.Name.Should().Be(typeof(IPipeline<SampleArgs>).FullName!);
+            pipeline.Name.Should().Be(IPipeline<SampleArgs>.DefaultName);
             pipeline.Description.Should().BeEmpty();
             pipeline.Lifetime.Should().Be(InvokablePipelineLifetime.Singleton);
             pipeline.Steps.Should().BeEmpty();

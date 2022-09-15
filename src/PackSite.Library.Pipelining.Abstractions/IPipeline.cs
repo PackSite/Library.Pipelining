@@ -6,7 +6,7 @@
     /// <summary>
     /// Pipeline.
     /// </summary>
-    public interface IPipeline
+    public interface IPipeline : IFormattable
     {
         /// <summary>
         /// Pipeline instance counters.
@@ -54,6 +54,11 @@
     public interface IPipeline<TArgs> : IPipeline
         where TArgs : class
     {
+        /// <summary>
+        /// Default pipeline name.
+        /// </summary>
+        public static PipelineName DefaultName => $"Pipeline<{typeof(TArgs)}>";
+
         /// <summary>
         /// Creates an invokable pipeline.
         /// </summary>

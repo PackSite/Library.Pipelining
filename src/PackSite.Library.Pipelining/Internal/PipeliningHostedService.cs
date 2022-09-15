@@ -46,7 +46,7 @@
 
             stopwatch.Stop();
 
-            _logger.LogInformation("Succesfully initialized PackSite.Library.Pipelining after {Elapsed}", stopwatch.Elapsed);
+            _logger.LogInformation("Successfully initialized pipelines after {Elapsed}", stopwatch.Elapsed);
         }
 
         /// <inheritdoc/>

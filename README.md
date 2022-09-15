@@ -16,13 +16,13 @@
 
 ## Features
   
-  - Uses `Microsoft.Extensions.*` to suppoort a modular library design (can also be used without Generic Host but with limited features).
+  - Uses `Microsoft.Extensions.*` to support a modular library design (can also be used without Generic Host but with limited features).
   - Support for asynchronous processing model.
   - Transient, Scoped, and Singleton pipeline lifetime.
-  - Pipelines distinguised by custom names or pipeline argument data type.
+  - Pipelines distinguished by custom names or pipeline argument data type.
   - Fluent pipeline builder (for defining pipeline name, description, and steps).
   - Highly configurable  steps order using `Add`, `Insert`, `InsertBefore`, `InsertAfter` methods.
-  - Dynamic subpipelines.
+  - Dynamic sub-pipelines.
   - Generic and object-based steps.
   - Code-first pipeline definitions during Generic Host start and at runtime through `IPipelineCollection`.
   - Optional configuration-based pipelines definitions using `IOptions` with reloading.
