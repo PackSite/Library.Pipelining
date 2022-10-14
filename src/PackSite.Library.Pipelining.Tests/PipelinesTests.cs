@@ -132,7 +132,7 @@ namespace PackSite.Library.Pipelining.Tests
         {
             // Arrange
             bool useDefault = pipelineName is null;
-            pipelineName ??= typeof(IPipeline<SampleArgs>).FullName!;
+            pipelineName ??= IPipeline<SampleArgs>.DefaultName;
 
             using ServiceProvider services = new ServiceCollection()
                 .AddPipelining()
@@ -208,7 +208,7 @@ namespace PackSite.Library.Pipelining.Tests
         {
             // Arrange
             bool useDefault = pipelineName is null;
-            pipelineName ??= typeof(IPipeline<SampleArgs>).FullName!;
+            pipelineName ??= IPipeline<SampleArgs>.DefaultName;
 
             IPipelineCollection pipelines = new PipelineCollection();
 
@@ -274,7 +274,7 @@ namespace PackSite.Library.Pipelining.Tests
         {
             // Arrange
             bool useDefault = pipelineName is null;
-            pipelineName ??= typeof(IPipeline<SampleArgs>).FullName!;
+            pipelineName ??= IPipeline<SampleArgs>.DefaultName;
 
             using ServiceProvider services = new ServiceCollection()
                 .AddPipelining()
