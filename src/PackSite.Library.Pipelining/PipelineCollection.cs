@@ -111,7 +111,7 @@
         public IPipeline<TArgs> Get<TArgs>()
             where TArgs : class
         {
-            return Get<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
+            return Get<TArgs>(IPipeline<TArgs>.DefaultName);
         }
 
         /// <inheritdoc/>
@@ -125,7 +125,7 @@
         public IPipeline<TArgs>? GetOrDefault<TArgs>()
             where TArgs : class
         {
-            return GetOrDefault<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
+            return GetOrDefault<TArgs>(IPipeline<TArgs>.DefaultName);
         }
 
         /// <inheritdoc/>

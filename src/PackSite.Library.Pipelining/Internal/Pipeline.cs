@@ -20,7 +20,7 @@
         private readonly IReadOnlyList<object> _steps;
         private readonly IReadOnlyList<Type> _stepTypes;
 
-        private string? _toStringCache;
+        private string? _toFullNameStringCache;
         private string? _toStepsStringCache;
 
         /// <inheritdoc/>
@@ -159,11 +159,18 @@
             return format.ToLowerInvariant() switch
             {
                 "n" or "name" or "d" or "default" => Name,
-                "f" or "full" or "fullname" => $"{Name}, {IPipeline<TArgs>.DefaultName}",
+                "f" or "full" or "fullname" => ToFullNameString(),
                 "s" or "steps" => ToStepsString(formatProvider),
 
                 _ => throw new FormatException($"The {format} format string is not supported."),
             };
+        }
+
+        private string ToFullNameString()
+        {
+            _toFullNameStringCache ??= $"{Name}, {IPipeline<TArgs>.DefaultName}";
+
+            return _toFullNameStringCache;
         }
 
         private string ToStepsString(IFormatProvider formatProvider)

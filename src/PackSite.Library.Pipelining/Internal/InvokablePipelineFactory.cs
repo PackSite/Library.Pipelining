@@ -74,14 +74,14 @@
         public IInvokablePipeline<TArgs>? GetPipeline<TArgs>()
             where TArgs : class
         {
-            return GetPipeline<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
+            return GetPipeline<TArgs>(IPipeline<TArgs>.DefaultName);
         }
 
         /// <inheritdoc/>
         public IInvokablePipeline<TArgs> GetRequiredPipeline<TArgs>()
             where TArgs : class
         {
-            return GetRequiredPipeline<TArgs>(typeof(IPipeline<TArgs>).FullName ?? string.Empty);
+            return GetRequiredPipeline<TArgs>(IPipeline<TArgs>.DefaultName);
         }
 
         private void PipelinesCollection_Cleared(object? sender, EventArgs e)
