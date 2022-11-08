@@ -10,7 +10,7 @@
     public sealed class PipeliningConfigurationValidator : IValidateOptions<PipeliningConfiguration>
     {
         /// <inheritdoc/>
-        public ValidateOptionsResult Validate(string name, PipeliningConfiguration options)
+        public ValidateOptionsResult Validate(string? name, PipeliningConfiguration options)
         {
             List<string> failures = new();
 

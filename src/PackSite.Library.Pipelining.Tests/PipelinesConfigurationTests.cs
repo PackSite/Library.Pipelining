@@ -27,7 +27,7 @@ namespace PackSite.Library.Pipelining.Tests
             string pipelinesSection = $"{DefaultSectionName}:{nameof(PipeliningConfiguration.Pipelines)}";
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>()
+                .AddInMemoryCollection(new Dictionary<string, string?>()
                 {
                     [$"{DefaultSectionName}:{nameof(PipeliningConfiguration.ThrowOnReloadError)}"] = true.ToString(),
 
@@ -89,7 +89,7 @@ namespace PackSite.Library.Pipelining.Tests
             string pipelinesSection = $"{DefaultSectionName}:{nameof(PipeliningConfiguration.Pipelines)}";
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>()
+                .AddInMemoryCollection(new Dictionary<string, string?>()
                 {
                     [$"{DefaultSectionName}:{nameof(PipeliningConfiguration.ThrowOnReloadError)}"] = true.ToString(),
 

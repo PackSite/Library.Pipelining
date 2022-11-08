@@ -59,7 +59,7 @@
             return Task.CompletedTask;
         }
 
-        private void OptionsChanged(PipeliningConfiguration pipeliningConfiguration, string namedOptions)
+        private void OptionsChanged(PipeliningConfiguration pipeliningConfiguration, string? namedOptions)
         {
             UpdatePipelinesAsync(pipeliningConfiguration, CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult();
         }
