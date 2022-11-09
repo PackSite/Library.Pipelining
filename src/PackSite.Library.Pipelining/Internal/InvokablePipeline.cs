@@ -1,4 +1,4 @@
-﻿namespace PackSite.Library.Pipelining.Internal
+namespace PackSite.Library.Pipelining.Internal
 {
     using System;
     using System.Diagnostics;
@@ -76,7 +76,7 @@
         {
             //TODO: pipeline step profiling
 
-            var stopwatch = Stopwatch.StartNew();
+            Stopwatch stopwatch = Stopwatch.StartNew();
 
             try
             {

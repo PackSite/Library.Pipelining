@@ -41,7 +41,7 @@
         /// <inheritdoc/>
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var stopwatch = Stopwatch.StartNew();
+            Stopwatch stopwatch = Stopwatch.StartNew();
             _logger.LogInformation("Initializing PackSite.Library.Pipelining.Configuration");
 
             await UpdatePipelinesAsync(_options.CurrentValue, cancellationToken);
@@ -69,7 +69,7 @@
             try
             {
                 await _lock.WaitAsync(cancellationToken);
-                var stopwatch = Stopwatch.StartNew();
+                Stopwatch stopwatch = Stopwatch.StartNew();
 
                 IReadOnlyList<IPipeline> pipelines = pipeliningConfiguration.BuildPipelines();
                 List<PipelineName> toPreserve = new(pipelines.Count);

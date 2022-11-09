@@ -32,7 +32,7 @@
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Initializing PackSite.Library.Pipelining");
-            var stopwatch = Stopwatch.StartNew();
+            Stopwatch stopwatch = Stopwatch.StartNew();
 
             await using (AsyncServiceScope scope = _serviceScopeFactory.CreateAsyncScope())
             {

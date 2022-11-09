@@ -243,7 +243,7 @@ namespace PackSite.Library.Pipelining.Tests
                 pipelines.Get<SampleArgs>() :
                 pipelines.Get<SampleArgs>(pipelineName);
 
-            var stepActivator = (IStepActivator)Activator.CreateInstance(activatorType)!;
+            IStepActivator stepActivator = (IStepActivator)Activator.CreateInstance(activatorType)!;
 
             IInvokablePipeline<SampleArgs>? invokablePipeline = pipelineFromCollection?.CreateInvokable(stepActivator);
             invokablePipeline.Should().NotBeNull();
