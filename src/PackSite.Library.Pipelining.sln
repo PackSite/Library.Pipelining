@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{F61F50C9-6428-4BE7-AE39-DF333029D19E}"
 	ProjectSection(SolutionItems) = preProject
@@ -34,6 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 		..\.github\workflows\CD-GitHub.yml = ..\.github\workflows\CD-GitHub.yml
 		..\.github\workflows\CD-NuGet.yml = ..\.github\workflows\CD-NuGet.yml
 		..\.github\workflows\CI.yml = ..\.github\workflows\CI.yml
+		..\.github\workflows\delete-old-workflows.yml = ..\.github\workflows\delete-old-workflows.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackSite.Library.Pipelining.Abstractions", "PackSite.Library.Pipelining.Abstractions\PackSite.Library.Pipelining.Abstractions.csproj", "{785A0E69-DDA1-4833-BFC2-2C3B9AB12673}"
