@@ -82,7 +82,7 @@
         /// <inheritdoc/>
         public bool TryRemove(PipelineName name)
         {
-            bool wasRemoved = _pipelines.TryRemove(name, out IPipeline _);
+            bool wasRemoved = _pipelines.TryRemove(name, out _);
 
             if (wasRemoved && Removed is not null)
             {

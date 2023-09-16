@@ -48,7 +48,7 @@
 
             if (pipeline.Lifetime is InvokablePipelineLifetime.Singleton)
             {
-                return _singletonPipelines.Get<TArgs>(pipeline);
+                return _singletonPipelines.Get(pipeline);
             }
 
             if (pipeline.Lifetime is InvokablePipelineLifetime.Scoped)
@@ -115,7 +115,7 @@
         {
             private readonly IPipelineCollection _pipelines;
             private readonly ISingletonStepActivator _stepActivator;
-            private readonly ConcurrentDictionary<PipelineName, Lazy<IInvokablePipeline>> _container = new();
+            private readonly ConcurrentDictionary<PipelineName, IInvokablePipeline> _pipelinesCache = new();
 
             /// <summary>
             /// Initializes a new instance of <see cref="SingletonPipelines"/>.
@@ -138,32 +138,30 @@
             public IInvokablePipeline<TArgs> Get<TArgs>(IPipeline<TArgs> pipeline)
                 where TArgs : class
             {
-                return (IInvokablePipeline<TArgs>)_container.GetOrAdd(pipeline.Name, (key, p) =>
+                return (IInvokablePipeline<TArgs>)_pipelinesCache.GetOrAdd(pipeline.Name, (key, p) =>
                 {
-                    return new Lazy<IInvokablePipeline>(() => pipeline.CreateInvokable(_stepActivator), LazyThreadSafetyMode.ExecutionAndPublication);
-                }, pipeline).Value;
+                    return pipeline.CreateInvokable(_stepActivator);
+                }, pipeline);
             }
 
             private void PipelinesCollection_Cleared(object? sender, EventArgs e)
             {
-                _container.Clear();
+                _pipelinesCache.Clear();
             }
 
             private void PipelinesCollection_Removed(object? sender, PipelineRemovedEventArgs e)
             {
-                _container.TryRemove(e.PipelineName, out Lazy<IInvokablePipeline> _);
+                _pipelinesCache.TryRemove(e.PipelineName, out _);
             }
 
             private void PipelinesCollection_Updated(object? sender, PipelineUpdatedEventArgs e)
             {
-                _container.TryRemove(e.PipelineName, out Lazy<IInvokablePipeline> _);
+                _pipelinesCache.TryRemove(e.PipelineName, out _);
             }
 
             /// <inheritdoc/>
             public void Dispose()
             {
-                _container.Clear();
-
                 _pipelines.Cleared -= PipelinesCollection_Cleared;
                 _pipelines.Updated -= PipelinesCollection_Updated;
                 _pipelines.Removed -= PipelinesCollection_Removed;
