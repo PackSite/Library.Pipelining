@@ -12,7 +12,7 @@
 [![Version](https://img.shields.io/nuget/v/PackSite.Library.Pipelining.Configuration.svg?label=Pipelining.Configuration)](https://nuget.org/packages/PackSite.Library.Pipelining.Configuration)
 [![Downloads](https://img.shields.io/nuget/dt/PackSite.Library.Pipelining.Configuration.svg?label=)](https://nuget.org/packages/PackSite.Library.Pipelining.Configuration)
 
-**PackSite.Library.Pipelining** is a set of **.NET Standard 2.1**, **.NET 5**, and **.NET 6** compatible libraries for building modern **ASP.NET Core** middleware-like data pipelines.
+**PackSite.Library.Pipelining** is a set of **.NET 8** compatible libraries for building modern **ASP.NET Core** middleware-like data pipelines.
 
 ## Features
   
