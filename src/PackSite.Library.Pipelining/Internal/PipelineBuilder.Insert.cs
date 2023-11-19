@@ -8,7 +8,7 @@
         /// <inheritdoc/>
         public IPipelineBuilder<TArgs> Insert(int index, IBaseStep instance)
         {
-            _ = instance ?? throw new ArgumentNullException(nameof(instance));
+            ArgumentNullException.ThrowIfNull(instance);
 
             if (instance is not (IStep or IStep<TArgs>))
             {

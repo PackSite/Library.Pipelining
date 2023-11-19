@@ -36,21 +36,21 @@ See [Examples folder](https://github.com/PackSite/Library.Pipelining/tree/main/e
 ## Benchmarks
 
 ```
-BenchmarkDotNet v0.13.7, Windows 10 (10.0.19045.3448/22H2/2022Update)
+BenchmarkDotNet v0.13.10, Windows 10 (10.0.19045.3693/22H2/2022Update)
 Intel Core i7-4790 CPU 3.60GHz (Haswell), 1 CPU, 8 logical and 4 physical cores
-.NET SDK 7.0.401
-  [Host]     : .NET 7.0.11 (7.0.1123.42427), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.11 (7.0.1123.42427), X64 RyuJIT AVX2
+.NET SDK 8.0.100
+  [Host]     : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
 ```
 
-|                       Method |        Mean |     Error |    StdDev | Ratio | RatioSD | Rank |
-|----------------------------- |------------:|----------:|----------:|------:|--------:|-----:|
-|           'Steps.Count == 1' |    24.04 us |  0.479 us |  0.911 us |  0.39 |    0.01 |    1 |
-|           'Steps.Count == 2' |    31.67 us |  0.483 us |  0.451 us |  0.51 |    0.01 |    2 |
-| 'Loop simulation (i == 100)' |    62.66 us |  1.157 us |  1.083 us |  1.00 |    0.00 |    3 |
-|           'Steps.Count == 5' |    67.43 us |  1.327 us |  2.524 us |  1.09 |    0.04 |    4 |
-|          'Steps.Count == 10' |   127.96 us |  2.365 us |  5.339 us |  2.05 |    0.09 |    5 |
-|          'Steps.Count == 50' |   643.48 us | 12.651 us | 12.425 us | 10.27 |    0.21 |    6 |
-|         'Steps.Count == 100' | 1,333.14 us | 15.208 us | 11.874 us | 21.35 |    0.47 |    7 |
+| Method                       | Mean        | Error    | StdDev   | Ratio | RatioSD | Rank |
+|----------------------------- |------------:|---------:|---------:|------:|--------:|-----:|
+| 'Steps.Count == 1'           |    20.13 us | 0.401 us | 0.961 us |  0.35 |    0.02 |    1 |
+| 'Steps.Count == 2'           |    26.54 us | 0.500 us | 0.650 us |  0.43 |    0.01 |    2 |
+| 'Steps.Count == 5'           |    52.33 us | 1.037 us | 1.520 us |  0.87 |    0.03 |    3 |
+| 'Loop simulation (i == 100)' |    61.08 us | 0.141 us | 0.110 us |  1.00 |    0.00 |    4 |
+| 'Steps.Count == 10'          |    96.50 us | 1.840 us | 1.536 us |  1.58 |    0.02 |    5 |
+| 'Steps.Count == 50'          |   501.68 us | 8.753 us | 8.188 us |  8.24 |    0.13 |    6 |
+| 'Steps.Count == 100'         | 1,049.00 us | 8.896 us | 6.946 us | 17.18 |    0.12 |    7 |
 
 > Every pipeline was invoked 100 times - so for pipeline with 5 steps, a 500 steps were executed.

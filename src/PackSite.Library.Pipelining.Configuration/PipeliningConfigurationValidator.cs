@@ -12,7 +12,7 @@
         /// <inheritdoc/>
         public ValidateOptionsResult Validate(string? name, PipeliningConfiguration options)
         {
-            List<string> failures = new();
+            List<string> failures = [];
 
             if (options.Pipelines is not null)
             {

@@ -52,11 +52,16 @@
                         IReadOnlyList<object> steps,
                         IReadOnlyList<Type> stepTypes)
         {
+            ArgumentNullException.ThrowIfNull(name);
+            ArgumentNullException.ThrowIfNull(description);
+            ArgumentNullException.ThrowIfNull(steps);
+            ArgumentNullException.ThrowIfNull(stepTypes);
+
             Lifetime = lifetime;
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            Description = description ?? throw new ArgumentNullException(nameof(description));
-            _steps = steps ?? throw new ArgumentNullException(nameof(steps));
-            _stepTypes = stepTypes ?? throw new ArgumentNullException(nameof(stepTypes));
+            Name = name;
+            Description = description;
+            _steps = steps;
+            _stepTypes = stepTypes;
         }
 
         /// <inheritdoc/>

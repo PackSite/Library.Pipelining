@@ -247,13 +247,13 @@ namespace PackSite.Library.Pipelining.Tests
         [InlineData("")]
         [InlineData(" ")]
         [InlineData(null!)]
-        public void Should_not_create_pipeline_with_empty_or_whitespace_name(string name)
+        public void Should_not_create_pipeline_with_empty_or_whitespace_name(string? name)
         {
             // Act
             Action action = () =>
             {
                 IPipeline pipeline = PipelineBuilder.Create<SampleArgs>()
-                    .Name(name)
+                    .Name(name!)
                     .Build();
             };
 

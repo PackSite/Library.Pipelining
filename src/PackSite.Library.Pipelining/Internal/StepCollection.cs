@@ -9,8 +9,8 @@
     internal sealed class StepCollection<TArgs> : IStepCollection
         where TArgs : class
     {
-        private readonly List<object> _steps = new();
-        private readonly List<Type> _stepTypes = new();
+        private readonly List<object> _steps = [];
+        private readonly List<Type> _stepTypes = [];
 
         /// <inheritdoc/>
         public int Count => _steps.Count;
@@ -34,19 +34,23 @@
         /// <inheritdoc/>
         public int IndexOf(Type stepType)
         {
+            ArgumentNullException.ThrowIfNull(stepType);
+
             return _stepTypes.IndexOf(stepType);
         }
 
         /// <inheritdoc/>
         public int IndexOf(Type stepType, int index)
         {
+            ArgumentNullException.ThrowIfNull(stepType);
+
             return _stepTypes.IndexOf(stepType, index);
         }
 
         /// <inheritdoc/>
         public void Insert(int index, Type stepType)
         {
-            _ = stepType ?? throw new ArgumentNullException(nameof(stepType));
+            ArgumentNullException.ThrowIfNull(stepType);
 
             Type[] stepInterfaces = stepType.GetInterfaces();
 
@@ -62,7 +66,7 @@
         /// <inheritdoc/>
         public void Insert(int index, IBaseStep instance)
         {
-            _ = instance ?? throw new ArgumentNullException(nameof(instance));
+            ArgumentNullException.ThrowIfNull(instance);
 
             if (instance is not (IStep or IStep<TArgs>))
             {
@@ -83,7 +87,7 @@
         /// <inheritdoc/>
         public void Add(Type stepType)
         {
-            _ = stepType ?? throw new ArgumentNullException(nameof(stepType));
+            ArgumentNullException.ThrowIfNull(stepType);
 
             Type[] stepInterfaces = stepType.GetInterfaces();
 
@@ -99,7 +103,7 @@
         /// <inheritdoc/>
         public void Add(IBaseStep instance)
         {
-            _ = instance ?? throw new ArgumentNullException(nameof(instance));
+            ArgumentNullException.ThrowIfNull(instance);
 
             if (instance is not (IStep or IStep<TArgs>))
             {
@@ -120,18 +124,24 @@
         /// <inheritdoc/>
         public bool Contains(Type stepType)
         {
+            ArgumentNullException.ThrowIfNull(stepType);
+
             return _stepTypes.Contains(stepType);
         }
 
         /// <inheritdoc/>
         public void CopyTo(Type[] array, int arrayIndex)
         {
+            ArgumentNullException.ThrowIfNull(array);
+
             _stepTypes.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc/>
         public bool Remove(Type stepType)
         {
+            ArgumentNullException.ThrowIfNull(stepType);
+
             int index = IndexOf(stepType);
 
             if (index >= 0)

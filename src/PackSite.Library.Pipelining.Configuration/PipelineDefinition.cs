@@ -45,7 +45,9 @@
         /// <param name="type"></param>
         public void SetArgsType(Type type)
         {
-            ArgsType = type?.AssemblyQualifiedName ?? throw new ArgumentNullException(nameof(type));
+            ArgumentNullException.ThrowIfNull(type);
+
+            ArgsType = type?.AssemblyQualifiedName;
         }
 
         /// <summary>
@@ -54,9 +56,9 @@
         /// <param name="steps"></param>
         public void AddSteps(IEnumerable<Type> steps)
         {
-            _ = steps ?? throw new ArgumentNullException(nameof(steps));
+            ArgumentNullException.ThrowIfNull(steps);
 
-            Steps ??= new List<string?>();
+            Steps ??= [];
             Steps.AddRange(steps.Select(x => x.AssemblyQualifiedName));
         }
 
@@ -66,9 +68,9 @@
         /// <param name="steps"></param>
         public void AddSteps(params Type[] steps)
         {
-            _ = steps ?? throw new ArgumentNullException(nameof(steps));
+            ArgumentNullException.ThrowIfNull(steps);
 
-            Steps ??= new List<string?>();
+            Steps ??= [];
             Steps.AddRange(steps.Select(x => x.AssemblyQualifiedName));
         }
     }

@@ -9,24 +9,21 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
-    internal sealed class PipeliningHostedService : IHostedService
+    /// <summary>
+    /// Initializes a new instance of <see cref="PipeliningHostedService"/>.
+    /// </summary>
+    /// <param name="serviceScopeFactory"></param>
+    /// <param name="pipelineCollection"></param>
+    /// <param name="logger"></param>
+    internal sealed class PipeliningHostedService(
+        IServiceScopeFactory serviceScopeFactory,
+        IPipelineCollection pipelineCollection,
+        ILoggerFactory logger) : IHostedService
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IPipelineCollection _pipelineCollection;
-        private readonly ILogger _logger;
+        private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
+        private readonly IPipelineCollection _pipelineCollection = pipelineCollection;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="PipeliningHostedService"/>.
-        /// </summary>
-        /// <param name="serviceScopeFactory"></param>
-        /// <param name="pipelineCollection"></param>
-        /// <param name="logger"></param>
-        public PipeliningHostedService(IServiceScopeFactory serviceScopeFactory, IPipelineCollection pipelineCollection, ILoggerFactory logger)
-        {
-            _serviceScopeFactory = serviceScopeFactory;
-            _pipelineCollection = pipelineCollection;
-            _logger = logger.CreateLogger("PackSite.Library.Pipelining");
-        }
+        private readonly ILogger _logger = logger.CreateLogger("PackSite.Library.Pipelining");
 
         /// <inheritdoc/>
         public async Task StartAsync(CancellationToken cancellationToken)

@@ -54,7 +54,9 @@
         /// <inheritdoc/>
         public IPipelineBuilder<TArgs> Description(string description)
         {
-            _description = description ?? throw new ArgumentNullException(nameof(description));
+            ArgumentNullException.ThrowIfNull(description);
+
+            _description = description;
 
             return this;
         }

@@ -37,11 +37,11 @@ namespace PackSite.Library.Pipelining.Tests
         [InlineData("")]
         [InlineData(" ")]
         [InlineData(null!)]
-        public void Should_not_create_with_ctor(string pipelineNameStr)
+        public void Should_not_create_with_ctor(string? pipelineNameStr)
         {
             Action action = () =>
             {
-                _ = new PipelineName(pipelineNameStr);
+                _ = new PipelineName(pipelineNameStr!);
             };
 
             action.Should().Throw<ArgumentException>();

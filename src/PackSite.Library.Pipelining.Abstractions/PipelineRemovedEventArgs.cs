@@ -5,20 +5,16 @@
     /// <summary>
     /// Arguments of the event invoked when a pipeline was removed from <see cref="IPipelineCollection"/>.
     /// </summary>
-    public sealed class PipelineRemovedEventArgs : EventArgs
+    /// <remarks>
+    /// Initializes a new instance of <see cref="PipelineRemovedEventArgs"/>.
+    /// </remarks>
+    /// <param name="pipelineName"></param>
+    public sealed class PipelineRemovedEventArgs(
+        PipelineName pipelineName) : EventArgs
     {
         /// <summary>
         /// Pipeline name.
         /// </summary>
-        public PipelineName PipelineName { get; }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="PipelineRemovedEventArgs"/>.
-        /// </summary>
-        /// <param name="pipelineName"></param>
-        public PipelineRemovedEventArgs(PipelineName pipelineName)
-        {
-            PipelineName = pipelineName ?? throw new ArgumentNullException(nameof(pipelineName));
-        }
+        public PipelineName PipelineName { get; } = pipelineName ?? throw new ArgumentNullException(nameof(pipelineName));
     }
 }

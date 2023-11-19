@@ -5,20 +5,16 @@
     /// <summary>
     /// Arguments of the event invoked when a pipeline was added to <see cref="IPipelineCollection"/>.
     /// </summary>
-    public sealed class PipelineAddedEventArgs : EventArgs
+    /// <remarks>
+    /// Initializes a new instance of <see cref="PipelineAddedEventArgs"/>.
+    /// </remarks>
+    /// <param name="pipelineName"></param>
+    public sealed class PipelineAddedEventArgs(
+        PipelineName pipelineName) : EventArgs
     {
         /// <summary>
         /// Pipeline name.
         /// </summary>
-        public PipelineName PipelineName { get; }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="PipelineAddedEventArgs"/>.
-        /// </summary>
-        /// <param name="pipelineName"></param>
-        public PipelineAddedEventArgs(PipelineName pipelineName)
-        {
-            PipelineName = pipelineName ?? throw new ArgumentNullException(nameof(pipelineName));
-        }
+        public PipelineName PipelineName { get; } = pipelineName ?? throw new ArgumentNullException(nameof(pipelineName));
     }
 }

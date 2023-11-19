@@ -5,7 +5,7 @@
 
     public sealed class SampleArgs
     {
-        public List<Type> DataIn { get; } = new();
-        public List<Type> DataOut { get; } = new();
+        public List<Type> DataIn { get; } = [];
+        public List<Type> DataOut { get; } = [];
     }
 }

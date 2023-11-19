@@ -17,7 +17,7 @@
         /// <returns></returns>
         public static IReadOnlyList<IPipeline> BuildPipelines(this PipeliningConfiguration options)
         {
-            List<IPipeline> pipelines = new();
+            List<IPipeline> pipelines = [];
 
             if (options.Pipelines is Dictionary<string, PipelineDefinition?> pipelinesToBuild)
             {
