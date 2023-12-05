@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		clean.ps1 = clean.ps1
 		..\codecov.yml = ..\codecov.yml
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 		local-deploy.ps1 = local-deploy.ps1
 		NuGet.config = NuGet.config
 	EndProjectSection
