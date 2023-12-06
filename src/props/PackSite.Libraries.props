@@ -1,0 +1,18 @@
+<Project>
+
+	<Import Project="PackSite.Library.Analytics.props" Condition="Exists('PackSite.Library.Analytics.props')" />
+	<Import Project="PackSite.Library.Buses.props" Condition="Exists('PackSite.Library.Buses.props')" />
+	<Import Project="PackSite.Library.Caching.props" Condition="Exists('PackSite.Library.Caching.props')" />
+	<Import Project="PackSite.Library.Crypto.props" Condition="Exists('PackSite.Library.Crypto.props')" />
+	<Import Project="PackSite.Library.DependencyInjection.props" Condition="Exists('PackSite.Library.DependencyInjection.props')" />
+	<Import Project="PackSite.Library.ETags.props" Condition="Exists('PackSite.Library.ETags.props')" />
+	<Import Project="PackSite.Library.Extensions.props" Condition="Exists('PackSite.Library.Extensions.props')" />
+	<Import Project="PackSite.Library.Licensing.props" Condition="Exists('PackSite.Library.Licensing.props')" />
+	<Import Project="PackSite.Library.Logging.props" Condition="Exists('PackSite.Library.Logging.props')" />
+	<Import Project="PackSite.Library.Modeling.props" Condition="Exists('PackSite.Library.Modeling.props')" />
+	<Import Project="PackSite.Library.Modularity.props" Condition="Exists('PackSite.Library.Modularity.props')" />
+	<Import Project="PackSite.Library.Pipelining.props" Condition="Exists('PackSite.Library.Pipelining.props')" />
+	<Import Project="PackSite.Library.StringUnformatter.props" Condition="Exists('PackSite.Library.StringUnformatter.props')" />
+	<Import Project="PackSite.Library.Validation.props" Condition="Exists('PackSite.Library.Validation.props')" />
+
+</Project>

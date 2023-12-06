@@ -5,6 +5,10 @@
 		<CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
 	</PropertyGroup>
 
+	<ImportGroup>
+		<Import Project="props/PackSite.Libraries.props"/>
+	</ImportGroup>
+
 	<ItemGroup>
 		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 		<PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.0" />

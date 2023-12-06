@@ -29,10 +29,10 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3.6.0
+      uses: actions/checkout@v4
 
     - name: Install .NET
-      uses: actions/setup-dotnet@v3.2.0
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
@@ -42,7 +42,7 @@ jobs:
         dotnet test ./src/PackSite.Library.Pipelining.sln --configuration Release
 
     - name: Upload coverage
-      uses: codecov/codecov-action@v3.1.1
+      uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./src/**/Coverage.xml
