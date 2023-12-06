@@ -56,6 +56,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvocationPerformanceBenchmark", "..\benchmarks\InvocationPerformanceBenchmark\InvocationPerformanceBenchmark.csproj", "{2379E7E1-4ECB-4383-9837-C2EA9C196852}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{C2F5D802-0C17-44B7-A938-55028FA8142F}"
+	ProjectSection(SolutionItems) = preProject
+		props\PackSite.Libraries.props = props\PackSite.Libraries.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -202,6 +207,7 @@ Global
 		{B0FFF4AF-2A3D-425D-B396-59B0309C265E} = {E7177480-AEAE-4717-AC94-71DA1884AA88}
 		{4B5A5571-83D2-49B2-AFBA-3C4F234B8A3A} = {E7177480-AEAE-4717-AC94-71DA1884AA88}
 		{2379E7E1-4ECB-4383-9837-C2EA9C196852} = {354F484B-94AA-433C-9711-006E3A588F07}
+		{C2F5D802-0C17-44B7-A938-55028FA8142F} = {F61F50C9-6428-4BE7-AE39-DF333029D19E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {11986FC9-BE93-49E2-AC90-F4C6028A7E6E}
