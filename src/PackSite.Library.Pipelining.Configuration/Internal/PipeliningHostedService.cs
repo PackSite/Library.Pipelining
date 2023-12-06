@@ -8,30 +8,25 @@
     using PackSite.Library.Pipelining.Configuration;
     using PackSite.Library.Pipelining.Configuration.Extensions;
 
-    internal sealed class PipeliningConfigurationHostedService : IHostedService, IDisposable
+    /// <summary>
+    /// Initializes a new instance of <see cref="PipeliningConfigurationHostedService"/>.
+    /// </summary>
+    /// <param name="options"></param>
+    /// <param name="pipelineCollection"></param>
+    /// <param name="loggerFactory"></param>
+    internal sealed class PipeliningConfigurationHostedService(
+        IOptionsMonitor<PipeliningConfiguration> options,
+        IPipelineCollection pipelineCollection,
+        ILoggerFactory loggerFactory) : IHostedService, IDisposable
     {
         private IReadOnlyList<PipelineName> _lastRegistered = new List<PipelineName>();
         private IDisposable? _optionsMonitor;
 
         private readonly SemaphoreSlim _lock = new(1, 1);
 
-        private readonly IOptionsMonitor<PipeliningConfiguration> _options;
-        private readonly IPipelineCollection _pipelineCollection;
-        private readonly ILogger _logger;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="PipeliningConfigurationHostedService"/>.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <param name="pipelineCollection"></param>
-        /// <param name="loggerFactory"></param>
-        public PipeliningConfigurationHostedService(IOptionsMonitor<PipeliningConfiguration> options, IPipelineCollection pipelineCollection, ILoggerFactory loggerFactory)
-        {
-            _options = options;
-
-            _pipelineCollection = pipelineCollection;
-            _logger = loggerFactory.CreateLogger("PackSite.Library.Pipelining.Configuration");
-        }
+        private readonly IOptionsMonitor<PipeliningConfiguration> _options = options;
+        private readonly IPipelineCollection _pipelineCollection = pipelineCollection;
+        private readonly ILogger _logger = loggerFactory.CreateLogger("PackSite.Library.Pipelining.Configuration");
 
         /// <inheritdoc/>
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -74,10 +69,10 @@
 
                 foreach (IPipeline pipeline in pipelines)
                 {
-                    bool r = _pipelineCollection.AddOrUpdate(pipeline);
+                    bool wasAdded = _pipelineCollection.AddOrUpdate(pipeline);
                     toPreserve.Add(pipeline.Name);
 
-                    if (r)
+                    if (wasAdded)
                     {
                         ++added;
                     }

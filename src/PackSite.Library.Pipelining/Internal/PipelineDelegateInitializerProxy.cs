@@ -2,18 +2,14 @@
 {
     internal static class PipelineDelegateInitializerProxy
     {
-        public sealed class Simple : IPipelineInitializer
+        /// <summary>
+        /// Initializes a new instance of <see cref="Simple"/>.
+        /// </summary>
+        /// <param name="initializerDelegate"></param>
+        public sealed class Simple(
+            Action<IPipelineCollection>? initializerDelegate) : IPipelineInitializer
         {
-            private readonly Action<IPipelineCollection>? _initializerDelegate;
-
-            /// <summary>
-            /// Initializes a new instance of <see cref="Simple"/>.
-            /// </summary>
-            /// <param name="initializerDelegate"></param>
-            public Simple(Action<IPipelineCollection>? initializerDelegate)
-            {
-                _initializerDelegate = initializerDelegate;
-            }
+            private readonly Action<IPipelineCollection>? _initializerDelegate = initializerDelegate;
 
             /// <inheritdoc/>
             public ValueTask RegisterAsync(IPipelineCollection pipelines, CancellationToken cancellationToken)
@@ -24,21 +20,17 @@
             }
         }
 
-        public sealed class Complex : IPipelineInitializer
+        /// <summary>
+        /// Initializes a new instance of <see cref="Complex"/>.
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <param name="initializerDelegate"></param>
+        public sealed class Complex(
+            IServiceProvider serviceProvider,
+            Func<IServiceProvider, IPipelineCollection, CancellationToken, ValueTask>? initializerDelegate) : IPipelineInitializer
         {
-            private readonly IServiceProvider _serviceProvider;
-            private readonly Func<IServiceProvider, IPipelineCollection, CancellationToken, ValueTask>? _initializerDelegate;
-
-            /// <summary>
-            /// Initializes a new instance of <see cref="Complex"/>.
-            /// </summary>
-            /// <param name="serviceProvider"></param>
-            /// <param name="initializerDelegate"></param>
-            public Complex(IServiceProvider serviceProvider, Func<IServiceProvider, IPipelineCollection, CancellationToken, ValueTask>? initializerDelegate)
-            {
-                _serviceProvider = serviceProvider;
-                _initializerDelegate = initializerDelegate;
-            }
+            private readonly IServiceProvider _serviceProvider = serviceProvider;
+            private readonly Func<IServiceProvider, IPipelineCollection, CancellationToken, ValueTask>? _initializerDelegate = initializerDelegate;
 
             /// <inheritdoc/>
             public async ValueTask RegisterAsync(IPipelineCollection pipelines, CancellationToken cancellationToken)

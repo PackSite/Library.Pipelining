@@ -8,7 +8,18 @@ namespace PackSite.Library.Pipelining.Internal
     /// Invokable pipeline.
     /// </summary>
     /// <typeparam name="TArgs"></typeparam>
-    internal sealed class InvokablePipeline<TArgs> : IInvokablePipeline<TArgs>
+    /// <remarks>
+    /// Initializes a new instance of <see cref="InvokablePipeline{TArgs}"/>.
+    /// </remarks>
+    /// <param name="pipeline"></param>
+    /// <param name="pipelineCounters"></param>
+    /// <param name="universalSteps"></param>
+    /// <param name="genericSteps"></param>
+    internal sealed class InvokablePipeline<TArgs>(
+        IPipeline<TArgs> pipeline,
+        PipelineCounters pipelineCounters,
+        IStep?[] universalSteps,
+        IStep<TArgs>?[] genericSteps) : IInvokablePipeline<TArgs>
         where TArgs : class
     {
         /// <summary>
@@ -21,38 +32,18 @@ namespace PackSite.Library.Pipelining.Internal
                                                          StepDelegate terminationContinuation,
                                                          CancellationToken cancellationToken);
 
-        private readonly PipelineCounters _pipelineCounters;
+        private readonly PipelineCounters _pipelineCounters = pipelineCounters;
         private readonly InvokablePipelineCounters _invokablePipelineCounters = new();
-        private readonly IStep?[] _universalSteps;
-        private readonly IStep<TArgs>?[] _genericSteps;
-        private readonly int _stepsCount;
+        private readonly IStep?[] _universalSteps = universalSteps;
+        private readonly IStep<TArgs>?[] _genericSteps = genericSteps;
+        private readonly int _stepsCount = Math.Max(universalSteps.Length, genericSteps.Length);
 
         /// <inheritdoc/>
         public IInvokablePipelineCounters Counters => _invokablePipelineCounters;
 
         /// <inheritdoc/>
-        public IPipeline<TArgs> Pipeline { get; }
+        public IPipeline<TArgs> Pipeline { get; } = pipeline;
         IPipeline IInvokablePipeline.Pipeline => Pipeline;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="InvokablePipeline{TArgs}"/>.
-        /// </summary>
-        /// <param name="pipeline"></param>
-        /// <param name="pipelineCounters"></param>
-        /// <param name="universalSteps"></param>
-        /// <param name="genericSteps"></param>
-        public InvokablePipeline(IPipeline<TArgs> pipeline,
-                                 PipelineCounters pipelineCounters,
-                                 IStep?[] universalSteps,
-                                 IStep<TArgs>?[] genericSteps)
-        {
-            Pipeline = pipeline;
-            _pipelineCounters = pipelineCounters;
-            _universalSteps = universalSteps;
-            _genericSteps = genericSteps;
-
-            _stepsCount = Math.Max(universalSteps.Length, genericSteps.Length);
-        }
 
         /// <inheritdoc/>
         public ValueTask<TArgs> InvokeAsync(TArgs input, CancellationToken cancellationToken = default)
