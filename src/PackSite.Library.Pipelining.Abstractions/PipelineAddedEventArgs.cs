@@ -1,7 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining
 {
-    using System;
-
     /// <summary>
     /// Arguments of the event invoked when a pipeline was added to <see cref="IPipelineCollection"/>.
     /// </summary>

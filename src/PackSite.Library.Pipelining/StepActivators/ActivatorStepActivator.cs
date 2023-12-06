@@ -1,7 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining.StepActivators
 {
-    using System;
-
     /// <summary>
     /// <see cref="Activator"/> based step activator.
     /// </summary>

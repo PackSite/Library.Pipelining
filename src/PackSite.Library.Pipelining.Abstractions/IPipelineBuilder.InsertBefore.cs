@@ -1,7 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining
 {
-    using System;
-
     public partial interface IPipelineBuilder
     {
         /// <summary>

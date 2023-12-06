@@ -1,7 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining.Internal
 {
-    using System;
-    using System.Collections.Generic;
     using PackSite.Library.Pipelining;
 
     internal sealed partial class PipelineBuilder<TArgs>

@@ -1,8 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining
 {
-    using System;
-    using System.Collections.Generic;
-
     public partial interface IPipelineBuilder
     {
         /// <summary>

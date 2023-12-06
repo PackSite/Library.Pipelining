@@ -1,7 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining.Internal
 {
-    using System.Threading;
-
     internal class PipelineCounters : IPipelineCounters
     {
         private long _builtElapsedUs;

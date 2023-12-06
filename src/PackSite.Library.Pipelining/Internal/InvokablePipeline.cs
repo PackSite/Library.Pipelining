@@ -1,9 +1,6 @@
 namespace PackSite.Library.Pipelining.Internal
 {
-    using System;
     using System.Diagnostics;
-    using System.Threading;
-    using System.Threading.Tasks;
     using PackSite.Library.Pipelining;
     using PackSite.Library.Pipelining.Internal.Extensions;
 

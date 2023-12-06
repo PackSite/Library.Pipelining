@@ -1,7 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining
 {
-    using System;
-    using System.Collections.Concurrent;
     using Microsoft.Extensions.DependencyInjection;
     using PackSite.Library.Pipelining.Internal;
 
@@ -11,6 +9,7 @@
     public static class PipelineBuilder
     {
         private static readonly ConcurrentDictionary<Type, ObjectFactory> _cache = new();
+        private static readonly IServiceProvider _serviceProvider = NoOpServiceProvider.Instance;
 
         /// <summary>
         /// Creates a new instance of pipeline builder.
@@ -36,7 +35,7 @@
                 return ActivatorUtilities.CreateFactory(builderType, []);
             });
 
-            return (IPipelineBuilder)factory(null!, null);
+            return (IPipelineBuilder)factory(_serviceProvider, null);
         }
     }
 }

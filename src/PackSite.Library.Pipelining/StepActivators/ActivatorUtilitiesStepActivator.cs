@@ -1,9 +1,8 @@
 ﻿namespace PackSite.Library.Pipelining.StepActivators
 {
-    using System;
-    using System.Collections.Concurrent;
     using Microsoft.Extensions.DependencyInjection;
     using PackSite.Library.Pipelining;
+    using PackSite.Library.Pipelining.Internal;
 
     /// <summary>
     /// <see cref="ActivatorUtilities"/> based step activator.
@@ -11,6 +10,7 @@
     public sealed class ActivatorUtilitiesStepActivator : IStepActivator
     {
         private static readonly ConcurrentDictionary<Type, ObjectFactory> _cache = new();
+        private static readonly IServiceProvider _serviceProvider = NoOpServiceProvider.Instance;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ActivatorUtilitiesStepActivator"/>
@@ -28,7 +28,7 @@
                 return ActivatorUtilities.CreateFactory(key, Array.Empty<Type>());
             });
 
-            return stepFactory(null!, null) as IBaseStep ??
+            return stepFactory(_serviceProvider, null) as IBaseStep ??
                 throw new InvalidOperationException($"Failed to activate '{stepType.FullName ?? stepType.Name}'");
         }
     }

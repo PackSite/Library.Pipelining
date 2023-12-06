@@ -1,7 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining
 {
-    using System;
-
     /// <summary>
     /// Singleton step activator.
     /// </summary>

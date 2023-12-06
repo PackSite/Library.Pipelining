@@ -1,7 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining.Internal
 {
-    using System.Threading;
-
     internal class InvokablePipelineCounters : IInvokablePipelineCounters
     {
         private long _successfulElapsedUs;

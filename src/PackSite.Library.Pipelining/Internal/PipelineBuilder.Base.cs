@@ -1,6 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining.Internal
 {
-    using System;
     using PackSite.Library.Pipelining;
 
     /// <summary>

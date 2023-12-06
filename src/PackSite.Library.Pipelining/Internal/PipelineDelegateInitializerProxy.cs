@@ -1,9 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining.Internal
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     internal static class PipelineDelegateInitializerProxy
     {
         public sealed class Simple : IPipelineInitializer

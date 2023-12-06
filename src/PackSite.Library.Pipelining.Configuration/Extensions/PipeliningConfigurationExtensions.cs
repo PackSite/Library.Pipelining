@@ -1,7 +1,5 @@
 ﻿namespace PackSite.Library.Pipelining.Configuration.Extensions
 {
-    using System;
-    using System.Collections.Generic;
     using System.Reflection;
     using PackSite.Library.Pipelining.Configuration;
 
