@@ -12,7 +12,7 @@
     public sealed class PipelineInvocationException(
         object? args,
         IPipeline pipeline,
-        Exception? innerException) : 
+        Exception? innerException) :
         Exception($"An unhandled error occurred while executing pipeline '{pipeline.GetType().FullName ?? pipeline.GetType().Name}' with name '{pipeline.Name}'.", innerException)
     {
         /// <summary>
