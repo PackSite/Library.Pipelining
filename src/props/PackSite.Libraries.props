@@ -12,6 +12,7 @@
 	<Import Project="PackSite.Library.Modeling.props" Condition="Exists('PackSite.Library.Modeling.props')" />
 	<Import Project="PackSite.Library.Modularity.props" Condition="Exists('PackSite.Library.Modularity.props')" />
 	<Import Project="PackSite.Library.Pipelining.props" Condition="Exists('PackSite.Library.Pipelining.props')" />
+	<Import Project="PackSite.Library.Security.props" Condition="Exists('PackSite.Library.Security.props')" />
 	<Import Project="PackSite.Library.StringUnformatter.props" Condition="Exists('PackSite.Library.StringUnformatter.props')" />
 	<Import Project="PackSite.Library.Validation.props" Condition="Exists('PackSite.Library.Validation.props')" />
 
