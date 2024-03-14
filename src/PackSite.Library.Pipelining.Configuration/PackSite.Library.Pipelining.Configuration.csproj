@@ -15,7 +15,6 @@
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<DebugType>Embedded</DebugType>
 		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>
 
