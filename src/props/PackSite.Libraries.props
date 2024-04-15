@@ -6,6 +6,7 @@
 	<Import Project="PackSite.Library.Crypto.props" Condition="Exists('PackSite.Library.Crypto.props')" />
 	<Import Project="PackSite.Library.DependencyInjection.props" Condition="Exists('PackSite.Library.DependencyInjection.props')" />
 	<Import Project="PackSite.Library.ETags.props" Condition="Exists('PackSite.Library.ETags.props')" />
+	<Import Project="PackSite.Library.Exceptions.props" Condition="Exists('PackSite.Library.Exceptions.props')" />
 	<Import Project="PackSite.Library.Extensions.props" Condition="Exists('PackSite.Library.Extensions.props')" />
 	<Import Project="PackSite.Library.Licensing.props" Condition="Exists('PackSite.Library.Licensing.props')" />
 	<Import Project="PackSite.Library.Logging.props" Condition="Exists('PackSite.Library.Logging.props')" />

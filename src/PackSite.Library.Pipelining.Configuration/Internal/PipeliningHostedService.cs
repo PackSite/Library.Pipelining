@@ -19,7 +19,7 @@
         IPipelineCollection pipelineCollection,
         ILoggerFactory loggerFactory) : IHostedService, IDisposable
     {
-        private IReadOnlyList<PipelineName> _lastRegistered = new List<PipelineName>();
+        private IReadOnlyList<PipelineName> _lastRegistered = [];
         private IDisposable? _optionsMonitor;
 
         private readonly SemaphoreSlim _lock = new(1, 1);
@@ -44,7 +44,7 @@
         /// <inheritdoc/>
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _lastRegistered = new List<PipelineName>();
+            _lastRegistered = [];
 
             return Task.CompletedTask;
         }
