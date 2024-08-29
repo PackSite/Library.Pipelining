@@ -4,7 +4,7 @@
     /// Step delegate.
     /// </summary>
     /// <returns></returns>
-    public delegate ValueTask StepDelegate();
+    public delegate Task StepDelegate();
 
     /// <summary>
     /// Pipeline step.
@@ -19,7 +19,7 @@
         /// <param name="invokablePipeline"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        ValueTask ExecuteAsync(object args, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default);
+        Task ExecuteAsync(object args, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -37,6 +37,6 @@
         /// <param name="invokablePipeline"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        ValueTask ExecuteAsync(TArgs args, StepDelegate next, IInvokablePipeline<TArgs> invokablePipeline, CancellationToken cancellationToken = default);
+        Task ExecuteAsync(TArgs args, StepDelegate next, IInvokablePipeline<TArgs> invokablePipeline, CancellationToken cancellationToken = default);
     }
 }

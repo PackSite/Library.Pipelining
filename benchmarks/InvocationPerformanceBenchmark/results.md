@@ -8,12 +8,13 @@ AMD Ryzen 9 7950X3D, 1 CPU, 32 logical and 16 physical cores
 
 # Invocation Performance Benchmark
 
-| Method                       | Mean      | Error     | StdDev    | Ratio | RatioSD | Rank |
-|----------------------------- |----------:|----------:|----------:|------:|--------:|-----:|
-| 'Steps.Count == 1'           |  13.80 us |  0.272 us |  0.291 us |  0.38 |    0.01 |    1 |
-| 'Steps.Count == 2'           |  16.79 us |  0.321 us |  0.300 us |  0.46 |    0.01 |    2 |
-| 'Steps.Count == 5'           |  32.77 us |  0.640 us |  0.711 us |  0.89 |    0.02 |    3 |
-| 'Loop simulation (i == 100)' |  36.67 us |  0.703 us |  0.691 us |  1.00 |    0.03 |    4 |
-| 'Steps.Count == 10'          |  67.48 us |  1.604 us |  4.730 us |  1.84 |    0.13 |    5 |
-| 'Steps.Count == 50'          | 307.87 us |  6.153 us |  7.781 us |  8.40 |    0.26 |    6 |
-| 'Steps.Count == 100'         | 600.16 us | 11.493 us | 15.343 us | 16.37 |    0.51 |    7 |
+| Method                      | Mean      | Error    | StdDev   | Ratio | RatioSD | Rank |
+|---------------------------- |----------:|---------:|---------:|------:|--------:|-----:|
+| 'Steps.Count == 1'          |  11.29 us | 0.226 us | 0.590 us |  0.65 |    0.03 |    1 |
+| 'Steps.Count == 2'          |  12.31 us | 0.131 us | 0.116 us |  0.71 |    0.01 |    2 |
+| 'Loop simulation (i == 50)' |  17.29 us | 0.137 us | 0.128 us |  1.00 |    0.01 |    3 |
+| 'Steps.Count == 5'          |  27.01 us | 0.274 us | 0.257 us |  1.56 |    0.02 |    4 |
+| 'Steps.Count == 10'         |  47.34 us | 0.470 us | 0.439 us |  2.74 |    0.03 |    5 |
+| 'Steps.Count == 50'         | 259.51 us | 2.564 us | 2.399 us | 15.01 |    0.17 |    6 |
+
+> Every pipeline was invoked 100 times - so for pipeline with 5 steps, a 500 steps were executed.

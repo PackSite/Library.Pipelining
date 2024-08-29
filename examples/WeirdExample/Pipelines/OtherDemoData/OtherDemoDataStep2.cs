@@ -6,7 +6,7 @@
 
     public class OtherDemoDataStep2 : IStep<OtherDemoDataArgs>
     {
-        public async ValueTask ExecuteAsync(OtherDemoDataArgs args, StepDelegate next, IInvokablePipeline<OtherDemoDataArgs> invokablePipeline, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(OtherDemoDataArgs args, StepDelegate next, IInvokablePipeline<OtherDemoDataArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
             if (args.Value > 5)
             {

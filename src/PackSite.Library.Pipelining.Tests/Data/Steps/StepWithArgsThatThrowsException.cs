@@ -10,7 +10,7 @@
         public const string ExceptionMessage = "Test exception" + nameof(StepWithArgsThatThrowsException);
 
         /// <inheritdoc/>
-        public async ValueTask ExecuteAsync(SampleArgs args, StepDelegate next, IInvokablePipeline<SampleArgs> invokablePipeline, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(SampleArgs args, StepDelegate next, IInvokablePipeline<SampleArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
             args.DataIn.Add(GetType());
 

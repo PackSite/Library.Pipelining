@@ -20,8 +20,7 @@ namespace InvocationPerformanceBenchmark
         private readonly IBenchmark InvocationPerformance5 = new Steps5InvocationPerformanceBenchmark();
         private readonly IBenchmark InvocationPerformance10 = new Steps10InvocationPerformanceBenchmark();
         private readonly IBenchmark InvocationPerformance50 = new Steps50InvocationPerformanceBenchmark();
-        private readonly IBenchmark InvocationPerformance100 = new Steps100InvocationPerformanceBenchmark();
-        private readonly IBenchmark ManualInvocationPerformance100 = new Steps100ManualInvocationPerformanceBenchmark();
+        private readonly IBenchmark ManualInvocationPerformance50 = new Steps50ManualInvocationPerformanceBenchmark();
 
         [GlobalSetup]
         public void Setup()
@@ -33,8 +32,7 @@ namespace InvocationPerformanceBenchmark
                 InvocationPerformance5.SetupAsync().GetAwaiter().GetResult();
                 InvocationPerformance10.SetupAsync().GetAwaiter().GetResult();
                 InvocationPerformance50.SetupAsync().GetAwaiter().GetResult();
-                InvocationPerformance100.SetupAsync().GetAwaiter().GetResult();
-                ManualInvocationPerformance100.SetupAsync().GetAwaiter().GetResult();
+                ManualInvocationPerformance50.SetupAsync().GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -53,8 +51,7 @@ namespace InvocationPerformanceBenchmark
                 InvocationPerformance5.DisposeAsync().AsTask().GetAwaiter().GetResult();
                 InvocationPerformance10.DisposeAsync().AsTask().GetAwaiter().GetResult();
                 InvocationPerformance50.DisposeAsync().AsTask().GetAwaiter().GetResult();
-                InvocationPerformance100.DisposeAsync().AsTask().GetAwaiter().GetResult();
-                ManualInvocationPerformance100.DisposeAsync().AsTask().GetAwaiter().GetResult();
+                ManualInvocationPerformance50.DisposeAsync().AsTask().GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -93,16 +90,10 @@ namespace InvocationPerformanceBenchmark
             InvocationPerformance50.BenchmarkAsync().GetAwaiter().GetResult();
         }
 
-        [Benchmark(Description = "Steps.Count == 100")]
-        public void Steps100Benchmark()
-        {
-            InvocationPerformance100.BenchmarkAsync().GetAwaiter().GetResult();
-        }
-
-        [Benchmark(Description = "Loop simulation (i == 100)", Baseline = true)]
+        [Benchmark(Description = "Loop simulation (i == 50)", Baseline = true)]
         public void LoopSimulationBenchmark()
         {
-            ManualInvocationPerformance100.BenchmarkAsync().GetAwaiter().GetResult();
+            ManualInvocationPerformance50.BenchmarkAsync().GetAwaiter().GetResult();
         }
 
         public static void Main()

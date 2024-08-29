@@ -4,9 +4,9 @@
     using System.Threading.Tasks;
     using InvocationPerformanceBenchmark.Steps;
 
-    public sealed class Steps100ManualInvocationPerformanceBenchmark : IBenchmark
+    public sealed class Steps50ManualInvocationPerformanceBenchmark : IBenchmark
     {
-        public Steps100ManualInvocationPerformanceBenchmark()
+        public Steps50ManualInvocationPerformanceBenchmark()
         {
 
         }
@@ -23,7 +23,7 @@
 
             for (int m = 0; m < 100; m++)
             {
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     ++args.Value;
 

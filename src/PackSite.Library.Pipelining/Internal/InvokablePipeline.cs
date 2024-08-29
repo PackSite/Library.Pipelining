@@ -46,21 +46,21 @@ namespace PackSite.Library.Pipelining.Internal
         IPipeline IInvokablePipeline.Pipeline => Pipeline;
 
         /// <inheritdoc/>
-        public ValueTask<TArgs> InvokeAsync(TArgs input, CancellationToken cancellationToken = default)
+        public Task<TArgs> InvokeAsync(TArgs input, CancellationToken cancellationToken = default)
         {
             if (_universalSteps.Length <= 0)
             {
                 _invokablePipelineCounters.Success(0);
                 _pipelineCounters.Success(0);
 
-                return new ValueTask<TArgs>(input);
+                return Task.FromResult(input);
             }
 
             return InvokeAsync(input, null, cancellationToken);
         }
 
         /// <inheritdoc/>
-        public async ValueTask<TArgs> InvokeAsync(TArgs input, StepDelegate? terminationContinuation, CancellationToken cancellationToken = default)
+        public async Task<TArgs> InvokeAsync(TArgs input, StepDelegate? terminationContinuation, CancellationToken cancellationToken = default)
         {
             //TODO: pipeline step profiling
 
@@ -88,10 +88,10 @@ namespace PackSite.Library.Pipelining.Internal
             return input;
         }
 
-        private async ValueTask StepAsync(int index,
-                                          TArgs args,
-                                          StepDelegate? terminationContinuation,
-                                          CancellationToken cancellationToken)
+        private async Task StepAsync(int index,
+                                     TArgs args,
+                                     StepDelegate? terminationContinuation,
+                                     CancellationToken cancellationToken)
         {
             if (index >= _stepsCount)
             {
@@ -105,7 +105,7 @@ namespace PackSite.Library.Pipelining.Internal
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            ValueTask Next()
+            Task Next()
             {
                 return StepAsync(index + 1, args, terminationContinuation, cancellationToken);
             }
@@ -126,12 +126,12 @@ namespace PackSite.Library.Pipelining.Internal
         }
 
         /// <inheritdoc/>
-        public async ValueTask<object> InvokeAsync(object args, CancellationToken cancellationToken = default)
+        public async Task<object> InvokeAsync(object args, CancellationToken cancellationToken = default)
         {
             return await InvokeAsync((TArgs)args, cancellationToken);
         }
 
-        public async ValueTask<object> InvokeAsync(object args, StepDelegate? terminationContinuation, CancellationToken cancellationToken = default)
+        public async Task<object> InvokeAsync(object args, StepDelegate? terminationContinuation, CancellationToken cancellationToken = default)
         {
             return await InvokeAsync((TArgs)args, terminationContinuation, cancellationToken);
         }

@@ -12,7 +12,7 @@
 
         }
 
-        public async ValueTask ExecuteAsync(object args, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(object args, StepDelegate next, IInvokablePipeline invokablePipeline, CancellationToken cancellationToken = default)
         {
             try
             {

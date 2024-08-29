@@ -7,7 +7,7 @@
 
     public sealed class SurroundWithSquareBracketsTransformStep : IStep<TextProcessingArgs>
     {
-        public async ValueTask ExecuteAsync(TextProcessingArgs args, StepDelegate next, IInvokablePipeline<TextProcessingArgs> invokablePipeline, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(TextProcessingArgs args, StepDelegate next, IInvokablePipeline<TextProcessingArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
             args.Text = '[' + args.Text + ']';
 

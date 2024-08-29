@@ -6,7 +6,7 @@
 
     public sealed class NopStep : IStep<ProcessingArgs>
     {
-        public async ValueTask ExecuteAsync(ProcessingArgs args, StepDelegate next, IInvokablePipeline<ProcessingArgs> invokablePipeline, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(ProcessingArgs args, StepDelegate next, IInvokablePipeline<ProcessingArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
             ++args.Value;
 

@@ -13,7 +13,7 @@
             _invokablePipelineFactory = invokablePipelineFactory;
         }
 
-        public async ValueTask ExecuteAsync(DemoArgs args, StepDelegate next, IInvokablePipeline<DemoArgs> invokablePipeline, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(DemoArgs args, StepDelegate next, IInvokablePipeline<DemoArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
             args.Value += GetType().Name + " > ";
 

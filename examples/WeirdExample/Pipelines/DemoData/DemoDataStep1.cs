@@ -7,7 +7,7 @@
 
     public class DemoDataStep1 : IStep<DemoDataArgs>
     {
-        public async ValueTask ExecuteAsync(DemoDataArgs args, StepDelegate next, IInvokablePipeline<DemoDataArgs> invokablePipeline, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(DemoDataArgs args, StepDelegate next, IInvokablePipeline<DemoDataArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
             args.Value++;
 

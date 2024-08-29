@@ -6,7 +6,7 @@
 
     public class SubpipelineStep2 : IStep<SimpleArgs>
     {
-        public async ValueTask ExecuteAsync(SimpleArgs args, StepDelegate next, IInvokablePipeline<SimpleArgs> invokablePipeline, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(SimpleArgs args, StepDelegate next, IInvokablePipeline<SimpleArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
             args.Value += GetType().Name + " > ";
 

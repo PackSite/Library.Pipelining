@@ -7,7 +7,7 @@
     public class StepWithArgs2 : IStep<SampleArgs>
     {
         /// <inheritdoc/>
-        public async ValueTask ExecuteAsync(SampleArgs args, StepDelegate next, IInvokablePipeline<SampleArgs> invokablePipeline, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(SampleArgs args, StepDelegate next, IInvokablePipeline<SampleArgs> invokablePipeline, CancellationToken cancellationToken = default)
         {
             args.DataIn.Add(GetType());
 
