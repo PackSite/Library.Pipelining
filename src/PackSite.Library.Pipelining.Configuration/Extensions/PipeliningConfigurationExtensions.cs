@@ -34,10 +34,10 @@
 
         private static IPipeline BuildPipeline(string pipelineName, PipelineDefinition pipelineDefinition)
         {
-            _ = pipelineDefinition.ArgsType ?? throw new NullReferenceException($"Args type cannot be null in '{pipelineName}' pipeline.");
+            _ = pipelineDefinition.ArgsType ?? throw new InvalidOperationException($"Args type cannot be null in '{pipelineName}' pipeline.");
 
             Type argsType = Type.GetType(pipelineDefinition.ArgsType, AssemblyResolver, null) ??
-                throw new NullReferenceException($"Invalid args type '{pipelineDefinition.ArgsType}' in '{pipelineName}' pipeline.");
+                throw new InvalidOperationException($"Invalid args type '{pipelineDefinition.ArgsType}' in '{pipelineName}' pipeline.");
 
             IPipelineBuilder builder = PipelineBuilder.Create(argsType)
                 .Name(pipelineDefinition.UseDefaultName ? null : new PipelineName(pipelineName))
@@ -48,10 +48,10 @@
             {
                 foreach (string? stepAssemblyQualifiedName in pipelineDefinition.Steps)
                 {
-                    _ = stepAssemblyQualifiedName ?? throw new NullReferenceException($"Step type cannot be null in '{pipelineName}' pipeline.");
+                    _ = stepAssemblyQualifiedName ?? throw new InvalidOperationException($"Step type cannot be null in '{pipelineName}' pipeline.");
 
                     Type stepType = Type.GetType(stepAssemblyQualifiedName, AssemblyResolver, null) ??
-                        throw new NullReferenceException($"Invalid step type '{stepAssemblyQualifiedName}' in '{pipelineName}' pipeline.");
+                        throw new InvalidOperationException($"Invalid step type '{stepAssemblyQualifiedName}' in '{pipelineName}' pipeline.");
 
                     builder.Add(stepType);
                 }

@@ -14,7 +14,7 @@
             Type instanceType = instance.GetType();
             if (instanceType == before)
             {
-                throw new ArgumentException($"Cannot insert step instance of type '{instanceType}' before '{before}'.");
+                throw new ArgumentException($"Cannot insert step instance of type '{instanceType}' before '{before}'.", nameof(before));
             }
 
             int lastIndex = -1, index;
@@ -46,7 +46,7 @@
         {
             if (step == before)
             {
-                throw new ArgumentException($"Cannot insert step of type '{step}' before '{before}'.");
+                throw new ArgumentException($"Cannot insert step of type '{step}' before '{before}'.", nameof(before));
             }
 
             int lastIndex = -1, index;

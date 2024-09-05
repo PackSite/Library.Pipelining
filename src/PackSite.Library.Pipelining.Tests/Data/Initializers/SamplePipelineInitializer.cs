@@ -7,7 +7,7 @@
 
     public sealed class SamplePipelineInitializer : IPipelineInitializer
     {
-        public static PipelineName[] Names { get; } = new PipelineName[] { "demo0" };
+        public static PipelineName[] Names { get; } = ["demo0"];
 
         public SamplePipelineInitializer()
         {

@@ -13,4 +13,11 @@
 		<Platforms>AnyCPU;x64;x86</Platforms>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Meziantou.Analyzer" PrivateAssets="all" />
+		<PackageReference Include="Roslynator.Analyzers" PrivateAssets="all" />
+		<PackageReference Include="Roslynator.CodeAnalysis.Analyzers" PrivateAssets="all" />
+		<PackageReference Include="Roslynator.Formatting.Analyzers" PrivateAssets="all" />
+	</ItemGroup>
+
 </Project>

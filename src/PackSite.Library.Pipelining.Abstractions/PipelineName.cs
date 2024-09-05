@@ -21,7 +21,7 @@
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
             }
 
-            if (name.Where(x => x is ':' or '_').Any())
+            if (name.Any(x => x is ':' or '_'))
             {
                 throw new ArgumentException($"'{nameof(name)}' cannot contain ':' and '_'.", nameof(name));
             }
@@ -50,13 +50,18 @@
         /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
-            return obj is PipelineName itemName && Value.Equals(itemName.Value);
+            return obj is PipelineName itemName && Equals(itemName);
         }
 
         /// <inheritdoc/>
         public bool Equals(PipelineName? other)
         {
-            return other is not null && Value.Equals(other.Value);
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return other is not null && Value.Equals(other.Value, StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -67,7 +72,7 @@
         /// <returns></returns>
         public static bool operator ==(PipelineName left, PipelineName right)
         {
-            return left.Value.Equals(right.Value);
+            return left.Equals(right);
         }
 
         /// <summary>
@@ -78,7 +83,7 @@
         /// <returns></returns>
         public static bool operator !=(PipelineName left, PipelineName right)
         {
-            return !left.Value.Equals(right.Value);
+            return !(left == right);
         }
 
         /// <inheritdoc/>
@@ -89,7 +94,7 @@
                 return -1;
             }
 
-            return Value.CompareTo(other.Value);
+            return string.CompareOrdinal(Value, other.Value);
         }
 
         /// <inheritdoc/>
@@ -106,13 +111,13 @@
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            return Value.GetHashCode(StringComparison.Ordinal);
         }
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            return Value.ToString();
+            return Value;
         }
     }
 }

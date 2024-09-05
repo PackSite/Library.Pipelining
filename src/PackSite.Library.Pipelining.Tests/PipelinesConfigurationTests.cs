@@ -34,7 +34,7 @@ namespace PackSite.Library.Pipelining.Tests
                     [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
                     [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.ArgsType)}"] = typeof(SampleArgs).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
+                    [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Lifetime)}"] = nameof(InvokablePipelineLifetime.Singleton),
                     [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Steps)}:0"] = typeof(StepWithArgs1).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Steps)}:1"] = typeof(StepWithArgs2).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:{DefaultName}:{nameof(PipelineDefinition.Steps)}:2"] = typeof(StepWithArgs3).AssemblyQualifiedName ?? "null",
@@ -43,7 +43,7 @@ namespace PackSite.Library.Pipelining.Tests
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.ArgsType)}"] = typeof(SampleArgs).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Lifetime)}"] = nameof(InvokablePipelineLifetime.Singleton),
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:0"] = typeof(StepWithArgs1).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:1"] = typeof(StepWithArgs2).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:2"] = typeof(StepWithArgs3).AssemblyQualifiedName ?? "null",
@@ -52,7 +52,7 @@ namespace PackSite.Library.Pipelining.Tests
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.ArgsType)}"] = typeof(SampleArgs).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Scoped.ToString(),
+                    [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Lifetime)}"] = nameof(InvokablePipelineLifetime.Scoped),
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:0"] = typeof(StepWithArgs1).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:1"] = typeof(StepWithArgs2).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:test-pipeline2:{nameof(PipelineDefinition.Steps)}:2"] = typeof(StepWithArgs3).AssemblyQualifiedName ?? "null",
@@ -61,7 +61,7 @@ namespace PackSite.Library.Pipelining.Tests
                 .Build();
 
             // Arrange
-            using ServiceProvider services = new ServiceCollection()
+            await using ServiceProvider services = new ServiceCollection()
                 .AddSingleton<IConfiguration>(configuration)
                 .AddOptions()
                 .AddLogging(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Trace))
@@ -96,16 +96,16 @@ namespace PackSite.Library.Pipelining.Tests
                     [$"{pipelinesSection}:test:{nameof(PipelineDefinition.Enabled)}"] = false.ToString(),
                     [$"{pipelinesSection}:test:{nameof(PipelineDefinition.ArgsType)}"] = typeof(SampleArgs).AssemblyQualifiedName ?? "null",
                     [$"{pipelinesSection}:test:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:test:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
+                    [$"{pipelinesSection}:test:{nameof(PipelineDefinition.Lifetime)}"] = nameof(InvokablePipelineLifetime.Singleton),
 
                     [$"{pipelinesSection}:test2:{nameof(PipelineDefinition.Enabled)}"] = true.ToString(),
                     [$"{pipelinesSection}:test2:{nameof(PipelineDefinition.Description)}"] = DefaultDescription,
-                    [$"{pipelinesSection}:test2:{nameof(PipelineDefinition.Lifetime)}"] = InvokablePipelineLifetime.Singleton.ToString(),
+                    [$"{pipelinesSection}:test2:{nameof(PipelineDefinition.Lifetime)}"] = nameof(InvokablePipelineLifetime.Singleton),
                 })
                 .Build();
 
             // Arrange
-            using ServiceProvider services = new ServiceCollection()
+            await using ServiceProvider services = new ServiceCollection()
                 .AddSingleton<IConfiguration>(configuration)
                 .AddOptions()
                 .AddLogging(builder => builder.AddDebug().SetMinimumLevel(LogLevel.Trace))
@@ -114,11 +114,11 @@ namespace PackSite.Library.Pipelining.Tests
                 {
                     builder.AddConfiguration(options =>
                     {
-                        _ = options.Pipelines ?? throw new NullReferenceException("Pipelines must not be null");
+                        _ = options.Pipelines ?? throw new InvalidOperationException("Pipelines must not be null");
 
                         options.Pipelines["test2"]!.SetArgsType(typeof(SampleArgs));
                         options.Pipelines["test2"]!.AddSteps(typeof(StepWithArgs1), typeof(StepWithArgs2));
-                        options.Pipelines["test2"]!.AddSteps(new[] { typeof(StepWithArgs1), typeof(StepWithArgs2) });
+                        options.Pipelines["test2"]!.AddSteps([typeof(StepWithArgs1), typeof(StepWithArgs2)]);
                     });
                 })
                 .BuildServiceProvider(true);
