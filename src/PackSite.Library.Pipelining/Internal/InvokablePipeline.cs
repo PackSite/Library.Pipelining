@@ -48,7 +48,7 @@ namespace PackSite.Library.Pipelining.Internal
         /// <inheritdoc/>
         public Task<TArgs> InvokeAsync(TArgs input, CancellationToken cancellationToken = default)
         {
-            if (_universalSteps.Length <= 0)
+            if (_universalSteps.Length == 0)
             {
                 _invokablePipelineCounters.Success(0);
                 _pipelineCounters.Success(0);
@@ -62,8 +62,6 @@ namespace PackSite.Library.Pipelining.Internal
         /// <inheritdoc/>
         public async Task<TArgs> InvokeAsync(TArgs input, StepDelegate? terminationContinuation, CancellationToken cancellationToken = default)
         {
-            //TODO: pipeline step profiling
-
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             try

@@ -118,7 +118,7 @@
         }
 
         /// <summary>
-        /// High-perfomrance logging definitions.
+        /// High-performance logging definitions.
         /// </summary>
         private static class Log
         {
