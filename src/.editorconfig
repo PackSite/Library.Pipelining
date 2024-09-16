@@ -27,9 +27,9 @@ dotnet_diagnostic.MA0131.severity = none
 dotnet_diagnostic.MA0150.severity = none
 
 dotnet_diagnostic.MA0048.excluded_symbol_names = T:*.Domain.Events.*
-MA0051.maximum_lines_per_method = 250
-MA0051.maximum_statements_per_method = 90
-MA0051.skip_local_functions = false
+MA0051.maximum_lines_per_method = 100
+MA0051.maximum_statements_per_method = 50
+MA0051.skip_local_functions = true
 
 #### Core EditorConfig Options ####
 
