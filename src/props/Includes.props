@@ -3,6 +3,7 @@
 	<ImportGroup>
 		<Import Project="Analyzers.props" Condition="Exists('Analyzers.props')" />
 		<Import Project="PackSite.Libraries.props" Condition="Exists('PackSite.Libraries.props')" />
+		<Import Project="PackSite/PackSite.Libraries.props" Condition="Exists('PackSite/PackSite.Libraries.props')" />
 	</ImportGroup>
 
 </Project>
