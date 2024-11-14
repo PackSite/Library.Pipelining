@@ -1,0 +1,7 @@
+<Project>
+
+	<PropertyGroup>		
+		<DeterministicSourcePaths>true</DeterministicSourcePaths>
+	</PropertyGroup>
+
+</Project>
