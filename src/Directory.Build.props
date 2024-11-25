@@ -12,5 +12,9 @@
 		<WarningsAsErrors>nullable,NU1605,CS1591</WarningsAsErrors>
 		<Platforms>AnyCPU;x64;x86</Platforms>
 	</PropertyGroup>
+
+	<ImportGroup>
+		<Import Project="props/Includes.Build.props" />
+	</ImportGroup>
 	
 </Project>

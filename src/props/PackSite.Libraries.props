@@ -8,6 +8,7 @@
 	<Import Project="PackSite.Library.ETags.props" Condition="Exists('PackSite.Library.ETags.props')" />
 	<Import Project="PackSite.Library.Exceptions.props" Condition="Exists('PackSite.Library.Exceptions.props')" />
 	<Import Project="PackSite.Library.Extensions.props" Condition="Exists('PackSite.Library.Extensions.props')" />
+	<Import Project="PackSite.Library.Identifiers.props" Condition="Exists('PackSite.Library.Identifiers.props')" />
 	<Import Project="PackSite.Library.Languages.props" Condition="Exists('PackSite.Library.Languages.props')" />
 	<Import Project="PackSite.Library.Licensing.props" Condition="Exists('PackSite.Library.Licensing.props')" />
 	<Import Project="PackSite.Library.Logging.props" Condition="Exists('PackSite.Library.Logging.props')" />
