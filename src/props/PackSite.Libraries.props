@@ -11,6 +11,7 @@
 	<Import Project="PackSite.Library.Identifiers.props" Condition="Exists('PackSite.Library.Identifiers.props')" />
 	<Import Project="PackSite.Library.Languages.props" Condition="Exists('PackSite.Library.Languages.props')" />
 	<Import Project="PackSite.Library.Licensing.props" Condition="Exists('PackSite.Library.Licensing.props')" />
+	<Import Project="PackSite.Library.Locking.props" Condition="Exists('PackSite.Library.Locking.props')" />
 	<Import Project="PackSite.Library.Logging.props" Condition="Exists('PackSite.Library.Logging.props')" />
 	<Import Project="PackSite.Library.Modeling.props" Condition="Exists('PackSite.Library.Modeling.props')" />
 	<Import Project="PackSite.Library.Modularity.props" Condition="Exists('PackSite.Library.Modularity.props')" />
