@@ -1,9 +1,7 @@
 <Project>
 
 	<ImportGroup>
-		<Import Project="Analyzers.Packages.props" Condition="Exists('Analyzers.props')" />
-		<Import Project="PackSite.Libraries.props" Condition="Exists('PackSite.Libraries.props')" />
-		<Import Project="PackSite/PackSite.Libraries.props" Condition="Exists('PackSite/PackSite.Libraries.props')" />
+		<Import Project="Stacktrace.Build.props" Condition="Exists('Stacktrace.props')" />
 	</ImportGroup>
 
 </Project>
