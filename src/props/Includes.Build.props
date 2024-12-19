@@ -1,7 +1,7 @@
 <Project>
 
 	<ImportGroup>
-		<Import Project="Stacktrace.Build.props" Condition="Exists('Stacktrace.props')" />
+		<Import Project="Stacktrace.Build.props" Condition="Exists('Stacktrace.Build.props')" />
 	</ImportGroup>
 
 </Project>
