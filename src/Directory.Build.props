@@ -1,11 +1,11 @@
 <Project>
 
 	<PropertyGroup>
-		<Version>1.0.0-dev-00018</Version>
+		<Version>1.0.0-dev-00019</Version>
 		<Author>PackSite</Author>
 		<Company>PackSite</Company>
 		<Copyright>
-			Copyrights for project PackSite.Library.Pipelining are held by PackSite, 2021-2024.
+			Copyrights for project PackSite.Library.Pipelining are held by PackSite, 2021-2025.
 		</Copyright>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
