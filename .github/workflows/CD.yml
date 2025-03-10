@@ -1,22 +1,21 @@
-name: CI
+name: CD
 
 on:
   push:
-    branches:
-      - main
-      - develop
-    tags-ignore:
-      - '*'
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-dev-[0-9]+'
 
 jobs:
-  build:
-    name: 'Build & test ''${{ github.repository }}'''
+  deploy:
+    name: 'Deploy ''${{ github.repository }}'''
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+  
       - name: Install .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -41,14 +40,35 @@ jobs:
               echo "No NuGet.config file found."
             fi
           done
-
-      - name: Build & Test
+    
+      - name: Pack
         run: |
+          OUTPUT_DIR="output-packages"
+          mkdir -p "$OUTPUT_DIR"
           find . -name "*.sln" | while read slnfile; do
             if [[ -f "$slnfile" ]]; then
-              echo "Building and testing $slnfile"
-              dotnet test "$slnfile" --configuration Release
+              echo "Building and packing $slnfile"
+              dotnet pack "$slnfile" --configuration Release --output "$OUTPUT_DIR"
             else
               echo "No solution file found."
+            fi
+          done
+
+      - name: Push NuGet packages to GitHub Packages
+        run: |
+          OUTPUT_DIR="output-packages"
+          OWNER_NAME="${{ github.repository_owner }}"  # e.g., PackSite
+          REPO_NAME="${{ github.event.repository.name }}"  # e.g., Library.Validation
+          PACKAGE_PATTERN="${OWNER_NAME}.${REPO_NAME}.*"  # Match pattern: PackSite.Library.Validation.*
+
+          for pkg in "$OUTPUT_DIR"/*.nupkg; do
+            PKG_NAME=$(basename "$pkg") # Extract package filename
+
+            # Match package name using pattern OWNER_NAME.REPO_NAME.*
+            if [[ "$PKG_NAME" == $PACKAGE_PATTERN* ]]; then
+              echo "✅ Pushing $PKG_NAME"
+              dotnet nuget push "$pkg" --source "https://nuget.pkg.github.com/${OWNER_NAME}/index.json" --api-key "${{ secrets.GITHUB_TOKEN }}" --skip-duplicate
+            else
+              echo "❌ Skipping package $PKG_NAME (does not match $PACKAGE_PATTERN)"
             fi
           done

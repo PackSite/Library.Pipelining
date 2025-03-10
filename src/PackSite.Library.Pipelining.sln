@@ -31,14 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackSite.Library.Pipelining
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackSite.Library.Pipelining", "PackSite.Library.Pipelining\PackSite.Library.Pipelining.csproj", "{D4506815-9E5D-4188-A902-2A87A8AE0B93}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{5A7E0309-C577-454B-A925-8ACCDAEDC815}"
-	ProjectSection(SolutionItems) = preProject
-		..\.github\workflows\CD-GitHub.yml = ..\.github\workflows\CD-GitHub.yml
-		..\.github\workflows\CD-NuGet.yml = ..\.github\workflows\CD-NuGet.yml
-		..\.github\workflows\CI.yml = ..\.github\workflows\CI.yml
-		..\.github\workflows\delete-old-workflows.yml = ..\.github\workflows\delete-old-workflows.yml
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackSite.Library.Pipelining.Abstractions", "PackSite.Library.Pipelining.Abstractions\PackSite.Library.Pipelining.Abstractions.csproj", "{785A0E69-DDA1-4833-BFC2-2C3B9AB12673}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackSite.Library.Pipelining.Configuration", "PackSite.Library.Pipelining.Configuration\PackSite.Library.Pipelining.Configuration.csproj", "{2E4D1423-591E-4394-8CD7-A693AE4AF138}"
@@ -203,7 +195,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0128B814-76DB-4085-8511-4143B44C3AE9} = {AD8EC989-672F-4D04-892D-026D71D9EC83}
 		{D4506815-9E5D-4188-A902-2A87A8AE0B93} = {62124109-EF94-44B8-9C30-1D631E0CE06C}
-		{5A7E0309-C577-454B-A925-8ACCDAEDC815} = {F61F50C9-6428-4BE7-AE39-DF333029D19E}
 		{785A0E69-DDA1-4833-BFC2-2C3B9AB12673} = {62124109-EF94-44B8-9C30-1D631E0CE06C}
 		{2E4D1423-591E-4394-8CD7-A693AE4AF138} = {62124109-EF94-44B8-9C30-1D631E0CE06C}
 		{E91422D8-FFB8-4BDE-B9B6-511342C58D2D} = {E7177480-AEAE-4717-AC94-71DA1884AA88}
