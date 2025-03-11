@@ -1,7 +1,6 @@
 <Project>
 
 	<Import Project="PackSite.Library.Buses.props" Condition="Exists('PackSite.Library.Buses.props')" />
-	<Import Project="PackSite.Library.Caching.props" Condition="Exists('PackSite.Library.Caching.props')" />
 	<Import Project="PackSite.Library.Crypto.props" Condition="Exists('PackSite.Library.Crypto.props')" />
 	<Import Project="PackSite.Library.ETags.props" Condition="Exists('PackSite.Library.ETags.props')" />
 	<Import Project="PackSite.Library.Exceptions.props" Condition="Exists('PackSite.Library.Exceptions.props')" />
