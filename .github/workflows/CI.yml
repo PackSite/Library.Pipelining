@@ -44,7 +44,7 @@ jobs:
 
       - name: Build & Test
         run: |
-          find . -name "*.sln" | while read slnfile; do
+          find . -name "*.sln*" | while read slnfile; do
             if [[ -f "$slnfile" ]]; then
               echo "Building and testing $slnfile"
               dotnet test "$slnfile" --configuration Release
