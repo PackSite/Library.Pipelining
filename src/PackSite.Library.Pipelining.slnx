@@ -1,0 +1,55 @@
+<Solution>
+
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+
+  <Folder Name="/Benchmarks/">
+    <Project Path="../benchmarks/InvocationPerformanceBenchmark/InvocationPerformanceBenchmark.csproj" />
+  </Folder>
+
+  <Folder Name="/Configuration/">
+    <File Path="../.gitignore" />
+    <File Path="../codecov.yml" />
+    <File Path=".editorconfig" />
+    <File Path="clean.ps1" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="local-deploy.ps1" />
+    <File Path="NuGet.config" />
+  </Folder>
+
+  <Folder Name="/Configuration/props/">
+    <File Path="props/Analyzers.Packages.props" />
+    <File Path="props/Includes.Build.props" />
+    <File Path="props/Includes.Packages.props" />
+    <File Path="props/PackSite.Libraries.props" />
+    <File Path="props/Stacktrace.Build.props" />
+  </Folder>
+
+  <Folder Name="/Docs/">
+    <File Path="../CHANGELOG.md" />
+    <File Path="../README.md" />
+  </Folder>
+
+  <Folder Name="/Examples/">
+    <Project Path="../examples/AppConfigurationExample/AppConfigurationExample.csproj" />
+    <Project Path="../examples/PipelineInitializerExample/PipelineInitializerExample.csproj" />
+    <Project Path="../examples/SimpleExample/SimpleExample.csproj" />
+    <Project Path="../examples/SubPipelineExample/SubPipelineExample.csproj" />
+    <Project Path="../examples/WeirdExample/WeirdExample.csproj" />
+  </Folder>
+
+  <Folder Name="/Src/">
+    <Project Path="PackSite.Library.Pipelining.Abstractions/PackSite.Library.Pipelining.Abstractions.csproj" />
+    <Project Path="PackSite.Library.Pipelining.Configuration/PackSite.Library.Pipelining.Configuration.csproj" />
+    <Project Path="PackSite.Library.Pipelining/PackSite.Library.Pipelining.csproj" />
+  </Folder>
+
+  <Folder Name="/Tests/">
+    <Project Path="PackSite.Library.Pipelining.Tests/PackSite.Library.Pipelining.Tests.csproj" />
+  </Folder>
+  
+</Solution>
